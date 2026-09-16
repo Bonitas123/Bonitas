@@ -2,110 +2,149 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ADMIN BONITAS</title>
+<title>BONITAS - Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#fff0f3}
-header{background:#ff4d6d;color:white;padding:18px;text-align:center;font-weight:bold;font-size:22px;letter-spacing:1px}
-.tabs{display:flex;gap:5px;padding:10px;background:white;position:sticky;top:0;z-index:5}
-.tabs button{flex:1;padding:12px;border:none;border-radius:10px;background:#ffe5ec;font-weight:bold;cursor:pointer}
-.tabs button.ativo{background:#ff4d6d;color:white}
-.aba{display:none;padding:15px}.aba.ativa{display:block}
-.card{background:white;padding:15px;border-radius:16px;margin:12px 0;box-shadow:0 3px 10px #0001}
-input,select,textarea{width:100%;padding:12px;margin:6px 0;border:2px solid #ffb3c6;border-radius:10px}
-.btn{background:#ff4d6d;color:white;border:none;padding:14px;border-radius:12px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
-.badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;color:white}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
-.grid div{background:white;padding:12px;border-radius:12px}
-.small{font-size:11px;color:#888}
-.prod{width:50px;height:50px;object-fit:cover;border-radius:8px}
-.flex{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.botoes button{padding:7px 9px;border:none;border-radius:7px;color:white;font-weight:bold;margin:2px;cursor:pointer;font-size:12px}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:#fcf8f9;display:flex;min-height:100vh;color:#3a2a2e}
+aside{width:260px;background:#1a0f14;color:#b89aa5;padding:28px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:space-between}
+aside h2{font-family:Playfair Display;color:#ff2e93;letter-spacing:3px;font-size:24px;margin-bottom:40px}
+aside nav a{display:flex;padding:13px 14px;border-radius:10px;text-decoration:none;color:#b89aa5;margin:4px 0;font-size:14px;cursor:pointer}
+aside nav a.ativo{background:#2a1a20;color:white}
+main{flex:1;padding:28px 32px}
+.topbar{display:flex;justify-content:flex-end;margin-bottom:20px}
+.btn-rosa{background:#e84393;color:white;border:none;padding:12px 26px;border-radius:8px;font-weight:700;cursor:pointer;letter-spacing:0.5px}
+.card{background:white;border-radius:14px;padding:22px;box-shadow:0 1px 3px #0000000a;margin-bottom:18px}
+h1{font-family:Playfair Display;font-size:28px;margin:6px 0 20px}
+.label{font-size:12px;color:#8a6a74;margin-top:16px;display:block}
+input,textarea,select{width:100%;padding:12px 14px;border:1px solid #e9d6db;border-radius:10px;margin-top:6px;background:#fffafb}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.small{font-size:12px;color:#9a7a84}
+.hide{display:none}
+table{width:100%;border-collapse:collapse;margin-top:12px}th{font-size:11px;color:#9a7a84;text-align:left;padding:12px 8px;text-transform:uppercase;letter-spacing:1px}td{padding:14px 8px;border-top:1px solid #f2e6e9;font-size:14px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;justify-content:center;align-items:flex-start;padding:30px;overflow:auto;z-index:50}
+.modal>div{background:white;width:100%;max-width:860px;border-radius:16px;padding:26px}
+.estoque{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
+.estoque div input{margin-top:4px}
+.checks{display:flex;gap:18px;margin:16px 0}
+.painel-label{color:#c98aa0;font-size:10px;letter-spacing:2px;text-transform:uppercase}
 </style>
 </head>
 <body>
-<header>BONITAS - PAINEL ADMIN 💖</header>
-<div class="tabs">
-<button onclick="aba('pedidos')" id="t-pedidos" class="ativo">📦 Pedidos</button>
-<button onclick="aba('produtos')" id="t-produtos">👚 Produtos</button>
-<button onclick="aba('entrega')" id="t-entrega">🚚 Entrega</button>
-<button onclick="aba('loja')" id="t-loja">⚙️ Loja</button>
+<aside>
+<div>
+<h2>BONITAS</h2>
+<nav>
+<a id="m-geral" class="ativo" onclick="page('geral')">Visão geral</a>
+<a id="m-prod" onclick="page('prod')">Produtos</a>
+<a id="m-ped" onclick="page('ped')">Pedidos</a>
+<a id="m-cup" onclick="page('cup')">Cupons</a>
+<a id="m-conf" onclick="page('conf')">Configurações</a>
+</nav>
+</div>
+<div><a style="color:#7a5a65;font-size:13px">Sair</a></div>
+</aside>
+
+<main>
+<div class="topbar"><button class="btn-rosa" onclick="page('geral')">ENTRAR NO PAINEL</button></div>
+
+<!-- VISAO GERAL IGUAL FOTO -->
+<div id="p-geral">
+<span class="painel-label">Painel Administrativo</span>
+<div style="display:flex;justify-content:space-between;align-items:center"><h1>Visão geral</h1><a href="/" style="color:#e84393;font-size:13px;text-decoration:none">Ver loja →</a></div>
+<div class="grid4">
+<div class="card"><div class="small">Produtos cadastrados</div><h2 id="gv-prod" style="margin-top:8px">0</h2></div>
+<div class="card"><div class="small">Itens em estoque</div><h2 id="gv-est" style="margin-top:8px">0</h2></div>
+<div class="card"><div class="small">Pedidos novos</div><h2 id="gv-ped" style="margin-top:8px">0</h2></div>
+<div class="card"><div class="small">Faturamento concluído</div><h2 style="margin-top:8px">R$ 0,00</h2></div>
+</div>
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+<div class="card"><div style="display:flex;justify-content:space-between"><b>Pedidos recentes</b></div><div id="recentes" style="margin-top:30px;text-align:center;color:#9a7a84">Nenhum pedido.</div></div>
+<div class="card"><b>Estoque baixo</b><div style="margin-top:12px;color:#9a7a84;font-size:13px">Nenhum alerta</div></div>
+</div>
 </div>
 
-<div id="aba-pedidos" class="aba ativa">
-<div class="grid">
-<div><b id="totalPed">0</b><br><span class="small">Total pedidos</span></div>
-<div><b id="totalHoje">0</b><br><span class="small">Hoje</span></div>
-<div><b id="totalPago">0</b><br><span class="small">Pagos</span></div>
-</div>
-<button onclick="carregar()" class="btn" style="margin-top:10px">🔄 Atualizar Pedidos</button>
-<div id="lista">Carregando...</div>
+<!-- PRODUTOS -->
+<div id="p-prod" class="hide">
+<div style="display:flex;justify-content:space-between"><div><span class="painel-label">Painel Administrativo</span><h1>Produtos</h1></div><button class="btn-rosa" onclick="openProd()">+ Novo produto</button></div>
+<div class="card"><div id="listaProd" class="small">Produtos (0) - Nenhum produto cadastrado</div></div>
 </div>
 
-<div id="aba-produtos" class="aba">
+<!-- PEDIDOS -->
+<div id="p-ped" class="hide">
+<span class="painel-label">Painel Administrativo</span><h1>Pedidos</h1>
+<div id="listaPed" class="card">Carregando pedidos...</div>
+</div>
+
+<!-- CUPONS IGUAL FOTO -->
+<div id="p-cup" class="hide">
+<span class="painel-label">Painel Administrativo</span>
+<div style="display:flex;justify-content:space-between;align-items:center"><h1>Cupons</h1><a href="/" style="color:#e84393;font-size:13px">Ver loja →</a></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><h2 style="font-family:Playfair Display">Cupons</h2><button class="btn-rosa">+ NOVO CUPOM</button></div>
+<div class="card"><table><tr><th>Codigo</th><th>Tipo</th><th>Valor</th><th>Usos</th><th>Status</th></tr><tr><td colspan="5" style="text-align:center;color:#aaa;padding:30px">Nenhum cupom</td></tr></table></div>
+</div>
+
+<!-- CONFIGURACOES IGUAL FOTO -->
+<div id="p-conf" class="hide">
+<h1 style="font-family:Playfair Display">Configurações</h1>
 <div class="card">
-<h3>Adicionar Produto</h3>
-<input id="pNome" placeholder="Nome ex: Cropped Rosa">
-<input id="pPreco" placeholder="Preço ex: 45.90" type="number">
-<input id="pFoto" placeholder="Link da foto (Instagram ou Google)">
-<input id="pEstoque" placeholder="Estoque ex: 10" type="number">
-<button onclick="addProd()" class="btn">+ Salvar Produto</button>
+<h2 style="font-family:Playfair Display;margin-bottom:16px">Configurações da loja</h2>
+<label class="label">Nome da loja</label><input id="c-nome" value="BONITAS">
+<label class="label">WhatsApp com DDI e DDD</label><input id="c-zap" value="558399923260">
+<label class="label">Instagram</label><input id="c-insta" value="@bonitas_storemodafeminina">
+<label class="label">Endereço</label><input id="c-end" value="João Pessoa - PB">
+<label class="label">Taxa de entrega (R$)</label><input id="c-taxa" value="10.00">
+<label class="label">Limite de estoque baixo</label><input id="c-lim" value="3">
+<label class="label">Horário de funcionamento</label><input id="c-hor" value="Segunda a sábado, 9h às 18h">
+<label class="label">Pedido mínimo (R$)</label><input id="c-min" value="0.00">
+<h2 style="font-family:Playfair Display;margin:30px 0 16px">PIX da loja</h2>
+<label class="label">Chave PIX</label><input id="c-pix" value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3">
+<label class="label">Nome do recebedor</label><input id="c-rec" value="BONITAS">
+<label class="label">Cidade do recebedor</label><input id="c-cid" value="JOAO PESSOA">
+<button class="btn-rosa" style="width:100%;margin-top:24px;padding:18px;border-radius:12px" onclick="salvarConf()">SALVAR CONFIGURAÇÕES</button>
+<p class="small" style="margin-top:12px">Confira a chave PIX antes de publicar. O QR Code terá o valor e o número de cada pedido. O WhatsApp deve ser informado somente com números.</p>
 </div>
-<div id="listaProd"></div>
 </div>
+</main>
 
-<div id="aba-entrega" class="aba">
-<div class="card">
-<h3>Taxas de Entrega</h3>
-<p class="small">Edita aqui, depois clica salvar. Isso vai aparecer na loja.</p>
-<textarea id="taxas" rows="6" placeholder="Centro:5&#10;Bessa:8&#10;Mangabeira:10&#10;Retirar:0"></textarea>
-<label>Grátis acima de R$:</label>
-<input id="gratis" type="number" value="150">
-<button onclick="salvarTaxas()" class="btn">Salvar Taxas</button>
+<!-- MODAL NOVO PRODUTO IGUAL FOTO -->
+<div id="modalProd" class="hide modal"><div>
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-family:Playfair Display">Novo produto</h2><span onclick="closeProd()" style="cursor:pointer;font-size:22px">×</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+<div><label class="label">Nome *</label><input id="np-nome"></div>
+<div><label class="label">Categoria *</label><input id="np-cat" placeholder="Ex: Blusas"></div>
+<div><label class="label">Preço (R$) *</label><input id="np-preco" type="number"></div>
+<div><label class="label">Preço antigo (R$)</label><input id="np-antigo" type="number"></div>
 </div>
+<label class="label">Descrição</label><textarea id="np-desc" rows="3"></textarea>
+<label class="label">Cores, separadas por virgula *</label><input id="np-cores" value="Rosa, Branco">
+<label class="label">URLs de imagens, uma por linha</label><textarea id="np-urls" rows="3" placeholder="https://..."></textarea>
+<label class="label">Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label><div style="margin-top:8px"><label class="btn-rosa" style="background:white;color:#333;border:1px solid #ddd;padding:6px 12px;font-size:13px">Escolher arquivos <input type="file" multiple style="display:none"></label> <span class="small">Nenhum arquivo escolhido</span></div>
+<div class="checks"><label class="small"><input type="checkbox"> Destaque</label><label class="small"><input type="checkbox"> Novidade</label><label class="small"><input type="checkbox" checked> Produto ativo</label></div>
+<b style="font-size:16px">Estoque por tamanho e cor</b>
+<div class="estoque">
+<div><label class="label">PP / Rosa</label><input type="number" value="0"></div>
+<div><label class="label">PP / Branco</label><input type="number" value="0"></div>
+<div><label class="label">P / Rosa</label><input type="number" value="0"></div>
+<div><label class="label">P / Branco</label><input type="number" value="0"></div>
+<div><label class="label">M / Rosa</label><input type="number" value="0"></div>
+<div><label class="label">M / Branco</label><input type="number" value="0"></div>
+<div><label class="label">G / Rosa</label><input type="number" value="0"></div>
+<div><label class="label">G / Branco</label><input type="number" value="0"></div>
+<div><label class="label">GG / Rosa</label><input type="number" value="0"></div>
+<div><label class="label">GG / Branco</label><input type="number" value="0"></div>
 </div>
-
-<div id="aba-loja" class="aba">
-<div class="card">
-<h3>Config da Loja BONITAS</h3>
-<input id="zap" placeholder="WhatsApp com DDD ex: 5583999999999">
-<input id="pix" placeholder="Chave PIX">
-<input id="insta" placeholder="Instagram @bonitas">
-<input id="nomeLoja" placeholder="Nome da loja" value="BONITAS">
-<button onclick="salvarLoja()" class="btn">Salvar Configurações</button>
-<p class="small">Essas infos aparecem no checkout e no topo da loja.</p>
-<div style="margin-top:15px">
-<a href="/" style="color:#ff4d6d;font-weight:bold">Ver Loja</a> | <a href="/api/todos-pedidos" style="color:#888">Ver JSON</a>
-</div>
-</div>
-</div>
+<div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px"><button onclick="closeProd()" style="background:none;border:none;cursor:pointer">Cancelar</button><button class="btn-rosa" onclick="salvarProd()">SALVAR PRODUTO</button></div>
+</div></div>
 
 <script>
-function aba(n){document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('ativo'));document.getElementById('aba-'+n).classList.add('ativa');document.getElementById('t-'+n).classList.add('ativo');if(n=='pedidos')carregar();if(n=='produtos')listarProd();}
-
-async function carregar(){
- document.getElementById('lista').innerHTML='Buscando...';
- try{
-  const r=await fetch('/api/todos-pedidos');const pedidos=await r.json();
-  const lista=document.getElementById('lista');
-  let total=Object.keys(pedidos).length, hoje=0, pago=0;
-  for(let c in pedidos){if(pedidos[c].data && pedidos[c].data.includes(new Date().toLocaleDateString().slice(0,5))) hoje++; if(pedidos[c].pagamento=='Pago') pago++;}
-  document.getElementById('totalPed').innerText=total;document.getElementById('totalHoje').innerText=hoje;document.getElementById('totalPago').innerText=pago;
-  if(total==0){lista.innerHTML='<div class="card" style="text-align:center">Nenhum pedido ainda.<br>Faz um teste na loja.</div>';return;}
-  lista.innerHTML='';
-  for(let c in pedidos){let p=pedidos[c];
-   lista.innerHTML+=`<div class="card"><div class="flex"><div><b>${c}</b><br>${p.nome||''} - ${p.zap||''}<br><span class="small">${p.endereco||''}</span><br><b>R$ ${p.total||''}</b> <span class="badge" style="background:${p.pagamento=='Pago'?'#06d6a0':'#ffbe0b'};color:${p.pagamento=='Pago'?'white':'black'}">${p.pagamento||'Falta pagar'}</span> <span class="badge" style="background:#ff4d6d">${p.status||''}</span><br><span class="small">${p.bairro||''} | ${p.produtos||''}</span></div></div><div class="botoes" style="margin-top:10px"><button style="background:#ff8fa3" onclick="mudarStatus('${c}','Preparado')">PREPARADO</button><button style="background:#3a86ff" onclick="mudarStatus('${c}','Enviando')">ENVIANDO</button><button style="background:#06d6a0" onclick="mudarStatus('${c}','Concluido')">CONCLUÍDO</button><br><button style="background:#ffbe0b;color:black" onclick="mudarPag('${c}','Falta pagar')">FALTA PAGAR</button><button style="background:#8338ec" onclick="mudarPag('${c}','Pago')">PAGO</button></div></div>`;
-  }
- }catch(e){document.getElementById('lista').innerHTML='Erro. Verifica seu server.js';}
-}
-async function mudarStatus(c,s){await fetch('/api/pedido/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,status:s})});carregar();}
-async function mudarPag(c,p){await fetch('/api/pedido/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,pagamento:p})});carregar();}
-
-function listarProd(){const prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');document.getElementById('listaProd').innerHTML=prods.map((p,i)=>`<div class="card flex"><img class="prod" src="${p.foto}"><div><b>${p.nome}</b><br>R$${p.preco} | Est:${p.estoque||0}</div><button onclick="delProd(${i})" style="background:#ff4d6d;color:white;border:none;padding:8px;border-radius:8px">X</button></div>`).join('')||'<div class="card small">Nenhum produto. Adiciona acima.</div>';}
-function addProd(){const nome=document.getElementById('pNome').value,preco=document.getElementById('pPreco').value,foto=document.getElementById('pFoto').value,estoque=document.getElementById('pEstoque').value;if(!nome||!preco)return alert('Nome e preço');const prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');prods.push({nome,preco,foto,estoque});localStorage.setItem('bonitas_prod',JSON.stringify(prods));document.getElementById('pNome').value='';document.getElementById('pPreco').value='';document.getElementById('pFoto').value='';listarProd();alert('Produto salvo!');}
-function delProd(i){const prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');prods.splice(i,1);localStorage.setItem('bonitas_prod',JSON.stringify(prods));listarProd();}
-function salvarTaxas(){localStorage.setItem('bonitas_taxas',document.getElementById('taxas').value);localStorage.setItem('bonitas_gratis',document.getElementById('gratis').value);alert('Taxas salvas!');}
-function salvarLoja(){localStorage.setItem('bonitas_zap',document.getElementById('zap').value);localStorage.setItem('bonitas_pix',document.getElementById('pix').value);localStorage.setItem('bonitas_insta',document.getElementById('insta').value);localStorage.setItem('bonitas_nome',document.getElementById('nomeLoja').value);alert('Config salva!');}
-(function init(){document.getElementById('taxas').value=localStorage.getItem('bonitas_taxas')||'Centro:5\nBessa:8\nMangabeira:10\nValentina:10\nRetirar na loja:0';document.getElementById('gratis').value=localStorage.getItem('bonitas_gratis')||150;document.getElementById('zap').value=localStorage.getItem('bonitas_zap')||'';document.getElementById('pix').value=localStorage.getItem('bonitas_pix')||'';document.getElementById('insta').value=localStorage.getItem('bonitas_insta')||'';listarProd();carregar();})();
+function page(p){document.querySelectorAll('main>div').forEach(d=>{if(d.id.startsWith('p-'))d.classList.add('hide')});document.getElementById('p-'+p).classList.remove('hide');document.querySelectorAll('aside nav a').forEach(a=>a.classList.remove('ativo'));document.getElementById('m-'+p).classList.add('ativo');if(p=='ped')carregarPedidos();}
+function openProd(){document.getElementById('modalProd').classList.remove('hide')}
+function closeProd(){document.getElementById('modalProd').classList.add('hide')}
+function salvarConf(){const o={nome:document.getElementById('c-nome').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,lim:document.getElementById('c-lim').value,hor:document.getElementById('c-hor').value,min:document.getElementById('c-min').value,pix:document.getElementById('c-pix').value,rec:document.getElementById('c-rec').value,cid:document.getElementById('c-cid').value};localStorage.setItem('bonitas_conf',JSON.stringify(o));alert('Configurações salvas! Você pode mudar Zap, Taxa e PIX quando quiser!');}
+function salvarProd(){const n=document.getElementById('np-nome').value;if(!n)return alert('Digite o nome');alert('Produto '+n+' salvo!');closeProd();}
+async function carregarPedidos(){try{const r=await fetch('/api/todos-pedidos');const j=await r.json();let html='';if(Object.keys(j).length==0)html='Nenhum pedido';else for(let k in j){let p=j[k];html+=`<div style="padding:12px;border-bottom:1px solid #f2e6e9"><b>${k}</b> - ${p.nome||''} - R$ ${p.total||''} - ${p.status||''} - Pag: ${p.pagamento||'Falta pagar'} <button class="btn-rosa" style="padding:4px 8px;margin-left:10px" onclick="mudarPag('${k}','Pago')">PAGO</button><button class="btn-rosa" style="padding:4px 8px;background:#bbb" onclick="mudarPag('${k}','Falta pagar')">FALTA PAGAR</button></div>`}document.getElementById('listaPed').innerHTML=html;document.getElementById('recentes').innerHTML=html||'Nenhum pedido.';}catch(e){document.getElementById('listaPed').innerHTML='Erro ao carregar';}}
+async function mudarPag(c,p){await fetch('/api/pedido/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,pagamento:p})});carregarPedidos();}
+(function(){const s=JSON.parse(localStorage.getItem('bonitas_conf')||'null');if(s){if(s.zap)document.getElementById('c-zap').value=s.zap;if(s.taxa)document.getElementById('c-taxa').value=s.taxa;if(s.pix)document.getElementById('c-pix').value=s.pix;if(s.nome)document.getElementById('c-nome').value=s.nome;}})();
 </script>
 </body>
 </html>
