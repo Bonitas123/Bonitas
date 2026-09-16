@@ -1,57 +1,52 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin BONITAS</title>
-<style>body{font-family:Inter,Arial;background:#f8f3f7;margin:0}header{padding:14px 20px;background:#fff;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}.box{background:#fff;padding:16px;border-radius:14px;margin:14px;border:1px solid #eee}input,textarea,select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:4px 0}button{background:#FF2DA0;color:#fff;border:none;padding:10px 18px;border-radius:20px;cursor:pointer;font-weight:700}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:50}.modalBox{background:#fff;width:96%;max-width:720px;border-radius:16px;padding:18px;max-height:92vh;overflow:auto}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.estoque{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.preview{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.preview img{width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #eee}</style>
+<style>body{font-family:Inter,Arial;background:#f8f3f7;margin:0}header{padding:14px 20px;background:#fff;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}.tabs{display:flex;gap:8px;padding:12px 20px}.tab{padding:8px 16px;border-radius:20px;cursor:pointer;background:#eee;font-size:13px}.tab.active{background:#FF2DA0;color:#fff}.box{background:#fff;padding:16px;border-radius:14px;margin:12px 20px;border:1px solid #eee}input,textarea,select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:4px 0}button{background:#FF2DA0;color:#fff;border:none;padding:10px 18px;border-radius:20px;cursor:pointer;font-weight:700}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:50}.modalBox{background:#fff;width:96%;max-width:720px;border-radius:16px;padding:18px;max-height:92vh;overflow:auto}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.estoque{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.preview{display:flex;gap:8px;flex-wrap:wrap}.preview img{width:70px;height:70px;object-fit:cover;border-radius:8px}</style>
 </head><body>
-<div id="login" style="max-width:360px;margin:70px auto;background:#fff;padding:24px;border-radius:16px;text-align:center"><h2>🔒 Admin BONITAS</h2><p style="font-size:12px;color:#777">Senha: 09282326</p><input id="senha" type="password" placeholder="Senha"><button onclick="logar()" style="width:100%;margin-top:10px">ENTRAR</button></div>
-<div id="painel" style="display:none"><header><div style="font-weight:700;color:#FF2DA0;letter-spacing:3px">BONITAS ADMIN</div><div><button onclick="location.href='../'" style="background:#eee;color:#333">Ver loja</button> <button onclick="openModal()">+ Novo produto</button></div></header>
-<div class="box"><h3>Produtos (<span id="qtd">0</span>) - o que você cadastrar aqui aparece na loja</h3><div id="lista"></div></div>
-<div class="box"><h3>Pedidos (<span id="qtdPed">0</span>) - códigos BON-00000</h3><div id="listaPed"></div></div>
+<div id="login" style="max-width:360px;margin:70px auto;background:#fff;padding:24px;border-radius:16px;text-align:center"><h2>🔒 Admin BONITAS</h2><input id="senha" type="password" placeholder="Senha 09282326"><button onclick="logar()" style="width:100%;margin-top:10px">ENTRAR</button></div>
+<div id="painel" style="display:none">
+<header><div style="font-weight:800;color:#FF2DA0;letter-spacing:4px;font-size:22px">BONITAS</div><div><button onclick="location.href='../'" style="background:#eee;color:#333">Ver loja</button> <button onclick="openModal()">+ Novo produto</button></div></header>
+<div class="tabs"><div class="tab active" onclick="aba('prod')" id="tProd">Produtos</div><div class="tab" onclick="aba('ped')" id="tPed">Pedidos</div><div class="tab" onclick="aba('conf')" id="tConf">Configurações / Taxas / CEP</div></div>
+
+<div id="abaProd"><div class="box"><h3>Produtos cadastrados (<span id="qtd">0</span>) - clique para editar preço</h3><div id="lista"></div></div></div>
+
+<div id="abaPed" style="display:none"><div class="box"><h3>Pedidos dos clientes (<span id="qtdPed">0</span>) - com endereço e CEP</h3><div id="listaPed"></div></div></div>
+
+<div id="abaConf" style="display:none">
+<div class="box"><h3>⚙️ Configurações da loja - Muda preço, taxa, endereço, busca CEP</h3>
+<div class="grid2"><div><label>Taxa de entrega (R$)</label><input id="cTaxa" type="number" step="0.01"><small style="color:#777">Ex: 15.00 - aparece no carrinho</small></div><div><label>CEP da loja</label><input id="cCepLoja" placeholder="58000-000"></div></div>
+<label>Endereço da loja</label><input id="cEnd" placeholder="João Pessoa - PB - Rua...">
+<div class="grid2"><div><label>PIX - chave</label><input id="cPix" placeholder="66b5d5fe-b9af-4d26-9f27-2467300dc6e3"></div><div><label>WhatsApp da mãe (só números)</label><input id="cZap" placeholder="5583999232602"></div></div>
+<label>Mensagem de frete grátis</label><input id="cMsg" placeholder="Frete grátis acima de R$ 200">
+<button onclick="salvarConf()" style="margin-top:10px;width:100%;padding:12px">SALVAR CONFIGURAÇÕES</button>
+<div style="margin-top:12px;background:#fdf2f8;padding:10px;border-radius:8px;font-size:12px"><b>Busca CEP:</b> O site já busca CEP automático quando cliente digita CEP no checkout, usando ViaCEP. Teste: digite 58000-000</div>
+</div>
+</div>
 </div>
 
 <div id="modalProd" class="modal"><div class="modalBox">
-<div style="display:flex;justify-content:space-between"><h2>Novo produto</h2><span onclick="closeModal()" style="cursor:pointer">✕</span></div>
-<div class="grid2"><div><label>Nome *</label><input id="pNome" placeholder="Blusa Rosa"></div><div><label>Categoria *</label><input id="pCat" placeholder="Blusa"></div></div>
-<div class="grid2"><div><label>Preço (R$) *</label><input id="pPreco" type="number" placeholder="49.90"></div><div><label>Preço antigo (R$)</label><input id="pAntigo" type="number" placeholder="89.90 para promoção"></div></div>
-<label>Descrição</label><textarea id="pDesc" rows="2" placeholder="Linda blusa..."></textarea>
-<label>Cores, separadas por vírgula *</label><input id="pCores" value="Rosa, Branco" oninput="gerarEstoque()">
-<label>URLs de imagens, uma por linha (opcional)</label><textarea id="pUrls" rows="2" placeholder="https://..."></textarea>
-
-<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label>
-<div style="display:flex;gap:10px;align-items:center"><input type="file" id="pFiles" multiple accept="image/*" style="border:none"><button onclick="document.getElementById('pFiles').click()" style="background:#fff;border:1px solid #FF2DA0;color:#FF2DA0;padding:6px 12px">Escolher arquivos</button><span id="fileLabel" style="font-size:12px;color:#777">Nenhum arquivo escolhido</span></div>
-<div id="preview" class="preview"></div>
-
+<div style="display:flex;justify-content:space-between"><h2 id="modalTitulo">Novo produto</h2><span onclick="closeModal()" style="cursor:pointer">✕</span></div>
+<div class="grid2"><div><label>Nome *</label><input id="pNome"></div><div><label>Categoria *</label><input id="pCat"></div></div>
+<div class="grid2"><div><label>Preço (R$) *</label><input id="pPreco" type="number" step="0.01"></div><div><label>Preço antigo (R$)</label><input id="pAntigo" type="number" step="0.01"></div></div>
+<label>Descrição</label><textarea id="pDesc" rows="2"></textarea>
+<label>Cores, separadas por vírgula</label><input id="pCores" value="Rosa, Branco" oninput="gerarEstoque()">
+<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label><input type="file" id="pFiles" multiple accept="image/*"><div id="preview" class="preview"></div>
 <div style="margin:10px 0"><label><input type="checkbox" id="pDest"> Destaque</label> <label style="margin-left:12px"><input type="checkbox" id="pNov"> Novidade</label> <label style="margin-left:12px"><input type="checkbox" id="pAtivo" checked> Produto ativo</label></div>
-<h3 style="margin-top:12px">Estoque por tamanho e cor</h3>
-<div id="estoqueArea" class="estoque"></div>
+<h4>Estoque por tamanho e cor</h4><div id="estoqueArea" class="estoque"></div>
 <div style="text-align:right;margin-top:16px"><button onclick="closeModal()" style="background:#eee;color:#333">Cancelar</button> <button onclick="salvar()" style="background:#FF2DA0;margin-left:8px">SALVAR PRODUTO</button></div>
 </div></div>
 
 <script>
-let imagensBase64=[];
-function logar(){if(document.getElementById('senha').value=='09282326'){document.getElementById('login').style.display='none';document.getElementById('painel').style.display='block';render()}else alert('Senha errada')}
+let editIndex=-1; let imagensBase64=[];
+function logar(){if(document.getElementById('senha').value=='09282326'){document.getElementById('login').style.display='none';document.getElementById('painel').style.display='block';render();carregarConf()}else alert('Senha errada')}
+function aba(nome){document.getElementById('abaProd').style.display=nome=='prod'?'block':'none';document.getElementById('abaPed').style.display=nome=='ped'?'block':'none';document.getElementById('abaConf').style.display=nome=='conf'?'block':'none';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('t'+nome.charAt(0).toUpperCase()+nome.slice(1)).classList.add('active');}
 let prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');
-function openModal(){document.getElementById('modalProd').style.display='flex';imagensBase64=[];document.getElementById('preview').innerHTML='';document.getElementById('fileLabel').innerText='Nenhum arquivo escolhido';gerarEstoque()}
+function openModal(i=-1){editIndex=i;document.getElementById('modalProd').style.display='flex';if(i>=0){let p=prods[i];document.getElementById('modalTitulo').innerText='Editar produto';document.getElementById('pNome').value=p.nome;document.getElementById('pCat').value=p.cat;document.getElementById('pPreco').value=p.preco;document.getElementById('pAntigo').value=p.precoAntigo||'';document.getElementById('pDesc').value=p.desc||'';document.getElementById('pCores').value=(p.cores||[]).join(', ');}else{document.getElementById('modalTitulo').innerText='Novo produto';document.getElementById('pNome').value='';document.getElementById('pCat').value='';document.getElementById('pPreco').value='';document.getElementById('pAntigo').value='';document.getElementById('pDesc').value='';}gerarEstoque();imagensBase64=[];document.getElementById('preview').innerHTML='';}
 function closeModal(){document.getElementById('modalProd').style.display='none'}
-function gerarEstoque(){
-let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim()).filter(s=>s);
-let tams=['PP','P','M','G','GG'];let area=document.getElementById('estoqueArea');area.innerHTML='';
-cores.forEach(cor=>{tams.forEach(tam=>{let id=`${tam} / ${cor}`;area.innerHTML+=`<div><label style="font-size:11px">${id}</label><input type="number" id="est_${id}" value="0" min="0"></div>`})});
-}
-document.getElementById('pFiles').addEventListener('change',function(e){
-let files=e.target.files;if(!files.length)return;document.getElementById('fileLabel').innerText=files.length+' arquivo(s) escolhido(s)';imagensBase64=[];document.getElementById('preview').innerHTML='';
-for(let f of files){if(f.size>5*1024*1024){alert(f.name+' muito grande >5MB');continue}let reader=new FileReader();reader.onload=function(ev){imagensBase64.push(ev.target.result);document.getElementById('preview').innerHTML+=`<img src="${ev.target.result}">`};reader.readAsDataURL(f);}
-});
-function salvar(){
-let nome=document.getElementById('pNome').value;let cat=document.getElementById('pCat').value;let preco=parseFloat(document.getElementById('pPreco').value);let precoAntigo=parseFloat(document.getElementById('pAntigo').value)||null;let desc=document.getElementById('pDesc').value;let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim());let urls=document.getElementById('pUrls').value.split('\n').filter(s=>s.trim());
-let todasImgs=[...imagensBase64,...urls];let img=todasImgs[0]||'https://via.placeholder.com/400x500/FF2DA0/fff?text='+encodeURIComponent(nome);
-let estoque={};document.querySelectorAll('[id^="est_"]').forEach(inp=>{estoque[inp.id.replace('est_','')]=parseInt(inp.value)||0});
-if(!nome||!cat||!preco){alert('Preencha Nome, Categoria e Preço');return}
-prods.push({nome,cat,preco,precoAntigo,desc,cores,img,imgs:todasImgs,destaque:document.getElementById('pDest').checked,novidade:document.getElementById('pNov').checked,ativo:document.getElementById('pAtivo').checked,estoque});
-localStorage.setItem('bonitas_prod',JSON.stringify(prods));closeModal();render();alert('Salvo! Vai na loja e dá F5 - já aparece em Categorias e Filtros!');}
-function render(){
-document.getElementById('qtd').innerText=prods.length;
-document.getElementById('lista').innerHTML=prods.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span><b>${p.nome}</b> - ${p.cat} - R$ ${p.preco} ${p.precoAntigo?`(promo de R$ ${p.precoAntigo})`:''}</span><span style="color:red;cursor:pointer" onclick="del(${i})">Excluir</span></div>`).join('')||'Nenhum produto - clique em + Novo produto';
-let pedidos=JSON.parse(localStorage.getItem('bonitas_ped')||'[]');document.getElementById('qtdPed').innerText=pedidos.length;document.getElementById('listaPed').innerHTML=pedidos.length==0?'Nenhum pedido recebido':pedidos.map(p=>`<div style="padding:6px;border-bottom:1px solid #eee"><b>${p.codigo}</b> - ${p.nome} - R$ ${p.total.toFixed(2)} - ${p.data}</div>`).join('');
-}
+function gerarEstoque(){let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim()).filter(s=>s);let tams=['PP','P','M','G','GG'];let area=document.getElementById('estoqueArea');area.innerHTML='';cores.forEach(cor=>{tams.forEach(tam=>{let id=`${tam} / ${cor}`;let val=editIndex>=0&&prods[editIndex].estoque?prods[editIndex].estoque[id]||0:0;area.innerHTML+=`<div><label style="font-size:11px">${id}</label><input type="number" id="est_${id}" value="${val}" min="0"></div>`})});}
+document.getElementById('pFiles').addEventListener('change',function(e){let files=e.target.files;imagensBase64=[];document.getElementById('preview').innerHTML='';for(let f of files){if(f.size>5*1024*1024){alert(f.name+' >5MB');continue}let r=new FileReader();r.onload=ev=>{imagensBase64.push(ev.target.result);document.getElementById('preview').innerHTML+=`<img src="${ev.target.result}">`};r.readAsDataURL(f);}});
+function salvar(){let nome=document.getElementById('pNome').value;let cat=document.getElementById('pCat').value;let preco=parseFloat(document.getElementById('pPreco').value);let precoAntigo=parseFloat(document.getElementById('pAntigo').value)||null;let desc=document.getElementById('pDesc').value;let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim());let img=imagensBase64[0]||(editIndex>=0?prods[editIndex].img:'https://via.placeholder.com/400x500/FF2DA0/fff?text='+encodeURIComponent(nome));let estoque={};document.querySelectorAll('[id^="est_"]').forEach(inp=>{estoque[inp.id.replace('est_','')]=parseInt(inp.value)||0});if(!nome||!cat||!preco){alert('Nome, categoria e preço');return}let obj={nome,cat,preco,precoAntigo,desc,cores,img,imgs:imagensBase64,ativo:document.getElementById('pAtivo').checked,novidade:document.getElementById('pNov').checked,destaque:document.getElementById('pDest').checked,estoque};if(editIndex>=0)prods[editIndex]=obj;else prods.push(obj);localStorage.setItem('bonitas_prod',JSON.stringify(prods));closeModal();render();alert('Salvo!');}
+function render(){document.getElementById('qtd').innerText=prods.length;document.getElementById('lista').innerHTML=prods.map((p,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee"><div><b>${p.nome}</b> - ${p.cat}<br>R$ <span style="color:#FF2DA0;font-weight:700">${p.preco.toFixed(2)}</span> ${p.precoAntigo?`<span style="text-decoration:line-through;color:#aaa">R$ ${p.precoAntigo.toFixed(2)}</span>`:''} - Estoque: ${Object.values(p.estoque||{}).reduce((a,b)=>a+b,0)}</div><div><button onclick="openModal(${i})" style="background:#eee;color:#333;padding:6px 12px">Editar preço</button> <span style="color:red;cursor:pointer;margin-left:8px" onclick="del(${i})">Excluir</span></div></div>`).join('')||'Nenhum produto';let pedidos=JSON.parse(localStorage.getItem('bonitas_ped')||'[]');document.getElementById('qtdPed').innerText=pedidos.length;document.getElementById('listaPed').innerHTML=pedidos.length==0?'Nenhum pedido recebido':pedidos.map(p=>`<div style="padding:10px;border-bottom:1px solid #eee"><b>${p.codigo}</b> - ${p.nome} - ${p.zap}<br><small>${p.endereco||''}</small><br><b>Total: R$ ${p.total.toFixed(2)} (sub R$ ${p.sub?.toFixed(2)||p.total} + taxa R$ ${p.taxa||0})</b> - ${p.data}<br>Produtos: ${(p.produtos||[]).map(x=>x.nome).join(', ')}<br><button onclick="window.open('https://wa.me/${p.zap.replace(/\\D/g,'')}','_blank')" style="margin-top:6px;padding:4px 10px;font-size:11px">Chamar no Zap</button></div>`).join('');}
 function del(i){if(confirm('Excluir?')){prods.splice(i,1);localStorage.setItem('bonitas_prod',JSON.stringify(prods));render()}}
+function carregarConf(){let c=JSON.parse(localStorage.getItem('bonitas_config')||'{"taxa":15,"endereco":"João Pessoa - PB","pix":"66b5d5fe-b9af-4d26-9f27-2467300dc6e3","zap":"5583999232602","cep":"58000-000","msg":""}');document.getElementById('cTaxa').value=c.taxa;document.getElementById('cEnd').value=c.endereco;document.getElementById('cPix').value=c.pix;document.getElementById('cZap').value=c.zap;document.getElementById('cCepLoja').value=c.cep;document.getElementById('cMsg').value=c.msg||'';}
+function salvarConf(){let c={taxa:parseFloat(document.getElementById('cTaxa').value)||0,endereco:document.getElementById('cEnd').value,pix:document.getElementById('cPix').value,zap:document.getElementById('cZap').value.replace(/\\D/g,''),cep:document.getElementById('cCepLoja').value,msg:document.getElementById('cMsg').value};localStorage.setItem('bonitas_config',JSON.stringify(c));alert('Configurações salvas! Taxa de entrega agora é R$ '+c.taxa.toFixed(2)+' - já aparece na loja!');}
 gerarEstoque();render();
 </script></body></html>
