@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acompanhar Pedido - BONITAS</title>
+<style>
+body{font-family:Arial;background:#fff5f5;text-align:center;padding:20px}
+.box{background:white;max-width:450px;margin:20px auto;padding:25px;border-radius:15px;box-shadow:0 4px 10px #0001}
+input{padding:12px;width:80%;border:2px solid #ff8fa3;border-radius:8px;text-transform:uppercase}
+button{padding:12px 25px;background:#ff4d6d;color:white;border:none;border-radius:8px;margin-top:10px;cursor:pointer;font-weight:bold}
+.status{display:flex;justify-content:space-between;margin:20px 0}
+.etapa{flex:1;padding:10px;border-radius:10px;background:#eee;margin:5px;font-size:12px}
+.etapa.ativo{background:#ff4d6d;color:white}
+</style>
+</head>
+<body>
+<h1>BONITAS</h1>
+<div class="box">
+<h2>Acompanhar meu pedido</h2>
+<input id="codigo" placeholder="Digite seu codigo ex: BON1234">
+<br><button onclick="buscar()">Ver meu pedido</button>
+<div id="resultado" style="margin-top:20px"></div>
+</div>
+<a href="/">Voltar para loja</a> | <a href="https://wa.me/558399923260?text=Ola! Preciso de ajuda com meu pedido BONITAS">Ajuda no WhatsApp</a>
+<script>
+async function buscar(){
+  const codigo=document.getElementById('codigo').value.trim().toUpperCase();
+  if(!codigo) return alert('Digite o codigo');
+  const res=await fetch('/api/pedido/'+codigo);
+  const p=await res.json();
+  const div=document.getElementById('resultado');
+  if(p.erro){div.innerHTML='<p style=color:red>'+p.erro+'</p>';return;}
+  let s1=p.status=='Preparando'?'ativo':'';let s2=p.status=='Enviando'?'ativo':'';let s3=p.status=='Chegou'?'ativo':'';
+  if(p.status=='Enviando') s1='ativo'; if(p.status=='Chegou'){s1='ativo';s2='ativo';}
+  div.innerHTML=`<h3>Ola ${p.nome}!</h3><p><b>Blusa:</b> ${p.blusa} - Tam: ${p.tamanho}</p><div class="status"><div class="etapa ${s1}">Preparando</div><div class="etapa ${s2}">Enviando</div><div class="etapa ${s3}">Chegou</div></div><p><b>Status atual: ${p.status}</b></p><p style="font-size:12px">Data: ${p.data}</p><img src="${p.foto||''}" style="max-width:200px;border-radius:10px;margin-top:10px">`;
+}
+</script>
+</body>
+</html>
