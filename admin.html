@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin BONITAS</title>
 <style>
 body{font-family:Arial;background:#f8f8f8;padding:15px}
-.pedido{background:white;padding:15px;margin:12px 0;border-radius:12px;display:flex;justify-content:space-between;flex-wrap:wrap}
-.info{flex:1;min-width:250px;text-align:left;font-size:13px}
-.botoes{display:flex;flex-direction:column;gap:6px;min-width:140px}
-.botoes button{padding:8px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;color:white}
-.prep{background:#ff8fa3}.env{background:#3a86ff}.conc{background:#06d6a0}.falta{background:#ffbe0b;color:black}.pago{background:#8338ec}
+.pedido{background:white;padding:15px;margin:10px 0;border-radius:10px}
 </style>
 </head>
 <body>
@@ -18,29 +15,15 @@ body{font-family:Arial;background:#f8f8f8;padding:15px}
 <div id="lista">Carregando...</div>
 <script>
 async function carregar(){
-  const res=await fetch('/api/todos-pedidos'); const pedidos=await res.json();
-  const lista=document.getElementById('lista'); lista.innerHTML='';
+  const res = await fetch('/api/todos-pedidos');
+  const pedidos = await res.json();
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
   for(let codigo in pedidos){
-    const p=pedidos[codigo];
-    lista.innerHTML+=`<div class="pedido">
-      <div class="info"><b>${codigo}</b> - ${p.nome}<br>${p.blusa||p.endereco||''}<br>Status: ${p.status} | Pag: ${p.pagamento||'Falta pagar'}</div>
-      <div class="botoes">
-        <button class="prep" onclick="mudarStatus('${codigo}','Preparado')">PREPARADO</button>
-        <button class="env" onclick="mudarStatus('${codigo}','Enviando')">ENVIANDO</button>
-        <button class="conc" onclick="mudarStatus('${codigo}','Concluido')">CONCLUIDO</button>
-        <button class="falta" onclick="mudarPag('${codigo}','Falta pagar')">FALTA PAGAR</button>
-        <button class="pago" onclick="mudarPag('${codigo}','Pago')">PAGO</button>
-      </div>
-    </div>`;
+    let p = pedidos[codigo];
+    lista.innerHTML += `<div class="pedido"><b>${codigo}</b> - ${p.nome}<br>${p.blusa||''}<br>${p.endereco||''}<br>R$ ${p.total||''}</div>`;
   }
-}
-async function mudarStatus(codigo,status){
-  await fetch('/api/pedido/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo,status})});
-  alert('Mudou para '+status); carregar();
-}
-async function mudarPag(codigo,pag){
-  await fetch('/api/pedido/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo,pagamento:pag})});
-  alert('Pagamento '+pag); carregar();
+  if(Object.keys(pedidos).length==0) lista.innerHTML='Nenhum pedido';
 }
 carregar();
 </script>
