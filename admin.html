@@ -1,31 +1,57 @@
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin BONITAS</title>
-<style>body{font-family:Arial;background:#f8f3f7;padding:20px} .box{background:#fff;padding:16px;border-radius:12px;margin:12px 0;border:1px solid #eee} input,select{width:100%;padding:10px;margin:4px 0;border:1px solid #ddd;border-radius:8px} button{background:#FF2DA0;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:700} .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px} table{width:100%;border-collapse:collapse;font-size:13px} td,th{border-bottom:1px solid #eee;padding:8px;text-align:left}</style>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin BONITAS</title>
+<style>body{font-family:Inter,Arial;background:#f8f3f7;margin:0}header{padding:14px 20px;background:#fff;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}.box{background:#fff;padding:16px;border-radius:14px;margin:14px;border:1px solid #eee}input,textarea,select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:4px 0}button{background:#FF2DA0;color:#fff;border:none;padding:10px 18px;border-radius:20px;cursor:pointer;font-weight:700}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:50}.modalBox{background:#fff;width:96%;max-width:720px;border-radius:16px;padding:18px;max-height:92vh;overflow:auto}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.estoque{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.preview{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.preview img{width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #eee}</style>
 </head><body>
-<div id="login" style="max-width:360px;margin:80px auto;text-align:center;background:#fff;padding:24px;border-radius:16px"><h2>🔒 Admin BONITAS</h2><p>Senha:</p><input id="senha" type="password" placeholder="09282326"><button onclick="logar()" style="width:100%;margin-top:10px">ENTRAR</button></div>
-<div id="painel" style="display:none">
-<h1>BONITAS - Painel Administrativo</h1><button onclick="location.href='../'">← Voltar pra loja</button>
-<div class="grid">
-<div class="box"><h3>➕ Cadastrar Produto</h3><input id="pNome" placeholder="Nome ex: Blusa Rosa"><input id="pPreco" type="number" placeholder="Preço ex: 49.90"><input id="pCat" placeholder="Categoria ex: Blusa"><input id="pImg" placeholder="Link da imagem (ou deixe vazio)"><button onclick="addProd()">Cadastrar</button></div>
-<div class="box"><h3>🏷️ Cupom</h3><input id="cCod" placeholder="Código ex: BONITAS10"><input id="cVal" type="number" placeholder="% desconto ex: 10"><button onclick="addCupom()">Criar Cupom</button><div id="listaCupom" style="margin-top:8px"></div></div>
+<div id="login" style="max-width:360px;margin:70px auto;background:#fff;padding:24px;border-radius:16px;text-align:center"><h2>🔒 Admin BONITAS</h2><p style="font-size:12px;color:#777">Senha: 09282326</p><input id="senha" type="password" placeholder="Senha"><button onclick="logar()" style="width:100%;margin-top:10px">ENTRAR</button></div>
+<div id="painel" style="display:none"><header><div style="font-weight:700;color:#FF2DA0;letter-spacing:3px">BONITAS ADMIN</div><div><button onclick="location.href='../'" style="background:#eee;color:#333">Ver loja</button> <button onclick="openModal()">+ Novo produto</button></div></header>
+<div class="box"><h3>Produtos (<span id="qtd">0</span>) - o que você cadastrar aqui aparece na loja</h3><div id="lista"></div></div>
+<div class="box"><h3>Pedidos (<span id="qtdPed">0</span>) - códigos BON-00000</h3><div id="listaPed"></div></div>
 </div>
-<div class="box"><h3>📦 Produtos Cadastrados (<span id="qtdP">0</span>)</h3><div id="listaProd"></div></div>
-<div class="box"><h3>🧾 Pedidos - Códigos</h3><div id="listaPed"></div></div>
-</div>
+
+<div id="modalProd" class="modal"><div class="modalBox">
+<div style="display:flex;justify-content:space-between"><h2>Novo produto</h2><span onclick="closeModal()" style="cursor:pointer">✕</span></div>
+<div class="grid2"><div><label>Nome *</label><input id="pNome" placeholder="Blusa Rosa"></div><div><label>Categoria *</label><input id="pCat" placeholder="Blusa"></div></div>
+<div class="grid2"><div><label>Preço (R$) *</label><input id="pPreco" type="number" placeholder="49.90"></div><div><label>Preço antigo (R$)</label><input id="pAntigo" type="number" placeholder="89.90 para promoção"></div></div>
+<label>Descrição</label><textarea id="pDesc" rows="2" placeholder="Linda blusa..."></textarea>
+<label>Cores, separadas por vírgula *</label><input id="pCores" value="Rosa, Branco" oninput="gerarEstoque()">
+<label>URLs de imagens, uma por linha (opcional)</label><textarea id="pUrls" rows="2" placeholder="https://..."></textarea>
+
+<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label>
+<div style="display:flex;gap:10px;align-items:center"><input type="file" id="pFiles" multiple accept="image/*" style="border:none"><button onclick="document.getElementById('pFiles').click()" style="background:#fff;border:1px solid #FF2DA0;color:#FF2DA0;padding:6px 12px">Escolher arquivos</button><span id="fileLabel" style="font-size:12px;color:#777">Nenhum arquivo escolhido</span></div>
+<div id="preview" class="preview"></div>
+
+<div style="margin:10px 0"><label><input type="checkbox" id="pDest"> Destaque</label> <label style="margin-left:12px"><input type="checkbox" id="pNov"> Novidade</label> <label style="margin-left:12px"><input type="checkbox" id="pAtivo" checked> Produto ativo</label></div>
+<h3 style="margin-top:12px">Estoque por tamanho e cor</h3>
+<div id="estoqueArea" class="estoque"></div>
+<div style="text-align:right;margin-top:16px"><button onclick="closeModal()" style="background:#eee;color:#333">Cancelar</button> <button onclick="salvar()" style="background:#FF2DA0;margin-left:8px">SALVAR PRODUTO</button></div>
+</div></div>
+
 <script>
-function logar(){if(document.getElementById('senha').value==='09282326'){document.getElementById('login').style.display='none';document.getElementById('painel').style.display='block';render()}else alert('Senha errada')}
+let imagensBase64=[];
+function logar(){if(document.getElementById('senha').value=='09282326'){document.getElementById('login').style.display='none';document.getElementById('painel').style.display='block';render()}else alert('Senha errada')}
 let prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');
-let cupons=JSON.parse(localStorage.getItem('bonitas_cupons')||'[{"codigo":"BONITAS10","valor":10}]');
-function addProd(){let nome=document.getElementById('pNome').value;let preco=parseFloat(document.getElementById('pPreco').value);let cat=document.getElementById('pCat').value;let img=document.getElementById('pImg').value||'https://via.placeholder.com/300x400/FF2DA0/fff?text='+encodeURIComponent(nome);if(!nome||!preco){alert('Nome e preço');return}prods.push({nome,preco,cat,img});localStorage.setItem('bonitas_prod',JSON.stringify(prods));alert('Cadastrado!');render();document.getElementById('pNome').value=''}
-function addCupom(){let codigo=document.getElementById('cCod').value.toUpperCase();let valor=parseFloat(document.getElementById('cVal').value);if(!codigo||!valor)return;cupons.push({codigo,valor});localStorage.setItem('bonitas_cupons',JSON.stringify(cupons));render()}
-function render(){
-document.getElementById('qtdP').innerText=prods.length;
-document.getElementById('listaProd').innerHTML=prods.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee"><span>${p.nome} - R$ ${p.preco} - ${p.cat}</span><span style="color:red;cursor:pointer" onclick="delProd(${i})">Excluir</span></div>`).join('')||'Nenhum produto - cadastre acima';
-document.getElementById('listaCupom').innerHTML=cupons.map((c,i)=>`<div>${c.codigo} - ${c.valor}% <span style="color:red;cursor:pointer" onclick="delCupom(${i})">x</span></div>`).join('');
-let pedidos=JSON.parse(localStorage.getItem('bonitas_ped')||'[]');
-document.getElementById('listaPed').innerHTML=pedidos.length==0?'Nenhum pedido ainda':`<table><tr><th>Código</th><th>Cliente</th><th>Total</th><th>Data</th></tr>${pedidos.map(p=>`<tr><td>${p.codigo}</td><td>${p.nome}</td><td>R$ ${p.total.toFixed(2)}</td><td>${p.data}</td></tr>`).join('')}</table>`;
+function openModal(){document.getElementById('modalProd').style.display='flex';imagensBase64=[];document.getElementById('preview').innerHTML='';document.getElementById('fileLabel').innerText='Nenhum arquivo escolhido';gerarEstoque()}
+function closeModal(){document.getElementById('modalProd').style.display='none'}
+function gerarEstoque(){
+let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim()).filter(s=>s);
+let tams=['PP','P','M','G','GG'];let area=document.getElementById('estoqueArea');area.innerHTML='';
+cores.forEach(cor=>{tams.forEach(tam=>{let id=`${tam} / ${cor}`;area.innerHTML+=`<div><label style="font-size:11px">${id}</label><input type="number" id="est_${id}" value="0" min="0"></div>`})});
 }
-function delProd(i){prods.splice(i,1);localStorage.setItem('bonitas_prod',JSON.stringify(prods));render()}
-function delCupom(i){cupons.splice(i,1);localStorage.setItem('bonitas_cupons',JSON.stringify(cupons));render()}
-if(localStorage.getItem('bonitas_admin_log')==='1'){document.getElementById('login').style.display='none';document.getElementById('painel').style.display='block';render()}
+document.getElementById('pFiles').addEventListener('change',function(e){
+let files=e.target.files;if(!files.length)return;document.getElementById('fileLabel').innerText=files.length+' arquivo(s) escolhido(s)';imagensBase64=[];document.getElementById('preview').innerHTML='';
+for(let f of files){if(f.size>5*1024*1024){alert(f.name+' muito grande >5MB');continue}let reader=new FileReader();reader.onload=function(ev){imagensBase64.push(ev.target.result);document.getElementById('preview').innerHTML+=`<img src="${ev.target.result}">`};reader.readAsDataURL(f);}
+});
+function salvar(){
+let nome=document.getElementById('pNome').value;let cat=document.getElementById('pCat').value;let preco=parseFloat(document.getElementById('pPreco').value);let precoAntigo=parseFloat(document.getElementById('pAntigo').value)||null;let desc=document.getElementById('pDesc').value;let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim());let urls=document.getElementById('pUrls').value.split('\n').filter(s=>s.trim());
+let todasImgs=[...imagensBase64,...urls];let img=todasImgs[0]||'https://via.placeholder.com/400x500/FF2DA0/fff?text='+encodeURIComponent(nome);
+let estoque={};document.querySelectorAll('[id^="est_"]').forEach(inp=>{estoque[inp.id.replace('est_','')]=parseInt(inp.value)||0});
+if(!nome||!cat||!preco){alert('Preencha Nome, Categoria e Preço');return}
+prods.push({nome,cat,preco,precoAntigo,desc,cores,img,imgs:todasImgs,destaque:document.getElementById('pDest').checked,novidade:document.getElementById('pNov').checked,ativo:document.getElementById('pAtivo').checked,estoque});
+localStorage.setItem('bonitas_prod',JSON.stringify(prods));closeModal();render();alert('Salvo! Vai na loja e dá F5 - já aparece em Categorias e Filtros!');}
+function render(){
+document.getElementById('qtd').innerText=prods.length;
+document.getElementById('lista').innerHTML=prods.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span><b>${p.nome}</b> - ${p.cat} - R$ ${p.preco} ${p.precoAntigo?`(promo de R$ ${p.precoAntigo})`:''}</span><span style="color:red;cursor:pointer" onclick="del(${i})">Excluir</span></div>`).join('')||'Nenhum produto - clique em + Novo produto';
+let pedidos=JSON.parse(localStorage.getItem('bonitas_ped')||'[]');document.getElementById('qtdPed').innerText=pedidos.length;document.getElementById('listaPed').innerHTML=pedidos.length==0?'Nenhum pedido recebido':pedidos.map(p=>`<div style="padding:6px;border-bottom:1px solid #eee"><b>${p.codigo}</b> - ${p.nome} - R$ ${p.total.toFixed(2)} - ${p.data}</div>`).join('');
+}
+function del(i){if(confirm('Excluir?')){prods.splice(i,1);localStorage.setItem('bonitas_prod',JSON.stringify(prods));render()}}
+gerarEstoque();render();
 </script></body></html>
