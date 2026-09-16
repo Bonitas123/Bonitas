@@ -1,22 +1,48 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin BONITAS</title><style>body{font-family:Arial;background:#f8f3f7;margin:0}header{padding:14px 20px;background:#fff;border-bottom:1px solid #eee;display:flex;justify-content:space-between}.tabs{display:flex;gap:8px;padding:12px 20px;background:#fff}.tab{padding:8px 18px;border-radius:20px;cursor:pointer;background:#eee}.tab.active{background:#FF2DA0;color:#fff}.box{background:#fff;padding:16px;border-radius:14px;margin:12px 20px;border:1px solid #eee}input,textarea,select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0}button{background:#FF2DA0;color:#fff;border:none;padding:10px 18px;border-radius:20px;cursor:pointer;font-weight:700}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:50}.modalBox{background:#fff;width:96%;max-width:740px;border-radius:18px;padding:18px;max-height:92vh;overflow:auto}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.estoque{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.preview img{width:70px;height:70px;object-fit:cover;border-radius:8px}</style></head><body>
-<div id="login" style="max-width:360px;margin:80px auto;background:#fff;padding:28px;border-radius:18px;text-align:center"><h2>Admin BONITAS</h2><input id="senha" type="password" placeholder="09282326"><button onclick="logar()" style="width:100%;margin-top:10px">ENTRAR</button></div>
-<div id="painel" style="display:none"><header><div style="font-weight:800;color:#FF2DA0;letter-spacing:5px">BONITAS</div><div><button onclick="location.href='/'" style="background:#eee;color:#333">Ver loja</button> <button onclick="openModal()">+ Novo produto</button></div></header>
-<div class="tabs"><div class="tab active" onclick="aba('prod')" id="tProd">Produtos</div><div class="tab" onclick="aba('ped')" id="tPed">Pedidos</div><div class="tab" onclick="aba('conf')" id="tConf">Taxas / Endereço / CEP</div></div>
-<div id="abaProd"><div class="box"><div id="lista"></div></div></div><div id="abaPed" style="display:none"><div class="box"><div id="listaPed"></div></div></div><div id="abaConf" style="display:none"><div class="box"><h3>Configurações - Taxa / Preços / Endereço / Busca CEP</h3><div class="grid2"><div><label>Taxa entrega R$</label><input id="cTaxa" type="number" step="0.01"></div><div><label>CEP loja</label><input id="cCepLoja"></div></div><label>Endereço loja</label><input id="cEnd"><div class="grid2"><div><label>PIX</label><input id="cPix"></div><div><label>WhatsApp mãe</label><input id="cZap"></div></div><button onclick="salvarConf()" style="width:100%;padding:14px;margin-top:12px">SALVAR NA NUVEM - APARECE NO MOBILE E PC</button></div></div></div>
-<div id="modalProd" class="modal"><div class="modalBox"><div style="display:flex;justify-content:space-between"><h2 id="modalTit">Novo produto</h2><span onclick="closeModal()" style="cursor:pointer">✕</span></div>
-<div class="grid2"><div><label>Nome *</label><input id="pNome"></div><div><label>Categoria *</label><input id="pCat"></div></div><div class="grid2"><div><label>Preço *</label><input id="pPreco" type="number" step="0.01"></div><div><label>Preço antigo</label><input id="pAntigo" type="number" step="0.01"></div></div><label>Descrição</label><textarea id="pDesc" rows="2"></textarea><label>Cores separadas por vírgula</label><input id="pCores" value="Rosa, Branco" oninput="gerarEstoque()"><label>Enviar fotos JPG PNG WebP até 5MB</label><input type="file" id="pFiles" multiple accept="image/*"><div id="preview" style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"></div><div style="margin:12px 0"><label><input type="checkbox" id="pDest"> Destaque</label><label><input type="checkbox" id="pNov"> Novidade</label><label><input type="checkbox" id="pAtivo" checked> Ativo</label></div><h3>Estoque por tamanho e cor</h3><div id="estoqueArea" class="estoque"></div><div style="text-align:right;margin-top:18px"><button onclick="closeModal()" style="background:#eee;color:#333">Cancelar</button> <button onclick="salvar()" style="margin-left:8px">SALVAR NA NUVEM</button></div></div></div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin BONITAS</title>
+<style>
+body{font-family:Arial;background:#f8f8f8;padding:15px}
+.pedido{background:white;padding:15px;margin:12px 0;border-radius:12px;display:flex;justify-content:space-between;flex-wrap:wrap}
+.info{flex:1;min-width:250px;text-align:left;font-size:13px}
+.botoes{display:flex;flex-direction:column;gap:6px;min-width:140px}
+.botoes button{padding:8px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;color:white}
+.prep{background:#ff8fa3}.env{background:#3a86ff}.conc{background:#06d6a0}.falta{background:#ffbe0b;color:black}.pago{background:#8338ec}
+</style>
+</head>
+<body>
+<h2 style="color:#ff4d6d">BONITAS - Pedidos</h2>
+<button onclick="carregar()">🔄 Atualizar</button>
+<div id="lista">Carregando...</div>
 <script>
-let DADOS={produtos:[],pedidos:[],config:{}}, editIndex=-1, imgs64=[];
-async function load(){let r=await fetch('/api/dados');DADOS=await r.json();render();carregarConf()}
-async function saveNuvem(){await fetch('/api/dados',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(DADOS)});alert('Salvo na nuvem! Agora aparece no celular e no computador!');render()}
-function logar(){if(document.getElementById('senha').value=='09282326'){document.getElementById('login').style.display='none';document.getElementById('painel').style.display='block';load()}else alert('Senha errada')}
-function aba(n){document.getElementById('abaProd').style.display=n=='prod'?'block':'none';document.getElementById('abaPed').style.display=n=='ped'?'block':'none';document.getElementById('abaConf').style.display=n=='conf'?'block':'none';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('t'+n.charAt(0).toUpperCase()+n.slice(1)).classList.add('active')}
-function openModal(i=-1){editIndex=i;document.getElementById('modalProd').style.display='flex';if(i>=0){let p=DADOS.produtos[i];document.getElementById('modalTit').innerText='Editar preço';document.getElementById('pNome').value=p.nome;document.getElementById('pCat').value=p.cat;document.getElementById('pPreco').value=p.preco;document.getElementById('pAntigo').value=p.precoAntigo||'';document.getElementById('pDesc').value=p.desc||'';document.getElementById('pCores').value=(p.cores||[]).join(', ');}gerarEstoque();document.getElementById('preview').innerHTML='';}
-function closeModal(){document.getElementById('modalProd').style.display='none'}
-function gerarEstoque(){let cores=document.getElementById('pCores').value.split(',').map(s=>s.trim()).filter(s=>s);let tams=['PP','P','M','G','GG'];let area=document.getElementById('estoqueArea');area.innerHTML='';cores.forEach(cor=>{tams.forEach(tam=>{let id=`${tam} / ${cor}`;let v=editIndex>=0?DADOS.produtos[editIndex].estoque?.[id]||0:0;area.innerHTML+=`<div><label style="font-size:11px">${id}</label><input type="number" id="est_${id}" value="${v}" min="0"></div>`})});}
-document.getElementById('pFiles').addEventListener('change',function(e){imgs64=[];document.getElementById('preview').innerHTML='';for(let f of e.target.files){if(f.size>5*1024*1024)continue;let r=new FileReader();r.onload=ev=>{imgs64.push(ev.target.result);document.getElementById('preview').innerHTML+=`<img src="${ev.target.result}" style="width:70px;height:70px;object-fit:cover;border-radius:8px">`};r.readAsDataURL(f);}});
-async function salvar(){let nome=document.getElementById('pNome').value;let cat=document.getElementById('pCat').value;let preco=parseFloat(document.getElementById('pPreco').value);let estoque={};document.querySelectorAll('[id^="est_"]').forEach(inp=>{estoque[inp.id.replace('est_','')]=parseInt(inp.value)||0});let img=imgs64[0]||(editIndex>=0?DADOS.produtos[editIndex].img:'');let obj={nome,cat,preco,precoAntigo:parseFloat(document.getElementById('pAntigo').value)||null,desc:document.getElementById('pDesc').value,cores:document.getElementById('pCores').value.split(',').map(s=>s.trim()),img,ativo:document.getElementById('pAtivo').checked,novidade:document.getElementById('pNov').checked,destaque:document.getElementById('pDest').checked,estoque};if(editIndex>=0)DADOS.produtos[editIndex]=obj;else DADOS.produtos.push(obj);await saveNuvem();closeModal()}
-function render(){document.getElementById('lista').innerHTML=DADOS.produtos.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee"><div><b>${p.nome}</b> - R$ ${Number(p.preco).toFixed(2)}</div><div><button onclick="openModal(${i})" style="background:#eee;color:#333;padding:6px 12px">Editar</button> <span style="color:red;cursor:pointer" onclick="DADOS.produtos.splice(${i},1);saveNuvem()">Excluir</span></div></div>`).join('')||'Nenhum produto';document.getElementById('listaPed').innerHTML=(DADOS.pedidos||[]).map(p=>`<div style="padding:10px;border-bottom:1px solid #eee;background:#fdf2f8;border-radius:8px;margin:6px 0"><b>${p.codigo}</b> - ${p.nome} - ${p.zap}<br>${p.endereco}<br>Total R$ ${Number(p.total).toFixed(2)} - ${p.data}</div>`).join('')||'Nenhum pedido';}
-function carregarConf(){document.getElementById('cTaxa').value=DADOS.config.taxa;document.getElementById('cEnd').value=DADOS.config.endereco;document.getElementById('cPix').value=DADOS.config.pix;document.getElementById('cZap').value=DADOS.config.zap;document.getElementById('cCepLoja').value=DADOS.config.cep;}
-async function salvarConf(){DADOS.config={taxa:parseFloat(document.getElementById('cTaxa').value)||0,endereco:document.getElementById('cEnd').value,pix:document.getElementById('cPix').value,zap:document.getElementById('cZap').value,cep:document.getElementById('cCepLoja').value};await saveNuvem()}
-</script></body></html>
+async function carregar(){
+  const res=await fetch('/api/todos-pedidos'); const pedidos=await res.json();
+  const lista=document.getElementById('lista'); lista.innerHTML='';
+  for(let codigo in pedidos){
+    const p=pedidos[codigo];
+    lista.innerHTML+=`<div class="pedido">
+      <div class="info"><b>${codigo}</b> - ${p.nome}<br>${p.blusa||p.endereco||''}<br>Status: ${p.status} | Pag: ${p.pagamento||'Falta pagar'}</div>
+      <div class="botoes">
+        <button class="prep" onclick="mudarStatus('${codigo}','Preparado')">PREPARADO</button>
+        <button class="env" onclick="mudarStatus('${codigo}','Enviando')">ENVIANDO</button>
+        <button class="conc" onclick="mudarStatus('${codigo}','Concluido')">CONCLUIDO</button>
+        <button class="falta" onclick="mudarPag('${codigo}','Falta pagar')">FALTA PAGAR</button>
+        <button class="pago" onclick="mudarPag('${codigo}','Pago')">PAGO</button>
+      </div>
+    </div>`;
+  }
+}
+async function mudarStatus(codigo,status){
+  await fetch('/api/pedido/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo,status})});
+  alert('Mudou para '+status); carregar();
+}
+async function mudarPag(codigo,pag){
+  await fetch('/api/pedido/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo,pagamento:pag})});
+  alert('Pagamento '+pag); carregar();
+}
+carregar();
+</script>
+</body>
+</html>
