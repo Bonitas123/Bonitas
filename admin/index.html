@@ -1,112 +1,46 @@
+COPIA A PARTIR DAQUI
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin | BONITAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | BONITAS - 09282326</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;font-family:Inter}body{background:#fdf2f5;display:flex}
-#login{position:fixed;inset:0;background:#1a0f14;z-index:99999;display:flex;align-items:center;justify-content:center}
-#login div{background:white;padding:30px;border-radius:20px;width:90%;max-width:350px;text-align:center}
-aside{width:230px;background:#1a0f14;min-height:100vh;padding:24px;position:sticky;top:0}
-aside h2{color:#ff3a93;font-family:Playfair Display;letter-spacing:4px}
-aside a{display:block;color:#d9a9bb;padding:12px;margin:6px 0;border-radius:10px;text-decoration:none;cursor:pointer}
+*{box-sizing:border-box;margin:0;font-family:Inter,Arial}
+body{background:#fdf2f5;display:flex}
+#login{position:fixed;inset:0;background:#120a0e;z-index:99999;display:flex;align-items:center;justify-content:center}
+#loginBox{background:white;padding:30px;border-radius:20px;width:90%;max-width:360px;text-align:center}
+aside{width:240px;background:#1a0f14;min-height:100vh;padding:22px;position:sticky;top:0}
+aside h2{color:#ff3a93;font-family:Playfair Display;letter-spacing:4px;margin-bottom:20px}
+aside a{display:block;color:#d8a9bb;padding:12px;border-radius:10px;cursor:pointer;text-decoration:none;margin:6px 0}
 aside a.ativo{background:#2e1d26;color:white}
 main{flex:1;padding:24px;max-width:900px}
-h1{font-family:Playfair Display;margin-bottom:10px}
-.card{background:white;padding:20px;border-radius:16px;box-shadow:0 2px 12px #0001;margin-bottom:16px}
-input,textarea,select{width:100%;padding:12px;margin:6px 0;border:1px solid #f0d6de;border-radius:10px}
-.btn{background:#e84393;color:white;border:none;padding:13px 20px;border-radius:12px;font-weight:700;cursor:pointer;width:100%}
-label{font-size:13px;color:#666;margin-top:10px;display:block}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.estoqueGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+.card{background:white;padding:22px;border-radius:18px;box-shadow:0 4px 14px #0001;margin-bottom:18px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #f0d6de;border-radius:10px;margin:6px 0}
+label{font-size:13px;color:#555;margin-top:8px;display:block}
+.btn{background:#e84393;color:white;border:none;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;width:100%}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.estoque{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
 .hide{display:none}
 </style>
 </head>
 <body>
-<div id="login"><div><h2 style="color:#e84393;letter-spacing:4px;font-family:Playfair Display">BONITAS</h2><p>Digite a senha</p><input id="senha" type="password" placeholder="Senha"><button class="btn" onclick="entrar()">ENTRAR</button><p id="erro" style="color:red;display:none">Senha errada!</p><small style="color:#999">Padrão: 09282326</small></div></div>
-
-<aside>
-<h2>BONITAS</h2>
-<a id="m-prod" class="ativo" onclick="page('prod')">Produtos</a>
-<a id="m-conf" onclick="page('conf')">Configurações</a>
-<a onclick="sessionStorage.clear();location.reload()" style="background:#ff3a93;color:white;text-align:center">Sair</a>
-<a href="/" style="background:white;color:#e84393;text-align:center;margin-top:8px">Ver loja</a>
-</aside>
-
+<div id="login"><div id="loginBox"><h2 style="color:#e84393;letter-spacing:4px;font-family:Playfair Display">BONITAS</h2><p style="margin:10px 0">Senha: 09282326</p><input id="senha" type="password" placeholder="Digite a senha"><button class="btn" onclick="entrar()" style="margin-top:10px">ENTRAR</button><p id="erro" style="color:red;display:none;margin-top:8px">Senha errada!</p></div></div>
+<aside><h2>BONITAS</h2><a id="m-prod" class="ativo" onclick="page('prod')">Produtos</a><a id="m-conf" onclick="page('conf')">Configurações</a><a onclick="sessionStorage.clear();location.reload()" style="background:#ff2e93;color:white;text-align:center">Sair</a><a href="/" style="background:white;color:#e84393;text-align:center;margin-top:8px">Ver loja</a></aside>
 <main>
-<div id="p-prod">
-<h1>Produtos (0)</h1>
-<div class="card">
-<h3>Novo produto</h3>
-<div class="grid2"><div><label>Nome *</label><input id="n-nome"></div><div><label>Categoria *</label><input id="n-cat" placeholder="Ex: Croppeds"></div></div>
-<div class="grid2"><div><label>Preço (R$) *</label><input id="n-preco" type="number"></div><div><label>Preço antigo (R$)</label><input id="n-antigo" type="number"></div></div>
-<label>Descrição</label><textarea id="n-desc"></textarea>
-<label>Cores, separadas por vírgula *</label><input id="n-cores" value="Rosa, Branco" oninput="gerarEstoque()">
-<label>URLs de imagens, uma por linha</label><textarea id="n-urls" placeholder="https://..."></textarea>
-<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label><input type="file" id="n-file" multiple accept="image/*">
-<div style="margin:10px 0"><label style="display:inline"><input type="checkbox" id="n-dest"> Destaque</label> <label style="display:inline;margin-left:12px"><input type="checkbox" id="n-nov"> Novidade</label> <label style="display:inline;margin-left:12px"><input type="checkbox" id="n-ativo" checked> Produto ativo</label></div>
-
-<h3 style="margin-top:15px">Estoque por tamanho e cor</h3>
-<div id="estoqueBox" class="estoqueGrid"></div>
-<button class="btn" style="margin-top:15px;background:#111" onclick="salvarProduto()">Salvar produto</button>
-</div>
-<div id="listaProd" class="card"></div>
-</div>
-
-<div id="p-conf" class="hide">
-<small style="color:#e84393;letter-spacing:3px">PAINEL ADMINISTRATIVO</small>
-<h1>Configurações</h1>
-<div class="card">
-<h3 style="font-family:Playfair Display;margin-bottom:12px">Configurações da loja</h3>
-<label>Nome da loja</label><input id="c-nome" value="BONITAS">
-<label>WhatsApp com DDI e DDD</label><input id="c-zap" value="558399923260">
-<label>Instagram</label><input id="c-insta" value="@bonitas_storemodafeminina">
-<label>Endereço</label><input id="c-end" value="Joao Pessoa - PB">
-<label>Taxa de entrega (R$)</label><input id="c-taxa" value="10.00">
-<label>Limite de estoque baixo</label><input id="c-limite" value="3">
-<label>Horário de funcionamento</label><input id="c-horario" value="Segunda a sábado, 9h às 18h">
-<label>Pedido mínimo (R$)</label><input id="c-min" value="0.00">
-
-<h3 style="font-family:Playfair Display;margin:20px 0 12px">PIX da loja</h3>
-<label>Chave PIX</label><input id="c-pix" value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3">
-<label>Nome do recebedor</label><input id="c-pixnome" value="BONITAS">
-<label>Cidade do recebedor</label><input id="c-pixcid" value="JOAO PESSOA">
-<button class="btn" style="margin-top:20px;background:#e84393" onclick="salvarConf()">SALVAR CONFIGURAÇÕES</button>
-</div>
-</div>
+<div id="p-prod"><h1>Produtos</h1><div class="card"><h3>Novo produto</h3><div class="grid2"><div><label>Nome *</label><input id="n-nome"></div><div><label>Categoria *</label><input id="n-cat"></div></div><div class="grid2"><div><label>Preço (R$) *</label><input id="n-preco" type="number"></div><div><label>Preço antigo</label><input id="n-ant" type="number"></div></div><label>Descrição</label><textarea></textarea><label>Cores, separadas por vírgula *</label><input id="n-cores" value="Rosa, Branco" oninput="gerarEstoque()"><label>URLs de imagens</label><textarea placeholder="https://..."></textarea><label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label><input type="file" multiple accept="image/*"><div style="margin:12px 0"><input type="checkbox" checked> Produto ativo <input type="checkbox" style="margin-left:12px"> Destaque <input type="checkbox" style="margin-left:12px"> Novidade</div><h3 style="margin-top:10px">Estoque por tamanho e cor</h3><div id="boxEstoque" class="estoque"></div><button class="btn" style="background:#111;margin-top:15px">Salvar produto</button></div></div>
+<div id="p-conf" class="hide"><small style="color:#e84393;letter-spacing:3px">PAINEL</small><h1>Configurações</h1><div class="card"><label>Nome da loja</label><input value="BONITAS"><label>WhatsApp</label><input id="c-zap" value="558399923260"><label>Instagram</label><input value="@bonitas_storemodafeminina"><label>Endereço</label><input value="Joao Pessoa - PB"><label style="color:#e84393;font-weight:700">Taxa de entrega (R$) - AJUSTE AQUI O FRETE</label><input id="c-taxa" value="10.00"><h3 style="margin-top:18px">PIX da loja</h3><label>Chave PIX</label><input value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3"><label>Nome do recebedor</label><input value="BONITAS"><label>Cidade do recebedor</label><input value="JOAO PESSOA"><button class="btn" style="margin-top:15px" onclick="salvar()">SALVAR CONFIGURAÇÕES</button></div></div>
 </main>
-
 <script>
 const SENHA='09282326';
-function check(){if(sessionStorage.getItem('bonitas_logado')!='true'){document.getElementById('login').style.display='flex'}else{document.getElementById('login').style.display='none'}}
-function entrar(){const v=document.getElementById('senha').value;const s=localStorage.getItem('bonitas_senha')||SENHA;if(v===s){sessionStorage.setItem('bonitas_logado','true');check()}else{document.getElementById('erro').style.display='block'}}
-check();
+function check(){if(sessionStorage.getItem('logado')!='true'){document.getElementById('login').style.display='flex'}else{document.getElementById('login').style.display='none'}}
+function entrar(){if(document.getElementById('senha').value===(localStorage.getItem('bonitas_senha')||SENHA)){sessionStorage.setItem('logado','true');check()}else{document.getElementById('erro').style.display='block'}}check();
 function page(p){document.getElementById('p-prod').classList.add('hide');document.getElementById('p-conf').classList.add('hide');document.getElementById('p-'+p).classList.remove('hide');document.querySelectorAll('aside a').forEach(a=>a.classList.remove('ativo'));document.getElementById('m-'+p).classList.add('ativo')}
-
-const tamanhos=['PP','P','M','G','GG'];
-function gerarEstoque(){
- const cores=document.getElementById('n-cores').value.split(',').map(s=>s.trim()).filter(Boolean);
- const box=document.getElementById('estoqueBox');box.innerHTML='';
- cores.forEach(cor=>{
-  tamanhos.forEach(tam=>{
-   box.innerHTML+=`<div><label>${tam} / ${cor}</label><input type="number" data-estoque="${tam}/${cor}" value="0"></div>`
-  })
- })
-}
+function gerarEstoque(){const cores=document.getElementById('n-cores').value.split(',').map(s=>s.trim()).filter(Boolean);const tams=['PP','P','M','G','GG'];const box=document.getElementById('boxEstoque');box.innerHTML='';cores.forEach(cor=>{tams.forEach(t=>{box.innerHTML+=`<div><label>${t} / ${cor}</label><input type="number" value="0"></div>`})})}
 gerarEstoque();
-
-function salvarProduto(){
- const nome=document.getElementById('n-nome').value;if(!nome)return alert('Nome obrigatório');
- let estoque={};document.querySelectorAll('[data-estoque]').forEach(i=>estoque[i.dataset.estoque]=Number(i.value||0));
- const prod={nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value,antigo:document.getElementById('n-antigo').value,desc:document.getElementById('n-desc').value,cores:document.getElementById('n-cores').value,urls:document.getElementById('n-urls').value,foto:document.getElementById('n-urls').value.split('\n')[0]||'https://images.unsplash.com/photo-1550928431-ee0ec6db30d3?w=500',estoque,ativo:document.getElementById('n-ativo').checked};
- let lista=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');lista.push(prod);localStorage.setItem('bonitas_produtos',JSON.stringify(lista));alert('Produto salvo!');location.reload();
-}
-function salvarConf(){
- const conf={nome:document.getElementById('c-nome').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,limite:document.getElementById('c-limite').value,horario:document.getElementById('c-horario').value,min:document.getElementById('c-min').value,pix:document.getElementById('c-pix').value,pixnome:document.getElementById('c-pixnome').value,pixcid:document.getElementById('c-pixcid').value};
- localStorage.setItem('bonitas_conf',JSON.stringify(conf));alert('Configurações salvas!');
-}
+function salvar(){localStorage.setItem('bonitas_conf',JSON.stringify({zap:document.getElementById('c-zap').value,taxa:document.getElementById('c-taxa').value}));alert('Taxa de entrega salva: R$ '+document.getElementById('c-taxa').value)}
 </script>
 </body>
 </html>
+ATÉ AQUI
