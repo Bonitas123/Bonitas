@@ -1,159 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BONITAS - Moda Feminina</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#fff;color:#222}
-header{position:sticky;top:0;z-index:20;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.logo{font-family:'Playfair Display';color:#e84393;font-size:28px;letter-spacing:4px;font-weight:700}
-.nav{display:flex;gap:20px;align-items:center}
-.nav a{color:#333;text-decoration:none;font-weight:600;font-size:14px}
-.btn{ background:#e84393;color:#fff;border:none;padding:12px 24px;border-radius:999px;font-weight:700;cursor:pointer;transition:.2s}
-.btn:hover{transform:scale(1.03)}
-.hero{background:linear-gradient(90deg,#fff5f8 0%, #ffe4ec 100%);padding:60px 24px;display:grid;grid-template-columns:1.2fr.8fr;gap:20px;align-items:center;max-width:1300px;margin:0 auto}
-.hero h1{font-family:'Playfair Display';font-size:52px;line-height:.95;color:#1a0f14}
-.hero h1 span{color:#e84393}
-.hero p{margin:14px 0 20px;color:#6b4a55}
-.grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;padding:24px}
-.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.07);transition:.2s}
-.card:hover{transform:translateY(-5px)}
-.card img{width:100%;height:280px;object-fit:cover}
-.info{padding:14px}
-.cat{font-size:10px;letter-spacing:2px;color:#e84393;font-weight:700;text-transform:uppercase}
-.nome{font-weight:700;margin:4px 0}
-.preco{color:#e84393;font-weight:800;font-size:19px}
-#carrinho{position:fixed;right:0;top:0;width:390px;max-width:100vw;height:100vh;background:#fff;box-shadow:-12px 0 32px rgba(0,0,0,.15);transform:translateX(100%);transition:.35s cubic-bezier(.4,0,.2,1);z-index:999;padding:22px;display:flex;flex-direction:column}
-#carrinho.aberto{transform:translateX(0)}
-input,select{width:100%;padding:13px;border:1px solid #f0d6de;border-radius:12px;margin:6px 0;font-size:14px}
-.total{font-size:20px;font-weight:800;margin:12px 0}
-.pixbox{display:none;background:#fff0f5;padding:14px;border-radius:12px;border:1px dashed #e84393;margin-top:12px}
-@media(max-width:700px){.hero{grid-template-columns:1fr;text-align:center}.hero h1{font-size:36px}}
-</style>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BONITAS | Moda Feminina</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;font-family:Inter}body{background:#fff}header{padding:16px;display:flex;justify-content:space-between;background:#fff;position:sticky;top:0;z-index:10;border-bottom:1px solid #f0d6de}header h1{font-family:Playfair Display;color:#e84393;letter-spacing:4px}.produtos{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px}.cardProd{border:1px solid #f0d6de;border-radius:14px;overflow:hidden;background:white}.cardProd img{width:100%;height:200px;object-fit:cover}.cardProd div{padding:10px}.btn{background:#e84393;color:white;border:none;padding:10px;border-radius:10px;width:100%;font-weight:700;cursor:pointer}#carrinho{position:fixed;right:10px;bottom:10px;background:#111;color:white;padding:14px 20px;border-radius:30px;font-weight:700;cursor:pointer;z-index:99}</style>
 </head>
 <body>
+<header><h1>BONITAS</h1><a href="/admin/" style="text-decoration:none;color:#e84393;font-weight:700">ADMIN</a></header>
 
-<header>
-  <div class="logo">BONITAS</div>
-  <div class="nav">
-    <a href="#loja">LOJA</a>
-    <a href="/admin" style="background:#1a0f14;color:#fff;padding:10px 18px;border-radius:999px">ADMIN</a>
-    <button class="btn" onclick="abrirCarrinho()">🛒 <span id="qtd">0</span></button>
-  </div>
-</header>
+<div id="listaProdutos" class="produtos"></div>
 
-<section class="hero">
-  <div>
-    <div style="color:#e84393;font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:10px">NOVA COLEÇÃO 2026</div>
-    <h1>Moda que<br><span>realça sua</span><br>beleza</h1>
-    <p>Peças selecionadas com amor para mulheres bonitas, modernas e confiantes.</p>
-    <a href="#loja"><button class="btn" style="padding:16px 36px;font-size:16px">VER COLEÇÃO</button></a>
-  </div>
-  <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600" style="width:100%;border-radius:24px;object-fit:cover;height:420px">
-</section>
+<div id="carrinho" onclick="abrirCarrinho()">🛒 <span id="qtd">0</span> | R$ <span id="total">0.00</span></div>
 
-<h2 id="loja" style="font-family:'Playfair Display';text-align:center;font-size:34px;margin:40px 0 8px">Nossos Produtos</h2>
-<p style="text-align:center;color:#8a6a74;margin-bottom:10px">Escolha seus favoritos</p>
-<div id="produtos" class="grid"></div>
-
-<div id="carrinho">
-  <div style="display:flex;justify-content:space-between;align-items:center">
-    <h2>Seu carrinho</h2>
-    <span onclick="fecharCarrinho()" style="font-size:28px;cursor:pointer">×</span>
-  </div>
-  <div id="listaCar" style="flex:1;overflow:auto;margin:16px 0"></div>
-
-  <div style="border-top:1px solid #f2e6e9;padding-top:12px">
-    <select id="bairro" onchange="calcTotal()">
-      <option value="10">Selecione bairro - entrega</option>
-      <option value="10">Centro - R$10</option>
-      <option value="8">Bessa - R$8</option>
-      <option value="10">Mangabeira - R$10</option>
-      <option value="12">Valentina - R$12</option>
-      <option value="0">Retirar na loja - Grátis</option>
-    </select>
-    <input id="nome" placeholder="Seu nome completo">
-    <input id="zap" placeholder="Seu WhatsApp">
-    <input id="end" placeholder="Rua, número, bairro">
-    <div class="total">Total: R$ <span id="total">0.00</span></div>
-    <button class="btn" style="width:100%;padding:16px;font-size:15px" onclick="finalizar()">FINALIZAR NO WHATSAPP + PIX</button>
-    <div id="pixArea" class="pixbox">
-      <b>💖 Chave PIX:</b><br><span id="pixChave" style="font-weight:700"></span><br><br>
-      <small>Após pagar, clique em WhatsApp e envie o comprovante</small><br><br>
-      <div id="qrcode" style="background:white;padding:10px;border-radius:10px;text-align:center">PIX Copia e Cola</div>
-    </div>
-  </div>
-</div>
+<div id="modalCar" style="display:none;position:fixed;inset:0;background:#0008;z-index:999;align-items:center;justify-content:center"><div style="background:white;width:95%;max-width:400px;padding:20px;border-radius:18px"><h3>Seu Carrinho</h3><div id="itens" style="margin:14px 0"></div><input id="nomeCli" placeholder="Seu nome"><input id="telCli" placeholder="Seu WhatsApp" style="margin-top:8px"><button class="btn" style="margin-top:10px;background:#25D366" onclick="finalizar()">Finalizar no WhatsApp</button><button onclick="document.getElementById('modalCar').style.display='none'" style="width:100%;margin-top:8px;border:none;background:#eee;padding:10px;border-radius:10px">Fechar</button></div></div>
 
 <script>
-let carrinho=[];
-const produtosDefault=[
-{nome:'Cropped Rosa Bonitas',preco:59.90,foto:'https://images.unsplash.com/photo-1550928431-ee0ec6db30d3?w=500',cat:'CROPPED'},
-{nome:'Vestido Branco Longo',preco:89.90,foto:'https://images.unsplash.com/photo-1515372039744-b8f02a3c67ae?w=500',cat:'VESTIDOS'},
-{nome:'Conjunto Rosa Claro',preco:129.90,foto:'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500',cat:'CONJUNTOS'},
-{nome:'Blusa Básica Preta',preco:49.90,foto:'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500',cat:'BLUSAS'},
-{nome:'Saia Midi Rosa',preco:69.90,foto:'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500',cat:'SAIAS'},
-{nome:'Short Jeans',preco:79.90,foto:'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500',cat:'SHORTS'}
-];
+let car=[];
+function getConf(){try{return JSON.parse(localStorage.getItem('bonitas_conf')||'{}')}catch{return {}}}
+function getTaxa(){return Number(getConf().taxa||10)}
 
-function getProdutos(){ try{ const p=JSON.parse(localStorage.getItem('bonitas_produtos')); if(p && p.length>0) return p; }catch(e){} return produtosDefault; }
-
-function render(){
-  const prods=getProdutos();
-  document.getElementById('produtos').innerHTML=prods.map((p,i)=>`
-    <div class="card">
-      <img src="${p.foto}">
-      <div class="info">
-        <div class="cat">${p.cat||'BONITAS'}</div>
-        <div class="nome">${p.nome}</div>
-        <div class="preco">R$ ${Number(p.preco).toFixed(2)}</div>
-        <button class="btn" style="width:100%;margin-top:10px;border-radius:12px" onclick="add(${i})">Adicionar</button>
-      </div>
-    </div>`).join('');
+function carregar(){
+ const produtos = JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
+ const div = document.getElementById('listaProdutos');
+ if(produtos.length===0){
+   div.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:#999"><h3>Nenhum produto cadastrado</h3><p>Vá em /admin/ > Produtos > Novo produto</p></div>';return
+ }
+ div.innerHTML=produtos.filter(p=>p.ativo!==false).map((p,i)=>`
+   <div class="cardProd">
+     <img src="${p.foto}">
+     <div><b>${p.nome}</b><br><small style="color:#666">${p.cat||''}</small><br><b style="color:#e84393">R$ ${Number(p.preco).toFixed(2)}</b><br><button class="btn" style="margin-top:8px" onclick="add(${i})">Adicionar</button></div>
+   </div>
+ `).join('');
 }
 
-function add(i){ carrinho.push(getProdutos()[i]); atualiza(); abrirCarrinho(); }
+function add(i){
+ const produtos = JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
+ car.push(produtos[i]);
+ atualiza();
+}
 function atualiza(){
-  document.getElementById('qtd').innerText=carrinho.length;
-  let soma=carrinho.reduce((a,b)=>a+Number(b.preco),0);
-  let taxa=Number(document.getElementById('bairro').value||10);
-  document.getElementById('total').innerText=(soma+taxa).toFixed(2);
-  document.getElementById('listaCar').innerHTML=carrinho.map((c,idx)=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f5e6ea"><div><b>${c.nome}</b><br><small style="color:#e84393">R$ ${c.preco}</small></div><span onclick="carrinho.splice(${idx},1);atualiza()" style="cursor:pointer">🗑️</span></div>`).join('') || '<p style="color:#999;text-align:center;margin-top:20px">Carrinho vazio</p>';
+ document.getElementById('qtd').innerText=car.length;
+ let taxa=getTaxa();
+ let sub=car.reduce((a,b)=>a+Number(b.preco),0);
+ let tot=sub+ (car.length?taxa:0);
+ document.getElementById('total').innerText=tot.toFixed(2);
+ document.getElementById('itens').innerHTML=car.map(c=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:6px 0"><span>${c.nome}</span><b>R$ ${c.preco}</b></div>`).join('')+ (car.length?`<div style="display:flex;justify-content:space-between;padding:6px 0;color:#666"><span>Entrega</span><span>R$ ${taxa.toFixed(2)}</span></div><div style="display:flex;justify-content:space-between;font-weight:800"><span>Total</span><span>R$ ${tot.toFixed(2)}</span></div>`:'');
 }
-function abrirCarrinho(){
-  const conf=JSON.parse(localStorage.getItem('bonitas_conf')||'{}');
-  document.getElementById('pixChave').innerText=conf.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3';
-  document.getElementById('carrinho').classList.add('aberto');
+function abrirCarrinho(){document.getElementById('modalCar').style.display='flex';atualiza()}
+function finalizar(){
+ const nome=document.getElementById('nomeCli').value||'Cliente';
+ const tel=document.getElementById('telCli').value||'';
+ if(car.length===0) return alert('Carrinho vazio');
+ const taxa=getTaxa();
+ const sub=car.reduce((a,b)=>a+Number(b.preco),0);
+ const total=sub+taxa;
+ const zap=getConf().zap||'558399923260';
+ let msg=`Olá BONITAS! Sou ${nome}%0AQuero:%0A${car.map(c=>`- ${c.nome} R$ ${c.preco}`).join('%0A')}%0AEntrega: R$ ${taxa.toFixed(2)}%0ATotal: R$ ${total.toFixed(2)}`;
+ // SALVA NOS PEDIDOS DO ADMIN
+ let pedidos=JSON.parse(localStorage.getItem('bonitas_pedidos')||'[]');
+ pedidos.push({nome,tel:tel, itens:car.map(c=>c.nome).join(', '), total:total.toFixed(2), pago:false, data:new Date().toLocaleString()});
+ localStorage.setItem('bonitas_pedidos',JSON.stringify(pedidos));
+ window.open(`https://wa.me/${zap}?text=${msg}`,'_blank');
+ car=[];atualiza();document.getElementById('modalCar').style.display='none';
 }
-function fecharCarrinho(){ document.getElementById('carrinho').classList.remove('aberto'); }
-function calcTotal(){ atualiza(); }
-
-async function finalizar(){
-  if(carrinho.length==0) return alert('Carrinho vazio!');
-  const nome=document.getElementById('nome').value;
-  const zap=document.getElementById('zap').value;
-  if(!nome ||!zap) return alert('Digite seu nome e WhatsApp!');
-  const total=document.getElementById('total').innerText;
-  const taxa=document.getElementById('bairro').value;
-  const bairro=document.getElementById('bairro').options[document.getElementById('bairro').selectedIndex].text;
-  const conf=JSON.parse(localStorage.getItem('bonitas_conf')||'{}');
-  const zapLoja=conf.zap||'558399923260';
-
-  try{
-    const r=await fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,total,produtos:carrinho.map(c=>c.nome).join(', '),bairro})});
-    const j=await r.json();
-    document.getElementById('pixArea').style.display='block';
-    const msg=`Oi BONITAS! 💖\n\nMeu pedido: ${j.codigo}\n${carrinho.map(c=>`• ${c.nome} - R$${c.preco}`).join('\n')}\n\nTaxa: ${bairro} - R$${taxa}\nTotal: R$${total}\n\nNome: ${nome}\nZap: ${zap}\nEnd: ${document.getElementById('end').value}\n\nJá fiz o PIX!`;
-    window.open(`https://wa.me/${zapLoja}?text=${encodeURIComponent(msg)}`,'_blank');
-  }catch(e){
-    const msg=`Oi BONITAS! Quero: ${carrinho.map(c=>c.nome).join(', ')} - Total R$${total} - Nome: ${nome}`;
-    window.open(`https://wa.me/${zapLoja}?text=${encodeURIComponent(msg)}`,'_blank');
-  }
-}
-render(); atualiza();
+carregar();
 </script>
 </body>
 </html>
