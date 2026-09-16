@@ -1,31 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin BONITAS</title>
-<style>
-body{font-family:Arial;background:#f8f8f8;padding:15px}
-.pedido{background:white;padding:15px;margin:10px 0;border-radius:10px}
-</style>
-</head>
-<body>
-<h2 style="color:#ff4d6d">BONITAS - Pedidos</h2>
-<button onclick="carregar()">🔄 Atualizar</button>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin BONITAS</title>
+<style>body{font-family:Arial;background:#fff0f3;margin:0;padding:0}header{background:#ff4d6d;color:white;padding:15px;text-align:center;font-weight:bold;font-size:20px}.tabs{display:flex;background:white}.tabs button{flex:1;padding:15px;border:none;background:#eee;font-weight:bold;cursor:pointer}.tabs button.ativo{background:#ff4d6d;color:white}.aba{display:none;padding:15px}.aba.ativa{display:block}.pedido{background:white;padding:15px;margin:10px 0;border-radius:12px;box-shadow:0 2px 5px #0001;display:flex;justify-content:space-between;flex-wrap:wrap}input,select{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:2px solid #ffb3c6;box-sizing:border-box}.btn{background:#ff4d6d;color:white;border:none;padding:12px;border-radius:10px;font-weight:bold;width:100%;cursor:pointer}.botoes button{padding:7px 10px;border:none;border-radius:6px;color:white;margin:2px;font-weight:bold;cursor:pointer}</style>
+</head><body>
+<header>BONITAS - ADMIN</header>
+<div class="tabs"><button onclick="aba('pedidos')" id="t-pedidos" class="ativo">📦 Pedidos</button><button onclick="aba('produtos')" id="t-produtos">👚 Produtos</button><button onclick="aba('config')" id="t-config">⚙️ Loja</button></div>
+
+<div id="aba-pedidos" class="aba ativa">
+<button onclick="carregar()" class="btn" style="width:auto">🔄 Atualizar Pedidos</button>
 <div id="lista">Carregando...</div>
+</div>
+
+<div id="aba-produtos" class="aba">
+<h3>Adicionar Produto Novo</h3>
+<input id="nome" placeholder="Nome da blusa ex: Blusa Rosa">
+<input id="preco" placeholder="Preço ex: 45,00">
+<input id="foto" placeholder="Link da foto (copia do Instagram)">
+<button onclick="addProd()" class="btn">+ Adicionar Produto na Loja</button>
+<div id="listaProd"></div>
+</div>
+
+<div id="aba-config" class="aba">
+<h3>Configuração da Loja</h3>
+<input id="whats" placeholder="Seu WhatsApp ex: 83999999999">
+<input id="pix" placeholder="Sua chave PIX">
+<button onclick="salvarConfig()" class="btn">Salvar Config</button>
+<p style="font-size:12px;color:#888">Isso aparece no checkout da loja</p>
+</div>
+
 <script>
-async function carregar(){
-  const res = await fetch('/api/todos-pedidos');
-  const pedidos = await res.json();
-  const lista = document.getElementById('lista');
-  lista.innerHTML = '';
-  for(let codigo in pedidos){
-    let p = pedidos[codigo];
-    lista.innerHTML += `<div class="pedido"><b>${codigo}</b> - ${p.nome}<br>${p.blusa||''}<br>${p.endereco||''}<br>R$ ${p.total||''}</div>`;
-  }
-  if(Object.keys(pedidos).length==0) lista.innerHTML='Nenhum pedido';
+function aba(nome){
+ document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));
+ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('ativo'));
+ document.getElementById('aba-'+nome).classList.add('ativa');
+ document.getElementById('t-'+nome).classList.add('ativo');
+ if(nome=='pedidos') carregar();
+ if(nome=='produtos') carregarProd();
 }
+async function carregar(){
+ document.getElementById('lista').innerHTML='Buscando...';
+ try{
+  const r=await fetch('/api/todos-pedidos'); const pedidos=await r.json();
+  const lista=document.getElementById('lista');
+  if(Object.keys(pedidos).length==0){lista.innerHTML='<p style="text-align:center;margin-top:30px">Nenhum pedido ainda.<br>Faz um pedido teste na loja.</p>';return;}
+  lista.innerHTML='';
+  for(let c in pedidos){let p=pedidos[c];
+   lista.innerHTML+=`<div class="pedido"><div><b>${c}</b><br>${p.nome||''}<br><b>Status:</b> ${p.status}<br><b>Pag:</b> ${p.pagamento||'Falta pagar'}<br>R$ ${p.total||''}</div><div class="botoes"><button style="background:#ff8fa3" onclick="mudarStatus('${c}','Preparado')">PREPARADO</button><button style="background:#3a86ff" onclick="mudarStatus('${c}','Enviando')">ENVIANDO</button><button style="background:#06d6a0" onclick="mudarStatus('${c}','Concluido')">CONCLUÍDO</button><br><button style="background:#ffbe0b;color:black" onclick="mudarPag('${c}','Falta pagar')">FALTA PAGAR</button><button style="background:#8338ec" onclick="mudarPag('${c}','Pago')">PAGO</button></div></div>`;
+  }
+ }catch(e){document.getElementById('lista').innerHTML='Erro. Atualiza seu server.js';}
+}
+async function mudarStatus(c,s){await fetch('/api/pedido/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,status:s})});carregar();}
+async function mudarPag(c,p){await fetch('/api/pedido/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,pagamento:p})});carregar();}
+
+function carregarProd(){
+ const prods=JSON.parse(localStorage.getItem('produtos')||'[]');
+ document.getElementById('listaProd').innerHTML=prods.map((p,i)=>`<div class="pedido">${p.nome} - R$${p.preco} <button onclick="delProd(${i})">X</button></div>`).join('');
+}
+function addProd(){
+ const nome=document.getElementById('nome').value, preco=document.getElementById('preco').value, foto=document.getElementById('foto').value;
+ if(!nome||!preco)return alert('Preenche nome e preço');
+ const prods=JSON.parse(localStorage.getItem('produtos')||'[]'); prods.push({nome,preco,foto}); localStorage.setItem('produtos',JSON.stringify(prods));
+ alert('Produto adicionado! Agora vai no index.html que te ensino colocar na loja'); carregarProd();
+}
+function delProd(i){const prods=JSON.parse(localStorage.getItem('produtos')||'[]');prods.splice(i,1);localStorage.setItem('produtos',JSON.stringify(prods));carregarProd();}
+function salvarConfig(){localStorage.setItem('whats',document.getElementById('whats').value);localStorage.setItem('pix',document.getElementById('pix').value);alert('Salvo!');}
 carregar();
-</script>
-</body>
-</html>
+</script></body></html>
