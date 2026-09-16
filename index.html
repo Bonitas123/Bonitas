@@ -1,68 +1,122 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BONITAS | Moda Feminina</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
-<style>*{box-sizing:border-box;margin:0;font-family:Inter}body{background:#fff}header{padding:16px;display:flex;justify-content:space-between;background:#fff;position:sticky;top:0;z-index:10;border-bottom:1px solid #f0d6de}header h1{font-family:Playfair Display;color:#e84393;letter-spacing:4px}.produtos{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px}.cardProd{border:1px solid #f0d6de;border-radius:14px;overflow:hidden;background:white}.cardProd img{width:100%;height:200px;object-fit:cover}.cardProd div{padding:10px}.btn{background:#e84393;color:white;border:none;padding:10px;border-radius:10px;width:100%;font-weight:700;cursor:pointer}#carrinho{position:fixed;right:10px;bottom:10px;background:#111;color:white;padding:14px 20px;border-radius:30px;font-weight:700;cursor:pointer;z-index:99}</style>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BONITAS - Nossa Loja</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;font-family:Inter}
+body{background:#fdfafb;color:#1a1a1a}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid #f0d6de;position:sticky;top:0;background:white;z-index:10}
+header nav a{margin:0 10px;text-decoration:none;color:#333;font-size:14px}
+header nav a:hover{color:#e84393}
+.badge-admin{border:1px solid #e84393;color:#e84393;padding:6px 14px;border-radius:20px;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:24px;display:grid;grid-template-columns:220px 1fr;gap:24px}
+.filtros h3{font-size:16px;margin-bottom:16px}
+.filtros label{font-size:13px;color:#666;margin-top:12px;display:block}
+.filtros select,.filtros input{width:100%;padding:10px;border:1px solid #f0d6de;border-radius:8px;margin-top:4px}
+#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:white;border-radius:14px;overflow:hidden;border:1px solid #f5e0e6}
+.card img{width:100%;height:220px;object-fit:cover}
+.card div{padding:12px}
+.btn{background:#e84393;color:white;border:none;padding:10px;border-radius:10px;width:100%;font-weight:700;cursor:pointer;margin-top:8px}
+.vazio{text-align:center;padding:60px;color:#999}
+#cart{position:fixed;right:14px;bottom:14px;background:#111;color:white;padding:14px 22px;border-radius:30px;font-weight:700;cursor:pointer;z-index:99}
+</style>
 </head>
 <body>
-<header><h1>BONITAS</h1><a href="/admin/" style="text-decoration:none;color:#e84393;font-weight:700">ADMIN</a></header>
+<header>
+<div style="font-family:Playfair Display;letter-spacing:4px;color:#111;font-weight:700">BONITAS</div>
+<nav>
+<a href="/">Início</a><a href="/">Loja</a><a href="/">Novidades</a><a href="/">Categorias</a><a href="/">Acompanhar pedido</a><a href="/">Sobre</a><a href="/">Contato</a>
+</nav>
+<a class="badge-admin" href="admin/">Admin</a>
+</header>
 
-<div id="listaProdutos" class="produtos"></div>
+<div style="max-width:1200px;margin:0 auto;padding:24px 24px 0">
+<small style="color:#e84393;letter-spacing:3px">FEITO PARA VOCÊ</small>
+<h1 style="font-family:Playfair Display;font-size:36px;margin-top:6px">Nossa loja</h1>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+<input id="busca" placeholder="Busque por nome, categoria ou descrição..." style="width:50%;padding:12px;border:1px solid #f0d6de;border-radius:10px" oninput="filtrar()">
+<select style="padding:10px;border-radius:8px;border:1px solid #ddd"><option>Mais recentes</option></select>
+</div>
+</div>
 
-<div id="carrinho" onclick="abrirCarrinho()">🛒 <span id="qtd">0</span> | R$ <span id="total">0.00</span></div>
+<div class="wrap">
+<div class="filtros">
+<h3>Filtros</h3>
+<label>Categoria</label><select id="f-cat" onchange="filtrar()"><option value="">Todas</option><option>Croppeds</option><option>Vestidos</option><option>Blusas</option></select>
+<label>Preço máximo</label><b id="f-preco-txt">R$ 300</b><input type="range" id="f-preco" min="20" max="300" value="300" oninput="document.getElementById('f-preco-txt').innerText='R$ '+this.value;filtrar()">
+<label>Tamanho</label><select id="f-tam" onchange="filtrar()"><option value="">Todos</option><option>PP</option><option>P</option><option>M</option><option>G</option><option>GG</option></select>
+<label>Cor</label><select id="f-cor" onchange="filtrar()"><option value="">Todas</option><option>Rosa</option><option>Branco</option><option>Preto</option></select>
+<label><input type="checkbox" id="f-promo" onchange="filtrar()"> Em promoção</label>
+</div>
 
-<div id="modalCar" style="display:none;position:fixed;inset:0;background:#0008;z-index:999;align-items:center;justify-content:center"><div style="background:white;width:95%;max-width:400px;padding:20px;border-radius:18px"><h3>Seu Carrinho</h3><div id="itens" style="margin:14px 0"></div><input id="nomeCli" placeholder="Seu nome"><input id="telCli" placeholder="Seu WhatsApp" style="margin-top:8px"><button class="btn" style="margin-top:10px;background:#25D366" onclick="finalizar()">Finalizar no WhatsApp</button><button onclick="document.getElementById('modalCar').style.display='none'" style="width:100%;margin-top:8px;border:none;background:#eee;padding:10px;border-radius:10px">Fechar</button></div></div>
+<div>
+<div id="grid"></div>
+<div id="vazio" class="vazio" style="display:none"><div style="font-size:40px">🛍️</div><h3>Nenhum produto encontrado.</h3><p>Tente mudar a busca ou os filtros.</p><button class="btn" style="width:auto;margin-top:12px;background:#111" onclick="limpar()">Limpar filtros</button></div>
+</div>
+</div>
+
+<div id="cart" onclick="abrir()">🛒 <span id="q">0</span> | R$ <span id="t">0.00</span></div>
 
 <script>
-let car=[];
-function getConf(){try{return JSON.parse(localStorage.getItem('bonitas_conf')||'{}')}catch{return {}}}
+let car=[]; let todos=[];
+function getConf(){try{return JSON.parse(localStorage.getItem('bonitas_conf'))||{}}catch{return{}}}
 function getTaxa(){return Number(getConf().taxa||10)}
 
-function carregar(){
- const produtos = JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
- const div = document.getElementById('listaProdutos');
- if(produtos.length===0){
-   div.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:#999"><h3>Nenhum produto cadastrado</h3><p>Vá em /admin/ > Produtos > Novo produto</p></div>';return
+function carregarProdutos(){
+// PEGA DO ADMIN
+ let salvos = JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
+ // SE AINDA NÃO TEM NADA, CRIA 6 PRODUTOS EXEMPLO PRA NÃO FICAR VAZIO
+ if(salvos.length===0){
+  salvos=[
+   {nome:'Cropped Rosa',cat:'Croppeds',preco:59.9,foto:'https://images.unsplash.com/photo-1550928431-ee0ec6db30d3?w=500',cores:'Rosa, Branco',tam:'P',promo:false},
+   {nome:'Vestido Floral',cat:'Vestidos',preco:129.9,foto:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500',cores:'Rosa',tam:'M',promo:true},
+   {nome:'Blusa Branca',cat:'Blusas',preco:49.9,foto:'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500',cores:'Branco',tam:'G',promo:false}
+  ];
+  localStorage.setItem('bonitas_produtos',JSON.stringify(salvos));
  }
- div.innerHTML=produtos.filter(p=>p.ativo!==false).map((p,i)=>`
-   <div class="cardProd">
-     <img src="${p.foto}">
-     <div><b>${p.nome}</b><br><small style="color:#666">${p.cat||''}</small><br><b style="color:#e84393">R$ ${Number(p.preco).toFixed(2)}</b><br><button class="btn" style="margin-top:8px" onclick="add(${i})">Adicionar</button></div>
-   </div>
+ todos=salvos;
+ render(todos);
+}
+
+function render(lista){
+ let g=document.getElementById('grid'); let v=document.getElementById('vazio');
+ if(lista.length===0){g.innerHTML=''; v.style.display='block'; return} v.style.display='none';
+ g.innerHTML=lista.map((p,i)=>`
+  <div class="card"><img src="${p.foto}"><div><small style="color:#888">${p.cat||''}</small><br><b>${p.nome}</b><br><b style="color:#e84393">R$ ${Number(p.preco).toFixed(2)}</b><button class="btn" onclick="add(${todos.indexOf(p)})">Adicionar</button></div></div>
  `).join('');
 }
 
-function add(i){
- const produtos = JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
- car.push(produtos[i]);
- atualiza();
+function filtrar(){
+ let busca=document.getElementById('busca').value.toLowerCase();
+ let cat=document.getElementById('f-cat').value;
+ let preco=Number(document.getElementById('f-preco').value);
+ let tam=document.getElementById('f-tam').value;
+ let cor=document.getElementById('f-cor').value;
+ let promo=document.getElementById('f-promo').checked;
+ let f=todos.filter(p=>{
+  if(busca &&!(p.nome.toLowerCase().includes(busca) || (p.cat||'').toLowerCase().includes(busca))) ) return false;
+  if(cat && p.cat!==cat) return false;
+  if(Number(p.preco)>preco) return false;
+  if(tam &&!(p.tam||'').includes(tam)) return false;
+  if(cor &&!(p.cores||'').includes(cor)) return false;
+  if(promo &&!p.promo) return false;
+  return true;
+ });
+ render(f);
 }
-function atualiza(){
- document.getElementById('qtd').innerText=car.length;
- let taxa=getTaxa();
- let sub=car.reduce((a,b)=>a+Number(b.preco),0);
- let tot=sub+ (car.length?taxa:0);
- document.getElementById('total').innerText=tot.toFixed(2);
- document.getElementById('itens').innerHTML=car.map(c=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:6px 0"><span>${c.nome}</span><b>R$ ${c.preco}</b></div>`).join('')+ (car.length?`<div style="display:flex;justify-content:space-between;padding:6px 0;color:#666"><span>Entrega</span><span>R$ ${taxa.toFixed(2)}</span></div><div style="display:flex;justify-content:space-between;font-weight:800"><span>Total</span><span>R$ ${tot.toFixed(2)}</span></div>`:'');
+function limpar(){document.getElementById('busca').value='';document.getElementById('f-cat').value='';document.getElementById('f-preco').value=300;document.getElementById('f-preco-txt').innerText='R$ 300';document.getElementById('f-tam').value='';document.getElementById('f-cor').value='';document.getElementById('f-promo').checked=false;render(todos)}
+
+function add(i){car.push(todos[i]); up()}
+function up(){
+ document.getElementById('q').innerText=car.length;
+ let taxa=getTaxa(); let sub=car.reduce((a,b)=>a+Number(b.preco),0); let tot=car.length?sub+taxa:0;
+ document.getElementById('t').innerText=tot.toFixed(2);
 }
-function abrirCarrinho(){document.getElementById('modalCar').style.display='flex';atualiza()}
-function finalizar(){
- const nome=document.getElementById('nomeCli').value||'Cliente';
- const tel=document.getElementById('telCli').value||'';
- if(car.length===0) return alert('Carrinho vazio');
- const taxa=getTaxa();
- const sub=car.reduce((a,b)=>a+Number(b.preco),0);
- const total=sub+taxa;
- const zap=getConf().zap||'558399923260';
- let msg=`Olá BONITAS! Sou ${nome}%0AQuero:%0A${car.map(c=>`- ${c.nome} R$ ${c.preco}`).join('%0A')}%0AEntrega: R$ ${taxa.toFixed(2)}%0ATotal: R$ ${total.toFixed(2)}`;
- // SALVA NOS PEDIDOS DO ADMIN
- let pedidos=JSON.parse(localStorage.getItem('bonitas_pedidos')||'[]');
- pedidos.push({nome,tel:tel, itens:car.map(c=>c.nome).join(', '), total:total.toFixed(2), pago:false, data:new Date().toLocaleString()});
- localStorage.setItem('bonitas_pedidos',JSON.stringify(pedidos));
- window.open(`https://wa.me/${zap}?text=${msg}`,'_blank');
- car=[];atualiza();document.getElementById('modalCar').style.display='none';
-}
-carregar();
+function abrir(){if(car.length===0) return alert('Carrinho vazio'); let taxa=getTaxa(); let sub=car.reduce((a,b)=>a+Number(b.preco),0); let tot=sub+taxa; let zap=getConf().zap||'558399923260'; let msg=`Oi BONITAS! Quero:%0A${car.map(c=>`- ${c.nome} R$ ${c.preco}`).join('%0A')}%0AEntrega: R$ ${taxa}%0ATotal: R$ ${tot}`; window.open(`https://wa.me/${zap}?text=${msg}`,'_blank')}
+carregarProdutos();
 </script>
 </body>
 </html>
