@@ -1,66 +1,111 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin BONITAS</title>
-<style>body{font-family:Arial;background:#fff0f3;margin:0;padding:0}header{background:#ff4d6d;color:white;padding:15px;text-align:center;font-weight:bold;font-size:20px}.tabs{display:flex;background:white}.tabs button{flex:1;padding:15px;border:none;background:#eee;font-weight:bold;cursor:pointer}.tabs button.ativo{background:#ff4d6d;color:white}.aba{display:none;padding:15px}.aba.ativa{display:block}.pedido{background:white;padding:15px;margin:10px 0;border-radius:12px;box-shadow:0 2px 5px #0001;display:flex;justify-content:space-between;flex-wrap:wrap}input,select{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:2px solid #ffb3c6;box-sizing:border-box}.btn{background:#ff4d6d;color:white;border:none;padding:12px;border-radius:10px;font-weight:bold;width:100%;cursor:pointer}.botoes button{padding:7px 10px;border:none;border-radius:6px;color:white;margin:2px;font-weight:bold;cursor:pointer}</style>
-</head><body>
-<header>BONITAS - ADMIN</header>
-<div class="tabs"><button onclick="aba('pedidos')" id="t-pedidos" class="ativo">📦 Pedidos</button><button onclick="aba('produtos')" id="t-produtos">👚 Produtos</button><button onclick="aba('config')" id="t-config">⚙️ Loja</button></div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ADMIN BONITAS</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#fff0f3}
+header{background:#ff4d6d;color:white;padding:18px;text-align:center;font-weight:bold;font-size:22px;letter-spacing:1px}
+.tabs{display:flex;gap:5px;padding:10px;background:white;position:sticky;top:0;z-index:5}
+.tabs button{flex:1;padding:12px;border:none;border-radius:10px;background:#ffe5ec;font-weight:bold;cursor:pointer}
+.tabs button.ativo{background:#ff4d6d;color:white}
+.aba{display:none;padding:15px}.aba.ativa{display:block}
+.card{background:white;padding:15px;border-radius:16px;margin:12px 0;box-shadow:0 3px 10px #0001}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border:2px solid #ffb3c6;border-radius:10px}
+.btn{background:#ff4d6d;color:white;border:none;padding:14px;border-radius:12px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
+.badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;color:white}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.grid div{background:white;padding:12px;border-radius:12px}
+.small{font-size:11px;color:#888}
+.prod{width:50px;height:50px;object-fit:cover;border-radius:8px}
+.flex{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.botoes button{padding:7px 9px;border:none;border-radius:7px;color:white;font-weight:bold;margin:2px;cursor:pointer;font-size:12px}
+</style>
+</head>
+<body>
+<header>BONITAS - PAINEL ADMIN 💖</header>
+<div class="tabs">
+<button onclick="aba('pedidos')" id="t-pedidos" class="ativo">📦 Pedidos</button>
+<button onclick="aba('produtos')" id="t-produtos">👚 Produtos</button>
+<button onclick="aba('entrega')" id="t-entrega">🚚 Entrega</button>
+<button onclick="aba('loja')" id="t-loja">⚙️ Loja</button>
+</div>
 
 <div id="aba-pedidos" class="aba ativa">
-<button onclick="carregar()" class="btn" style="width:auto">🔄 Atualizar Pedidos</button>
+<div class="grid">
+<div><b id="totalPed">0</b><br><span class="small">Total pedidos</span></div>
+<div><b id="totalHoje">0</b><br><span class="small">Hoje</span></div>
+<div><b id="totalPago">0</b><br><span class="small">Pagos</span></div>
+</div>
+<button onclick="carregar()" class="btn" style="margin-top:10px">🔄 Atualizar Pedidos</button>
 <div id="lista">Carregando...</div>
 </div>
 
 <div id="aba-produtos" class="aba">
-<h3>Adicionar Produto Novo</h3>
-<input id="nome" placeholder="Nome da blusa ex: Blusa Rosa">
-<input id="preco" placeholder="Preço ex: 45,00">
-<input id="foto" placeholder="Link da foto (copia do Instagram)">
-<button onclick="addProd()" class="btn">+ Adicionar Produto na Loja</button>
+<div class="card">
+<h3>Adicionar Produto</h3>
+<input id="pNome" placeholder="Nome ex: Cropped Rosa">
+<input id="pPreco" placeholder="Preço ex: 45.90" type="number">
+<input id="pFoto" placeholder="Link da foto (Instagram ou Google)">
+<input id="pEstoque" placeholder="Estoque ex: 10" type="number">
+<button onclick="addProd()" class="btn">+ Salvar Produto</button>
+</div>
 <div id="listaProd"></div>
 </div>
 
-<div id="aba-config" class="aba">
-<h3>Configuração da Loja</h3>
-<input id="whats" placeholder="Seu WhatsApp ex: 83999999999">
-<input id="pix" placeholder="Sua chave PIX">
-<button onclick="salvarConfig()" class="btn">Salvar Config</button>
-<p style="font-size:12px;color:#888">Isso aparece no checkout da loja</p>
+<div id="aba-entrega" class="aba">
+<div class="card">
+<h3>Taxas de Entrega</h3>
+<p class="small">Edita aqui, depois clica salvar. Isso vai aparecer na loja.</p>
+<textarea id="taxas" rows="6" placeholder="Centro:5&#10;Bessa:8&#10;Mangabeira:10&#10;Retirar:0"></textarea>
+<label>Grátis acima de R$:</label>
+<input id="gratis" type="number" value="150">
+<button onclick="salvarTaxas()" class="btn">Salvar Taxas</button>
+</div>
+</div>
+
+<div id="aba-loja" class="aba">
+<div class="card">
+<h3>Config da Loja BONITAS</h3>
+<input id="zap" placeholder="WhatsApp com DDD ex: 5583999999999">
+<input id="pix" placeholder="Chave PIX">
+<input id="insta" placeholder="Instagram @bonitas">
+<input id="nomeLoja" placeholder="Nome da loja" value="BONITAS">
+<button onclick="salvarLoja()" class="btn">Salvar Configurações</button>
+<p class="small">Essas infos aparecem no checkout e no topo da loja.</p>
+<div style="margin-top:15px">
+<a href="/" style="color:#ff4d6d;font-weight:bold">Ver Loja</a> | <a href="/api/todos-pedidos" style="color:#888">Ver JSON</a>
+</div>
+</div>
 </div>
 
 <script>
-function aba(nome){
- document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));
- document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('ativo'));
- document.getElementById('aba-'+nome).classList.add('ativa');
- document.getElementById('t-'+nome).classList.add('ativo');
- if(nome=='pedidos') carregar();
- if(nome=='produtos') carregarProd();
-}
+function aba(n){document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('ativo'));document.getElementById('aba-'+n).classList.add('ativa');document.getElementById('t-'+n).classList.add('ativo');if(n=='pedidos')carregar();if(n=='produtos')listarProd();}
+
 async function carregar(){
  document.getElementById('lista').innerHTML='Buscando...';
  try{
-  const r=await fetch('/api/todos-pedidos'); const pedidos=await r.json();
+  const r=await fetch('/api/todos-pedidos');const pedidos=await r.json();
   const lista=document.getElementById('lista');
-  if(Object.keys(pedidos).length==0){lista.innerHTML='<p style="text-align:center;margin-top:30px">Nenhum pedido ainda.<br>Faz um pedido teste na loja.</p>';return;}
+  let total=Object.keys(pedidos).length, hoje=0, pago=0;
+  for(let c in pedidos){if(pedidos[c].data && pedidos[c].data.includes(new Date().toLocaleDateString().slice(0,5))) hoje++; if(pedidos[c].pagamento=='Pago') pago++;}
+  document.getElementById('totalPed').innerText=total;document.getElementById('totalHoje').innerText=hoje;document.getElementById('totalPago').innerText=pago;
+  if(total==0){lista.innerHTML='<div class="card" style="text-align:center">Nenhum pedido ainda.<br>Faz um teste na loja.</div>';return;}
   lista.innerHTML='';
   for(let c in pedidos){let p=pedidos[c];
-   lista.innerHTML+=`<div class="pedido"><div><b>${c}</b><br>${p.nome||''}<br><b>Status:</b> ${p.status}<br><b>Pag:</b> ${p.pagamento||'Falta pagar'}<br>R$ ${p.total||''}</div><div class="botoes"><button style="background:#ff8fa3" onclick="mudarStatus('${c}','Preparado')">PREPARADO</button><button style="background:#3a86ff" onclick="mudarStatus('${c}','Enviando')">ENVIANDO</button><button style="background:#06d6a0" onclick="mudarStatus('${c}','Concluido')">CONCLUÍDO</button><br><button style="background:#ffbe0b;color:black" onclick="mudarPag('${c}','Falta pagar')">FALTA PAGAR</button><button style="background:#8338ec" onclick="mudarPag('${c}','Pago')">PAGO</button></div></div>`;
+   lista.innerHTML+=`<div class="card"><div class="flex"><div><b>${c}</b><br>${p.nome||''} - ${p.zap||''}<br><span class="small">${p.endereco||''}</span><br><b>R$ ${p.total||''}</b> <span class="badge" style="background:${p.pagamento=='Pago'?'#06d6a0':'#ffbe0b'};color:${p.pagamento=='Pago'?'white':'black'}">${p.pagamento||'Falta pagar'}</span> <span class="badge" style="background:#ff4d6d">${p.status||''}</span><br><span class="small">${p.bairro||''} | ${p.produtos||''}</span></div></div><div class="botoes" style="margin-top:10px"><button style="background:#ff8fa3" onclick="mudarStatus('${c}','Preparado')">PREPARADO</button><button style="background:#3a86ff" onclick="mudarStatus('${c}','Enviando')">ENVIANDO</button><button style="background:#06d6a0" onclick="mudarStatus('${c}','Concluido')">CONCLUÍDO</button><br><button style="background:#ffbe0b;color:black" onclick="mudarPag('${c}','Falta pagar')">FALTA PAGAR</button><button style="background:#8338ec" onclick="mudarPag('${c}','Pago')">PAGO</button></div></div>`;
   }
- }catch(e){document.getElementById('lista').innerHTML='Erro. Atualiza seu server.js';}
+ }catch(e){document.getElementById('lista').innerHTML='Erro. Verifica seu server.js';}
 }
 async function mudarStatus(c,s){await fetch('/api/pedido/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,status:s})});carregar();}
 async function mudarPag(c,p){await fetch('/api/pedido/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:c,pagamento:p})});carregar();}
 
-function carregarProd(){
- const prods=JSON.parse(localStorage.getItem('produtos')||'[]');
- document.getElementById('listaProd').innerHTML=prods.map((p,i)=>`<div class="pedido">${p.nome} - R$${p.preco} <button onclick="delProd(${i})">X</button></div>`).join('');
-}
-function addProd(){
- const nome=document.getElementById('nome').value, preco=document.getElementById('preco').value, foto=document.getElementById('foto').value;
- if(!nome||!preco)return alert('Preenche nome e preço');
- const prods=JSON.parse(localStorage.getItem('produtos')||'[]'); prods.push({nome,preco,foto}); localStorage.setItem('produtos',JSON.stringify(prods));
- alert('Produto adicionado! Agora vai no index.html que te ensino colocar na loja'); carregarProd();
-}
-function delProd(i){const prods=JSON.parse(localStorage.getItem('produtos')||'[]');prods.splice(i,1);localStorage.setItem('produtos',JSON.stringify(prods));carregarProd();}
-function salvarConfig(){localStorage.setItem('whats',document.getElementById('whats').value);localStorage.setItem('pix',document.getElementById('pix').value);alert('Salvo!');}
-carregar();
-</script></body></html>
+function listarProd(){const prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');document.getElementById('listaProd').innerHTML=prods.map((p,i)=>`<div class="card flex"><img class="prod" src="${p.foto}"><div><b>${p.nome}</b><br>R$${p.preco} | Est:${p.estoque||0}</div><button onclick="delProd(${i})" style="background:#ff4d6d;color:white;border:none;padding:8px;border-radius:8px">X</button></div>`).join('')||'<div class="card small">Nenhum produto. Adiciona acima.</div>';}
+function addProd(){const nome=document.getElementById('pNome').value,preco=document.getElementById('pPreco').value,foto=document.getElementById('pFoto').value,estoque=document.getElementById('pEstoque').value;if(!nome||!preco)return alert('Nome e preço');const prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');prods.push({nome,preco,foto,estoque});localStorage.setItem('bonitas_prod',JSON.stringify(prods));document.getElementById('pNome').value='';document.getElementById('pPreco').value='';document.getElementById('pFoto').value='';listarProd();alert('Produto salvo!');}
+function delProd(i){const prods=JSON.parse(localStorage.getItem('bonitas_prod')||'[]');prods.splice(i,1);localStorage.setItem('bonitas_prod',JSON.stringify(prods));listarProd();}
+function salvarTaxas(){localStorage.setItem('bonitas_taxas',document.getElementById('taxas').value);localStorage.setItem('bonitas_gratis',document.getElementById('gratis').value);alert('Taxas salvas!');}
+function salvarLoja(){localStorage.setItem('bonitas_zap',document.getElementById('zap').value);localStorage.setItem('bonitas_pix',document.getElementById('pix').value);localStorage.setItem('bonitas_insta',document.getElementById('insta').value);localStorage.setItem('bonitas_nome',document.getElementById('nomeLoja').value);alert('Config salva!');}
+(function init(){document.getElementById('taxas').value=localStorage.getItem('bonitas_taxas')||'Centro:5\nBessa:8\nMangabeira:10\nValentina:10\nRetirar na loja:0';document.getElementById('gratis').value=localStorage.getItem('bonitas_gratis')||150;document.getElementById('zap').value=localStorage.getItem('bonitas_zap')||'';document.getElementById('pix').value=localStorage.getItem('bonitas_pix')||'';document.getElementById('insta').value=localStorage.getItem('bonitas_insta')||'';listarProd();carregar();})();
+</script>
+</body>
+</html>
