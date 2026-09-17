@@ -1,100 +1,87 @@
 <!DOCTYPE html><html lang="pt-BR"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BONITAS | Admin</title>
+<title>BONITAS | Admin V10</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;font-family:Inter}
 body{background:#fff8fb;display:flex;min-height:100vh}
-#login{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1400&q=80') center/cover no-repeat}
-#login::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,94,176,.4),rgba(138,23,64,.6))}
-#login::after{content:'';position:absolute;inset:0;background:rgba(255,245,247,.35);backdrop-filter:blur(12px)}
-#loginBox{position:relative;z-index:2;background:rgba(255,255,255,.82);backdrop-filter:blur(24px);padding:34px;border-radius:26px;width:90%;max-width:380px;text-align:center}
+#login{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#ff5eb0}
+#loginBox{background:#fff;padding:32px;border-radius:24px;width:90%;max-width:380px;text-align:center}
 aside{width:260px;background:#1c1218;min-height:100vh;padding:22px;position:sticky;top:0;display:flex;flex-direction:column;justify-content:space-between}
-aside h2{color:#ff5eb0;letter-spacing:5px;font-family:Playfair Display;font-size:24px}
+aside h2{color:#ff5eb0;letter-spacing:5px;font-family:Playfair Display}
 aside nav a{display:block;color:#c49fb0;padding:12px 14px;border-radius:12px;margin:6px 0;cursor:pointer;text-decoration:none}
 aside nav a.ativo{background:#2d1e27;color:#fff;font-weight:700}
 main{flex:1;padding:28px;background:#fff8fb;min-height:100vh}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
 .formCard{background:#fff;border-radius:20px;padding:26px;width:100%;max-width:720px;max-height:92vh;overflow:auto}
 label{font-size:11px;color:#8a5a6a;display:block;margin-top:16px;text-transform:uppercase;font-weight:700}
-input,textarea,select{width:100%;padding:13px;border:1px solid #e5c3ce;border-radius:12px;margin-top:6px;background:#fff9fb;outline:none}
+input,textarea,select{width:100%;padding:13px;border:1px solid #e5c3ce;border-radius:12px;margin-top:6px;background:#fff9fb}
 .btnPink{background:#e84393;color:#fff;border:none;padding:13px 22px;border-radius:12px;font-weight:800;cursor:pointer;width:100%;margin-top:18px}
 .btnDark{background:#111;color:#fff;border:none;padding:11px 20px;border-radius:10px;font-weight:700;cursor:pointer}
-.btnGhost{background:none;border:none;padding:10px;cursor:pointer;color:#8a6a78}
 .hide{display:none!important}
 .card{background:#fff;border:1px solid #f6e1e8;border-radius:18px;padding:22px;margin-top:16px}
-.catTag{background:linear-gradient(135deg,#ffe2ea,#ffd1dc);color:#8a1740;padding:10px 16px;border-radius:24px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:8px;margin:6px}
 </style></head><body>
-<div id="login"><div id="loginBox">
-<p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:800">PAINEL ADMINISTRATIVO</p>
-<h1 style="font-family:Playfair Display;font-size:28px;color:#8a1740">Bem-vinda à Bonitas</h1>
-<div style="text-align:left;margin-top:18px"><label>E-mail</label><input id="email" value="admin@gmail.com"></div>
-<div style="text-align:left"><label>Senha</label><input id="senha" type="password" value="09282326"></div>
-<button onclick="entrar()" style="background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-weight:800;margin-top:18px;cursor:pointer">ENTRAR NO PAINEL →</button>
-<p id="erro" style="color:#e84393;display:none;margin-top:10px">Senha incorreta!</p>
-</div></div>
-<aside><div><h2>BONITAS</h2><nav style="margin-top:28px">
+<div id="login"><div id="loginBox"><h2 style="color:#e84393">VERSÃO 10 - NOVA</h2><p style="font-family:Playfair Display;font-size:22px;color:#8a1740">BONITAS Admin</p><input id="senha" type="password" value="09282326" style="margin-top:12px"><button onclick="entrar()" class="btnPink">ENTRAR →</button><p id="erro" style="color:red;display:none">Senha errada!</p></div></div>
+<aside><div><h2>BONITAS</h2><div style="color:#ff5eb0;font-size:10px;font-weight:800">V10 COM UPLOAD 5MB</div><nav style="margin-top:20px">
 <a id="m-geral" onclick="showPage('geral')">🏠 Visão geral</a>
 <a id="m-prod" class="ativo" onclick="showPage('prod')">👚 Produtos</a>
 <a id="m-cat" onclick="showPage('cat')">📂 Categorias</a>
 <a id="m-conf" onclick="showPage('conf')">⚙️ Configurações</a>
-</nav></div><a onclick="sair()" style="color:#8a6a78;font-size:13px;cursor:pointer">↩ Sair</a></aside>
+</nav></div><a onclick="localStorage.removeItem('bonitas_log');location.reload()" style="color:#8a6a78;font-size:13px;cursor:pointer">↩ Sair</a></aside>
 <main>
-<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Visão geral</h1><div class="card"><b id="totalProd">0 produtos</b> • <b id="totalCat">0 categorias</b></div></div>
-<div id="p-prod"><div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Produtos</h1><button class="btnDark" onclick="abrirModalProd()">+ Novo produto</button></div><div id="listaProd" class="card"></div></div>
-<div id="p-cat" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Categorias</h1><div class="card"><h3>➕ Criar nova categoria</h3><div style="display:flex;gap:10px;margin-top:12px"><input id="novaCatNome" placeholder="Ex: Blusas"><button class="btnDark" onclick="salvarCategoria()">+ Criar</button></div></div><div class="card"><h3>📂 Suas categorias</h3><div id="listaCat"></div></div></div>
-<div id="p-conf" class="hide"><h1 style="font-family:Playfair Display;color:#8a1740;font-size:32px">Configurações da loja</h1><div class="card"><label>Nome da loja</label><input id="c-nomeLoja" value="BONITAS"><label>WhatsApp</label><input id="c-zap" value="558399923260"><label>Instagram</label><input id="c-insta" value="@bonitas_storemodafeminina"><label>Endereço</label><input id="c-end" value="João Pessoa - PB"><label>Taxa de entrega</label><input id="c-taxa" value="10.00"><label>Limite estoque baixo</label><input id="c-estoque" value="3"><label>Horário</label><input id="c-horario" value="Segunda a sábado, 9h às 18h"><label>Pedido mínimo</label><input id="c-minimo" value="0.00"></div><div class="card"><h2 style="font-family:Playfair Display;color:#8a1740">PIX da loja</h2><label>Chave PIX</label><input id="c-pix" value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3"><button class="btnPink" onclick="salvarConf()">SALVAR CONFIGURAÇÕES</button></div></div>
+<div id="p-geral" class="hide"><h1>Visão geral V10</h1><div class="card"><b id="totalProd">0 produtos</b> • <b id="totalCat">0 categorias</b></div></div>
+<div id="p-prod"><div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font-family:Playfair Display;color:#8a1740">Produtos V10</h1><button class="btnDark" onclick="abrirModalProd()">+ Novo produto</button></div><div id="listaProd" class="card"></div></div>
+<div id="p-cat" class="hide"><h1>Categorias</h1><div class="card"><div style="display:flex;gap:10px"><input id="novaCatNome" placeholder="Ex: Blusas"><button class="btnDark" onclick="salvarCategoria()">+ Criar</button></div><div id="listaCat" style="margin-top:12px"></div></div></div>
+<div id="p-conf" class="hide">
+<h1 style="font-family:Playfair Display;color:#8a1740;font-size:28px">Configurações da loja V10</h1>
+<p style="background:#e84393;color:#fff;padding:8px 12px;border-radius:8px;margin:10px 0;font-weight:800">Se você vê V10 aqui, o arquivo novo carregou!</p>
+<div class="card">
+<label>Nome da loja</label><input id="c-nomeLoja" value="BONITAS">
+<label>WhatsApp com DDI e DDD</label><input id="c-zap" value="558399923260">
+<label>Instagram</label><input id="c-insta" value="@bonitas_storemodafeminina">
+<label>Endereço</label><input id="c-end" value="João Pessoa - PB">
+<label>Taxa de entrega (R$)</label><input id="c-taxa" value="10.00">
+<label>Limite de estoque baixo</label><input id="c-estoque" value="3">
+<label>Horário de funcionamento</label><input id="c-horario" value="Segunda a sábado, 9h às 18h">
+<label>Pedido mínimo (R$)</label><input id="c-minimo" value="0.00">
+</div>
+<div class="card">
+<h2 style="font-family:Playfair Display;color:#8a1740">PIX da loja</h2>
+<label>Chave PIX (CPF, telefone ou aleatória)</label><input id="c-pix" value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3">
+<button class="btnPink" onclick="salvarConf()">SALVAR CONFIGURAÇÕES V10</button>
+</div>
+</div>
 </main>
-
 <div id="modalProd" class="modal hide"><div class="formCard">
-<h2 style="font-family:Playfair Display;color:#8a1740">Novo produto</h2>
-<label>Nome do produto *</label><input id="n-nome" placeholder="Ex: Calça Wide Leg Rosa">
-<label>Categoria * (só aparece o que você criou)</label><select id="n-cat"></select>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label>Preço *</label><input id="n-preco" type="number" placeholder="59.90"></div><div><label>Preço antigo</label><input id="n-precoAnt" placeholder="99.90"></div></div>
-<label>Cores (separadas por vírgula)</label><input id="n-cores" value="Rosa, Branco, Preto">
-
-<label style="color:#e84393;font-weight:800">📸 IMAGEM DO PRODUTO - ATÉ 5MB *</label>
-<div style="border:3px dashed #e84393;background:#fff0f5;border-radius:16px;padding:20px;text-align:center;margin-top:8px">
-<input type="file" id="n-file" accept="image/*" style="width:100%;font-weight:700">
-<small style="color:#8a1740;font-weight:700;display:block;margin-top:8px">Escolha da galeria - PNG ou JPG até 5MB</small>
-</div>
-<div id="previewBox" style="display:none;margin-top:12px;background:#fff;padding:10px;border-radius:12px;border:2px solid #e84393;text-align:center">
-<img id="previewImg" style="width:100%;max-height:250px;object-fit:contain;border-radius:10px">
-<p style="color:green;font-weight:800;margin-top:8px">✅ Imagem pronta!</p>
-<button onclick="removerImagem()" style="margin-top:8px;background:#ffe2ea;border:none;padding:8px 14px;border-radius:8px;color:#8a1740;cursor:pointer;font-weight:700">Remover</button>
-</div>
-<label>Ou cole URL da imagem (opcional)</label><textarea id="n-urls" placeholder="https://... cole aqui" rows="2"></textarea>
-
-<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px"><button class="btnGhost" onclick="fecharModalProd()">Cancelar</button><button class="btnPink" style="width:auto;padding:12px 28px" onclick="salvarProdutoFinal()">SALVAR PRODUTO</button></div>
+<h2 style="font-family:Playfair Display;color:#8a1740">Novo produto V10 - COM UPLOAD 5MB</h2>
+<p style="background:#e84393;color:#fff;padding:6px 10px;border-radius:8px;font-weight:800;font-size:12px">SE VOCÊ VÊ ISSO, O UPLOAD ESTÁ AQUI!</p>
+<label>Nome *</label><input id="n-nome">
+<label>Categoria *</label><select id="n-cat"></select>
+<label>Preço *</label><input id="n-preco" type="number">
+<label style="color:#e84393;font-weight:800;font-size:14px">📸 IMAGEM ATÉ 5MB * OBRIGATÓRIO</label>
+<input type="file" id="n-file" accept="image/*" style="padding:18px;background:#ffe2ea;border:3px dashed #e84393;font-weight:800">
+<div id="previewBox" style="display:none;text-align:center;margin-top:12px;border:3px solid #e84393;border-radius:12px;padding:10px"><img id="previewImg" style="width:100%;max-height:260px;object-fit:contain"><p style="color:green;font-weight:800">✅ Imagem carregada!</p><button onclick="removerImagem()" style="background:#ffe2ea;border:none;padding:8px 14px;border-radius:8px;color:#8a1740;font-weight:700">Remover</button></div>
+<label>Ou URL</label><input id="n-urls" placeholder="https://...">
+<div style="display:flex;gap:10px;margin-top:16px"><button onclick="fecharModalProd()" style="flex:1;padding:12px;border:1px solid #eee;border-radius:10px;background:#fff">Cancelar</button><button onclick="salvarProdutoFinal()" class="btnDark" style="flex:1">SALVAR PRODUTO</button></div>
 </div></div>
-
 <script>
 const SENHA='09282326'; let imagemBase64='';
-function getCategorias(){try{return JSON.parse(localStorage.getItem('bonitas_categorias')||'[]')}catch{return []}}
-function getProdutos(){try{return JSON.parse(localStorage.getItem('bonitas_produtos')||'[]')}catch{return []}}
-function getConf(){try{return JSON.parse(localStorage.getItem('bonitas_conf')||'null')}catch{return null}}
-document.getElementById('n-file').addEventListener('change',function(e){
- let file=e.target.files[0]; if(!file) return;
- if(file.size>5*1024*1024){ alert('❌ Muito grande! Máx 5MB. Essa tem '+(file.size/1024/1024).toFixed(2)+'MB'); this.value=''; return; }
- let reader=new FileReader();
- reader.onload=function(ev){ imagemBase64=ev.target.result; document.getElementById('previewImg').src=imagemBase64; document.getElementById('previewBox').style.display='block'; };
- reader.readAsDataURL(file);
-});
-document.getElementById('n-urls').addEventListener('input',function(){ let url=this.value.trim(); if(url.startsWith('http')){ imagemBase64=url; document.getElementById('previewImg').src=url; document.getElementById('previewBox').style.display='block'; } });
-function removerImagem(){ imagemBase64=''; document.getElementById('n-file').value=''; document.getElementById('n-urls').value=''; document.getElementById('previewBox').style.display='none'; }
-function salvarCategoria(){ let nome=document.getElementById('novaCatNome').value.trim(); if(!nome) return alert('Digite nome'); let cats=getCategorias(); if(cats.includes(nome)) return alert('Já existe'); cats.push(nome); localStorage.setItem('bonitas_categorias',JSON.stringify(cats)); document.getElementById('novaCatNome').value=''; listarCategorias(); alert('✅ Criada!'); }
-function remCat(i){ if(!confirm('Excluir?')) return; let c=getCategorias(); c.splice(i,1); localStorage.setItem('bonitas_categorias',JSON.stringify(c)); listarCategorias(); }
-function listarCategorias(){ let cats=getCategorias(); document.getElementById('listaCat').innerHTML=cats.length?cats.map((c,i)=>`<span class="catTag">${c} <button onclick="remCat(${i})" style="background:rgba(0,0,0,.1);border:none;width:22px;height:22px;border-radius:50%;color:#8a1740;font-weight:800;cursor:pointer">✕</button></span>`).join(''):'Nenhuma'; document.getElementById('n-cat').innerHTML=cats.length?cats.map(c=>`<option>${c}</option>`).join(''):'<option>Crie categoria primeiro</option>'; document.getElementById('totalCat').innerText=cats.length+' categorias'; }
-function checkLogin(){ if(localStorage.getItem('bonitas_log')==='1') document.getElementById('login').style.display='none'; }
-function entrar(){ if(document.getElementById('senha').value===SENHA){ localStorage.setItem('bonitas_log','1'); document.getElementById('login').style.display='none'; showPage(localStorage.getItem('bonitas_page')||'prod'); } else document.getElementById('erro').style.display='block'; }
-function sair(){ localStorage.removeItem('bonitas_log'); location.reload(); } checkLogin();
-function showPage(p){ ['geral','prod','cat','conf'].forEach(x=>{ document.getElementById('p-'+x).classList.add('hide'); document.getElementById('m-'+x).classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); document.getElementById('m-'+p).classList.add('ativo'); localStorage.setItem('bonitas_page',p); if(p==='cat') listarCategorias(); if(p==='prod') listarProdutos(); if(p==='geral'){ listarCategorias(); listarProdutos(); } if(p==='conf') carregarConf(); }
-function carregarConf(){ let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||'558399923260'; document.getElementById('c-insta').value=c.insta||'@bonitas_storemodafeminina'; document.getElementById('c-end').value=c.end||'João Pessoa - PB'; document.getElementById('c-taxa').value=c.taxa||'10.00'; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||'Segunda a sábado, 9h às 18h'; document.getElementById('c-minimo').value=c.minimo||'0.00'; document.getElementById('c-pix').value=c.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'; }
-function abrirModalProd(){ listarCategorias(); if(!getCategorias().length){ alert('Crie categoria primeiro!'); showPage('cat'); return; } removerImagem(); document.getElementById('modalProd').classList.remove('hide'); }
-function fecharModalProd(){ document.getElementById('modalProd').classList.add('hide'); }
-function salvarProdutoFinal(){ let nome=document.getElementById('n-nome').value.trim(); if(!nome) return alert('Nome obrigatório'); let foto=imagemBase64||document.getElementById('n-urls').value.trim(); if(!foto) return alert('Escolha uma imagem até 5MB!'); let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',foto,cores:document.getElementById('n-cores').value}; let l=getProdutos(); l.push(prod); localStorage.setItem('bonitas_produtos',JSON.stringify(l)); alert('✅ Produto salvo!'); fecharModalProd(); listarProdutos(); }
-function listarProdutos(){ let l=getProdutos(); document.getElementById('totalProd').innerText=l.length+' produtos'; document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:46px;height:46px;border-radius:10px;object-fit:cover"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:2px 8px;border-radius:10px;color:#8a1740">${p.cat}</small> R$ ${p.preco}</span></span><button onclick="let a=getProdutos();a.splice(${i},1);localStorage.setItem('bonitas_produtos',JSON.stringify(a));listarProdutos()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`).join(''):'Nenhum produto'; }
-function salvarConf(){ let c={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; localStorage.setItem('bonitas_conf',JSON.stringify(c)); alert('✅ Salvo!'); }
-let paginaSalva=localStorage.getItem('bonitas_page')||'prod'; if(localStorage.getItem('bonitas_log')==='1') showPage(paginaSalva);
-listarCategorias(); listarProdutos(); carregarConf();
+function getCategorias(){return JSON.parse(localStorage.getItem('bonitas_categorias')||'[]')}
+function getProdutos(){return JSON.parse(localStorage.getItem('bonitas_produtos')||'[]')}
+function getConf(){return JSON.parse(localStorage.getItem('bonitas_conf')||'null')}
+document.getElementById('n-file').addEventListener('change',function(e){let f=e.target.files[0]; if(!f) return; if(f.size>5*1024*1024){alert('Maior que 5MB!');return} let r=new FileReader(); r.onload=ev=>{imagemBase64=ev.target.result; document.getElementById('previewImg').src=imagemBase64; document.getElementById('previewBox').style.display='block';}; r.readAsDataURL(f);});
+function salvarCategoria(){let n=document.getElementById('novaCatNome').value.trim(); if(!n) return; let c=getCategorias(); c.push(n); localStorage.setItem('bonitas_categorias',JSON.stringify(c)); document.getElementById('novaCatNome').value=''; listarCategorias();}
+function listarCategorias(){let c=getCategorias(); document.getElementById('listaCat').innerHTML=c.map((x,i)=>`<span style="background:#ffe2ea;padding:8px 12px;border-radius:20px;margin:4px;display:inline-block">${x} <button onclick="let a=getCategorias();a.splice(${i},1);localStorage.setItem('bonitas_categorias',JSON.stringify(a));listarCategorias()">✕</button></span>`).join(''); document.getElementById('n-cat').innerHTML=c.map(x=>`<option>${x}</option>`).join(''); document.getElementById('totalCat').innerText=c.length+' categorias';}
+function checkLogin(){if(localStorage.getItem('bonitas_log')==='1')document.getElementById('login').style.display='none';}
+function entrar(){if(document.getElementById('senha').value===SENHA){localStorage.setItem('bonitas_log','1');document.getElementById('login').style.display='none';showPage('conf');}else document.getElementById('erro').style.display='block';}
+checkLogin();
+function showPage(p){['geral','prod','cat','conf'].forEach(x=>{document.getElementById('p-'+x).classList.add('hide');document.getElementById('m-'+x).classList.remove('ativo');});document.getElementById('p-'+p).classList.remove('hide');document.getElementById('m-'+p).classList.add('ativo');if(p==='cat')listarCategorias();if(p==='prod')listarProdutos();if(p==='conf')carregarConf();}
+function carregarConf(){let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||''; document.getElementById('c-insta').value=c.insta||''; document.getElementById('c-end').value=c.end||''; document.getElementById('c-taxa').value=c.taxa||''; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||''; document.getElementById('c-minimo').value=c.minimo||''; document.getElementById('c-pix').value=c.pix||'';}
+function abrirModalProd(){listarCategorias(); if(!getCategorias().length){alert('Crie categoria primeiro');showPage('cat');return;} document.getElementById('modalProd').classList.remove('hide');}
+function fecharModalProd(){document.getElementById('modalProd').classList.add('hide');}
+function removerImagem(){imagemBase64=''; document.getElementById('n-file').value=''; document.getElementById('previewBox').style.display='none';}
+function salvarProdutoFinal(){let nome=document.getElementById('n-nome').value; if(!nome) return alert('Nome'); let foto=imagemBase64||document.getElementById('n-urls').value; if(!foto) return alert('Coloque imagem até 5MB'); let p={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value,foto}; let l=getProdutos(); l.push(p); localStorage.setItem('bonitas_produtos',JSON.stringify(l)); alert('Salvo!'); fecharModalProd(); listarProdutos();}
+function listarProdutos(){let l=getProdutos(); document.getElementById('listaProd').innerHTML=l.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee"><span><img src="${p.foto}" style="width:40px;height:40px"> ${p.nome}</span><button onclick="let a=getProdutos();a.splice(${i},1);localStorage.setItem('bonitas_produtos',JSON.stringify(a));listarProdutos()" style="color:red;border:none;background:none">Excluir</button></div>`).join(''); document.getElementById('totalProd').innerText=l.length+' produtos';}
+function salvarConf(){let c={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; localStorage.setItem('bonitas_conf',JSON.stringify(c)); alert('✅ Salvo V10!');}
+listarCategorias(); listarProdutos();
 </script></body></html>
