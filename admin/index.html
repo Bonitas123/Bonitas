@@ -1,34 +1,32 @@
 
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BONITAS | Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;font-family:Inter}
 body{background:#fff8fb;display:flex;min-height:100vh}
 #login{position:fixed;inset:0;background:#fff5f7;z-index:99999;display:flex;align-items:center;justify-content:center}
 #loginBox{background:#fff;padding:32px;border-radius:20px;width:100%;max-width:380px;box-shadow:0 20px 60px #0002;text-align:center;border:1px solid #f5d6e0}
 #loginBox input{width:100%;padding:12px;border:1px solid #f0c6d3;border-radius:10px;margin-top:8px}
-aside{width:250px;background:#1c1218;min-height:100vh;padding:20px;position:sticky;top:0}
+aside{width:250px;background:#1c1218;min-height:100vh;padding:20px;position:sticky;top:0;display:flex;flex-direction:column;justify-content:space-between}
 aside h2{color:#ff5eb0;letter-spacing:5px;font-family:Playfair Display}
 aside nav a{display:block;color:#c49fb0;padding:11px 12px;border-radius:10px;margin:5px 0;text-decoration:none;cursor:pointer}
 aside nav a.ativo{background:#2d1e27;color:#fff;font-weight:700}
-main{flex:1;padding:24px;background:#fff8fb}
+main{flex:1;padding:28px;background:#fff8fb;min-height:100vh}
 .modal{position:fixed;inset:0;background:#0006;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
 .formCard{background:#fff;border-radius:18px;padding:24px;width:100%;max-width:700px;max-height:90vh;overflow:auto;box-shadow:0 20px 60px #0003}
-.formCard h2{font-family:Playfair Display;font-size:22px;margin-bottom:16px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{font-size:12px;color:#666;display:block;margin-top:14px}
-input,textarea,select{width:100%;padding:10px;border:1px solid #e5c3ce;border-radius:10px;margin-top:6px;background:#fff9fb}
+label{font-size:11px;color:#666;display:block;margin-top:14px;letter-spacing:.5px;text-transform:uppercase;font-weight:600}
+input,textarea,select{width:100%;padding:12px;border:1px solid #e5c3ce;border-radius:12px;margin-top:6px;background:#fff9fb}
 textarea{height:70px}
-.checks{display:flex;gap:18px;margin-top:14px}
-.estoque{margin-top:18px}
-.estoque h3{font-size:16px;margin-bottom:10px}
-.estoqueGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.btnPink{background:#e84393;color:#fff;border:none;padding:12px 22px;border-radius:10px;font-weight:700;cursor:pointer}
-.btnDark{background:#111;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+.btnPink{background:#e84393;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer;width:100%;margin-top:16px}
+.btnDark{background:#111;color:#fff;border:none;padding:11px 20px;border-radius:10px;font-weight:700;cursor:pointer}
 .btnGhost{background:none;border:none;padding:10px 16px;cursor:pointer;color:#666}
 .hide{display:none}
-.card{background:#fff;border:1px solid #f6e1e8;border-radius:14px;padding:18px;margin-top:14px}
+.card{background:#fff;border:1px solid #f6e1e8;border-radius:16px;padding:22px;margin-top:16px;box-shadow:0 4px 12px #0001}
+.estoqueGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.topBar{display:flex;justify-content:space-between;align-items:center}
+.tabelaHeader{display:grid;grid-template-columns:1.4fr.6fr.6fr.6fr.8fr;font-weight:700;color:#999;font-size:11px;padding:12px 0;border-bottom:1px solid #f3dde3;letter-spacing:1px}
 </style></head><body>
 
 <div id="login"><div id="loginBox">
@@ -40,157 +38,116 @@ textarea{height:70px}
 <p id="erro" style="color:#e84393;display:none;margin-top:8px;font-size:13px">Senha incorreta!</p>
 </div></div>
 
-<aside><h2>BONITAS</h2><nav style="margin-top:24px">
-<a id="m-geral" onclick="showPage('geral')">Visão geral</a>
-<a id="m-prod" class="ativo" onclick="showPage('prod')">Produtos</a>
-<a id="m-ped" onclick="showPage('ped')">Pedidos</a>
-<a id="m-cup" onclick="showPage('cup')">Cupons</a>
-<a id="m-conf" onclick="showPage('conf')">Configurações</a>
-</nav><a onclick="localStorage.removeItem('bonitas_log');location.reload()" style="color:#8a6a78;text-decoration:none;font-size:13px;cursor:pointer;display:block;margin-top:30px">↩ Sair</a></aside>
+<aside><div><h2>BONITAS</h2><nav style="margin-top:24px">
+<a id="m-geral" onclick="showPage('geral')">🏠 Visão geral</a>
+<a id="m-prod" class="ativo" onclick="showPage('prod')">👚 Produtos</a>
+<a id="m-ped" onclick="showPage('ped')">📦 Pedidos</a>
+<a id="m-cup" onclick="showPage('cup')">🎟️ Cupons</a>
+<a id="m-conf" onclick="showPage('conf')">⚙️ Configurações</a>
+</nav></div><a onclick="localStorage.removeItem('bonitas_log');location.reload()" style="color:#8a6a78;text-decoration:none;font-size:13px;cursor:pointer">↩ Sair</a></aside>
 
 <main>
-<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display">Visão geral</h1><div id="geralCards" class="card">Total vendido: R$ 0,00</div></div>
+<!-- VISÃO GERAL -->
+<div id="p-geral" class="hide">
+<p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p>
+<h1 style="font-family:Playfair Display;font-size:32px">Visão geral</h1>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px">
+<div class="card"><small>TOTAL ADQUIRIDO</small><h2 id="v-total" style="color:#e84393">R$ 0,00</h2><small id="v-ped">0 pedidos</small></div>
+<div class="card"><small>GASTOS</small><h2 id="v-gasto">R$ 0,00</h2></div>
+<div class="card"><small>LUCRO LÍQUIDO</small><h2 id="v-lucro" style="color:#0a7a42">R$ 0,00</h2></div>
+<div class="card"><small>PRODUTOS</small><h2 id="v-prod">0</h2></div>
+</div>
+</div>
+
+<!-- PRODUTOS -->
 <div id="p-prod">
-<div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font-family:Playfair Display">Produtos</h1><button class="btnDark" onclick="abrirModal()">+ Novo produto</button></div>
+<div class="topBar"><div><p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p><h1 style="font-family:Playfair Display;font-size:32px">Produtos</h1></div><button class="btnDark" onclick="abrirModalProd()">+ Novo produto</button></div>
 <div id="listaProd" class="card">Nenhum produto ainda</div>
 </div>
-<div id="p-ped" class="hide"><h1>Pedidos</h1><div class="card">Nenhum pedido</div></div>
-<div id="p-cup" class="hide"><h1>Cupons</h1><div class="card">Nenhum cupom</div></div>
-<div id="p-conf" class="hide"><h1>Configurações</h1><div class="card"><label>WhatsApp</label><input id="c-zap" value="558399923260"><label>Taxa</label><input id="c-taxa" value="10.00"><button class="btnPink" style="margin-top:12px" onclick="alert('Salvo')">Salvar</button></div></div>
+
+<!-- PEDIDOS -->
+<div id="p-ped" class="hide"><p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p><h1 style="font-family:Playfair Display;font-size:32px">Pedidos</h1><div id="listaPed" class="card">Nenhum pedido recebido.</div></div>
+
+<!-- CUPONS CORRIGIDO - AGORA FUNCIONA -->
+<div id="p-cup" class="hide">
+<div class="topBar"><div><p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p><h1 style="font-family:Playfair Display;font-size:32px">Cupons</h1></div><button class="btnDark" onclick="abrirModalCup()">+ NOVO CUPOM</button></div>
+<div class="card">
+<div class="tabelaHeader"><span>Código</span><span>Tipo</span><span>Valor</span><span>Usos</span><span>Status</span></div>
+<div id="listaCupom" style="margin-top:10px">Nenhum cupom cadastrado</div>
+</div>
+</div>
+
+<!-- CONFIGURAÇÕES IGUAL SUA FOTO AGORA -->
+<div id="p-conf" class="hide">
+<p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p>
+<h1 style="font-family:Playfair Display;font-size:32px">Configurações</h1>
+<div class="card">
+<h3 style="font-family:Playfair Display;margin-bottom:14px">Configurações da loja</h3>
+<label>Nome da loja</label><input id="c-nome" value="BONITAS">
+<label>WhatsApp com DDI e DDD</label><input id="c-zap" value="558399923260">
+<label>Instagram</label><input id="c-insta" value="@bonitas_storemodafeminina">
+<label>Endereço</label><input id="c-end" value="João Pessoa - PB">
+<label>Taxa de entrega (R$)</label><input id="c-taxa" value="10.00">
+<label>Limite de estoque baixo</label><input id="c-limite" value="3">
+<label>Horário de funcionamento</label><input id="c-horario" value="Segunda a sábado, 9h às 18h">
+<label>Pedido mínimo (R$)</label><input id="c-min" value="0.00">
+
+<h3 style="font-family:Playfair Display;margin:26px 0 14px">PIX da loja</h3>
+<label>Chave PIX</label><input id="c-pix" value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3">
+<label>Nome do recebedor</label><input id="c-pixNome" value="BONITAS">
+<label>Cidade do recebedor</label><input id="c-pixCid" value="JOAO PESSOA">
+
+<button class="btnPink" onclick="salvarConf()">SALVAR CONFIGURAÇÕES</button>
+<p style="font-size:11px;color:#999;margin-top:10px">Confira a chave PIX antes de publicar. O QR Code terá o valor e o número de cada pedido. O WhatsApp deve ser informado somente com números.</p>
+</div>
+</div>
 </main>
 
-<!-- MODAL NOVO PRODUTO IGUAL SUA FOTO -->
+<!-- MODAL PRODUTO -->
 <div id="modalProd" class="modal hide">
 <div class="formCard">
 <h2>Novo produto</h2>
-<div class="grid2">
-<div><label>Nome *</label><input id="n-nome" placeholder="Ex: Vestido Rosa"></div>
-<div><label>Categoria *</label><select id="n-cat"><option>Cropped Tops</option><option>Vestidos</option><option>Blusas</option><option>Conjuntos</option></select></div>
-<div><label>Preço (R$) *</label><input id="n-preco" type="number" placeholder="59.90"></div>
-<div><label>Preço antigo (R$)</label><input id="n-precoAntigo" type="number" placeholder="99.90"></div>
-</div>
-<label>Descrição</label><textarea id="n-desc" placeholder="Descrição do produto..."></textarea>
+<div class="grid2"><div><label>Nome *</label><input id="n-nome"></div><div><label>Categoria *</label><select id="n-cat"><option>Cropped Tops</option><option>Vestidos</option><option>Blusas</option><option>Conjuntos</option></select></div>
+<div><label>Preço (R$) *</label><input id="n-preco" type="number"></div><div><label>Preço antigo (R$)</label><input id="n-precoAnt"></div></div>
+<label>Descrição</label><textarea id="n-desc"></textarea>
 <label>Cores, separadas por vírgula *</label><input id="n-cores" value="Rosa, Branco" oninput="gerarEstoque()">
-<label>URLs de imagens, uma por linha</label><textarea id="n-urls" placeholder="https://...&#10;https://..."></textarea>
-<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label>
-<div style="margin-top:8px"><input type="file" id="n-files" accept="image/*" multiple><small style="color:#999" id="fileInfo">Nenhum arquivo escolhido</small></div>
-
-<div class="checks">
-<label><input type="checkbox" id="n-destaque"> Destaque</label>
-<label><input type="checkbox" id="n-novidade"> Novidade</label>
-<label><input type="checkbox" id="n-ativo" checked> Produto ativo</label>
+<label>URLs de imagens, uma por linha</label><textarea id="n-urls"></textarea>
+<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label><input type="file" id="n-files" accept="image/*" multiple>
+<div style="display:flex;gap:18px;margin-top:14px"><label><input type="checkbox"> Destaque</label><label><input type="checkbox"> Novidade</label><label><input type="checkbox" checked> Produto ativo</label></div>
+<div style="margin-top:18px"><h3 style="font-size:16px">Estoque por tamanho e cor</h3><div id="estoqueGrid" class="estoqueGrid"></div></div>
+<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px"><button class="btnGhost" onclick="fecharModalProd()">Cancelar</button><button class="btnPink" style="width:auto" onclick="salvarProdutoFinal()">SALVAR PRODUTO</button></div>
+</div>
 </div>
 
-<div class="estoque">
-<h3>Estoque por tamanho e cor</h3>
-<div id="estoqueGrid" class="estoqueGrid"></div>
-</div>
-
-<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
-<button class="btnGhost" onclick="fecharModal()">Cancelar</button>
-<button class="btnPink" onclick="salvarProdutoFinal()">SALVAR PRODUTO</button>
-</div>
+<!-- MODAL CUPOM NOVO -->
+<div id="modalCup" class="modal hide">
+<div class="formCard" style="max-width:400px">
+<h2>Novo Cupom</h2>
+<label>Código do cupom *</label><input id="cupCod" placeholder="BONITAS10">
+<label>Tipo</label><select id="cupTipo"><option>Porcentagem</option><option>Valor fixo</option></select>
+<label>Valor *</label><input id="cupVal" type="number" value="10" placeholder="10">
+<label>Usos máximos</label><input id="cupUsos" type="number" value="100">
+<button class="btnPink" onclick="salvarCupom()">CRIAR CUPOM</button>
+<button class="btnGhost" style="width:100%" onclick="fecharModalCup()">Cancelar</button>
 </div>
 </div>
 
 <script>
-const SENHA='09282326';
-const TAMANHOS=['PP','P','M','G','GG'];
+const SENHA='09282326';const TAMANHOS=['PP','P','M','G','GG'];
 function checkLogin(){if(localStorage.getItem('bonitas_log')==='1')document.getElementById('login').style.display='none'}
 function entrar(){if(document.getElementById('senha').value===SENHA){localStorage.setItem('bonitas_log','1');document.getElementById('login').style.display='none';showPage('prod')}else document.getElementById('erro').style.display='block'}
 checkLogin();
-function showPage(p){['geral','prod','ped','cup','conf'].forEach(x=>{document.getElementById('p-'+x).classList.add('hide');document.getElementById('m-'+x).classList.remove('ativo')});document.getElementById('p-'+p).classList.remove('hide');document.getElementById('m-'+p).classList.add('ativo')}
-function abrirModal(){document.getElementById('modalProd').classList.remove('hide');gerarEstoque()}
-function fecharModal(){document.getElementById('modalProd').classList.add('hide')}
-
-function gerarEstoque(){
- let cores=document.getElementById('n-cores').value.split(',').map(c=>c.trim()).filter(c=>c);
- let grid=document.getElementById('estoqueGrid');
- let html='';
- TAMANHOS.forEach(t=>{
-  cores.forEach(c=>{
-   html+=`<div><label>${t} / ${c}</label><input type="number" id="est_${t}_${c}" value="0" min="0"></div>`;
-  });
- });
- grid.innerHTML=html||'<small style="color:#999">Digite cores: Rosa, Branco</small>';
-}
-
-document.getElementById('n-files').addEventListener('change',e=>{
- document.getElementById('fileInfo').innerText=e.target.files.length?e.target.files.length+' arquivo(s) escolhido(s)':'Nenhum arquivo escolhido';
-});
-
-function salvarProdutoFinal(){
- let nome=document.getElementById('n-nome').value;
- if(!nome)return alert('Digite o Nome *');
- let cores=document.getElementById('n-cores').value;
- if(!cores)return alert('Digite as Cores *');
- // pega estoque
- let estoque={};
- TAMANHOS.forEach(t=>{
-  cores.split(',').forEach(c=>{
-   let cor=c.trim(); if(!cor)return;
-   let v=document.getElementById(`est_${t}_${cor}`)?.value||0;
-   estoque[`${t}/${cor}`]=Number(v);
-  });
- });
- let fotosUrl=document.getElementById('n-urls').value.split('\n').filter(u=>u.trim());
- // pega fotos enviadas como base64 (primeira)
- let fileInput=document.getElementById('n-files');
- let fotoPrincipal=fotosUrl[0]||'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600';
-
- let produto={
-  id:Date.now(),
-  nome,
-  cat:document.getElementById('n-cat').value,
-  preco:document.getElementById('n-preco').value||59.9,
-  precoAntigo:document.getElementById('n-precoAntigo').value||'',
-  desc:document.getElementById('n-desc').value||'',
-  cores:cores,
-  fotos:fotosUrl,
-  foto:fotoPrincipal,
-  destaque:document.getElementById('n-destaque').checked,
-  novidade:document.getElementById('n-novidade').checked,
-  ativo:document.getElementById('n-ativo').checked,
-  estoque:estoque,
-  tag:document.getElementById('n-novidade').checked?'NOVIDADE':(document.getElementById('n-destaque').checked?'DESTAQUE':'NOVO')
- };
-
- // Se tem arquivo, converte para base64
- if(fileInput.files.length){
-   let reader=new FileReader();
-   reader.onload=e=>{
-     produto.foto=e.target.result;
-     finalizarSalvamento(produto);
-   };
-   reader.readAsDataURL(fileInput.files[0]);
- }else{
-   finalizarSalvamento(produto);
- }
-}
-
-function finalizarSalvamento(prod){
- let lista=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
- lista.push(prod);
- localStorage.setItem('bonitas_produtos',JSON.stringify(lista));
- alert('✅ Produto salvo com estoque! PP/Rosa etc.');
- fecharModal();
- listarProdutos();
-}
-
-function listarProdutos(){
- let lista=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
- let div=document.getElementById('listaProd');
- if(!lista.length){div.innerHTML='Nenhum produto ainda';return}
- div.innerHTML=lista.map((p,i)=>`
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee">
-   <div style="display:flex;align-items:center;gap:10px">
-    <img src="${p.foto}" style="width:48px;height:48px;object-fit:cover;border-radius:10px">
-    <div><b>${p.nome}</b><br><small>${p.cat} • R$ ${p.preco} • ${p.cores} • Estoque: ${Object.values(p.estoque||{}).reduce((a,b)=>a+b,0)} un.</small></div>
-   </div>
-   <button onclick="remProd(${i})" style="color:red;background:none;border:none;cursor:pointer">🗑️</button>
-  </div>
- `).join('');
-}
-function remProd(i){let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');l.splice(i,1);localStorage.setItem('bonitas_produtos',JSON.stringify(l));listarProdutos()}
-showPage('prod');listarProdutos();gerarEstoque();
+function showPage(p){['geral','prod','ped','cup','conf'].forEach(x=>{document.getElementById('p-'+x).classList.add('hide');document.getElementById('m-'+x).classList.remove('ativo')});document.getElementById('p-'+p).classList.remove('hide');document.getElementById('m-'+p).classList.add('ativo');if(p==='prod')listarProdutos();if(p==='cup')listarCupons();if(p==='geral')atualizaGeral()}
+function abrirModalProd(){document.getElementById('modalProd').classList.remove('hide');gerarEstoque()}
+function fecharModalProd(){document.getElementById('modalProd').classList.add('hide')}
+function abrirModalCup(){document.getElementById('modalCup').classList.remove('hide')}
+function fecharModalCup(){document.getElementById('modalCup').classList.add('hide')}
+function gerarEstoque(){let cores=document.getElementById('n-cores').value.split(',').map(c=>c.trim()).filter(c=>c);let grid=document.getElementById('estoqueGrid');let html='';TAMANHOS.forEach(t=>{cores.forEach(c=>{html+=`<div><label>${t} / ${c}</label><input type="number" id="est_${t}_${c}" value="0"></div>`})});grid.innerHTML=html}
+function salvarProdutoFinal(){let nome=document.getElementById('n-nome').value;if(!nome)return alert('Digite Nome');let cores=document.getElementById('n-cores').value;let estoque={};TAMANHOS.forEach(t=>{cores.split(',').forEach(c=>{let cor=c.trim();if(!cor)return;let v=document.getElementById(`est_${t}_${cor}`)?.value||0;estoque[`${t}/${cor}`]=Number(v)})});let foto=document.getElementById('n-urls').value.split('\n')[0]||'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600';let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||59.9,foto,cores,estoque,tag:'NOVO'};let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');l.push(prod);localStorage.setItem('bonitas_produtos',JSON.stringify(l));alert('✅ Produto salvo!');fecharModalProd();listarProdutos()}
+function listarProdutos(){let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eee"><span><img src="${p.foto}" style="width:40px;height:40px;border-radius:8px;vertical-align:middle;margin-right:8px">${p.nome} - R$ ${p.preco}</span><button onclick="let a=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');a.splice(${i},1);localStorage.setItem('bonitas_produtos',JSON.stringify(a));listarProdutos()" style="color:red;background:none;border:none;cursor:pointer">Excluir</button></div>`).join(''):'Nenhum produto. Clique em + Novo produto'}
+function salvarCupom(){let cod=document.getElementById('cupCod').value;if(!cod)return alert('Digite código');let l=JSON.parse(localStorage.getItem('bonitas_cupons')||'[]');l.push({codigo:cod,tipo:document.getElementById('cupTipo').value,valor:document.getElementById('cupVal').value,usos:0,limite:document.getElementById('cupUsos').value,status:'Ativo'});localStorage.setItem('bonitas_cupons',JSON.stringify(l));alert('Cupom '+cod+' criado!');fecharModalCup();listarCupons()}
+function listarCupons(){let l=JSON.parse(localStorage.getItem('bonitas_cupons')||'[]');document.getElementById('listaCupom').innerHTML=l.length?l.map((c,i)=>`<div style="display:grid;grid-template-columns:1.4fr.6fr.6fr.6fr.8fr;padding:12px 0;border-bottom:1px solid #eee;font-size:13px"><b>${c.codigo}</b><span>${c.tipo}</span><span>${c.valor}%</span><span>${c.usos}/${c.limite}</span><span style="color:green">${c.status} <button onclick="let a=JSON.parse(localStorage.getItem('bonitas_cupons')||'[]');a.splice(${i},1);localStorage.setItem('bonitas_cupons',JSON.stringify(a));listarCupons()" style="color:red;background:none;border:none;margin-left:6px">x</button></span></div>`).join(''):'Nenhum cupom cadastrado. Clique em + NOVO CUPOM'}
+function atualizaGeral(){let peds=JSON.parse(localStorage.getItem('bonitas_pedidos')||'[]');let total=peds.reduce((a,b)=>a+Number(b.total||0),0);document.getElementById('v-total').innerText='R$ '+total.toFixed(2);document.getElementById('v-ped').innerText=peds.length+' pedidos';document.getElementById('v-prod').innerText=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]').length}
+function salvarConf(){let conf={nome:document.getElementById('c-nome').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,limite:document.getElementById('c-limite').value,horario:document.getElementById('c-horario').value,min:document.getElementById('c-min').value,pix:document.getElementById('c-pix').value};localStorage.setItem('bonitas_conf',JSON.stringify(conf));alert('✅ Configurações salvas igual sua foto!')}
+showPage('prod');listarProdutos();gerarEstoque();listarCupons();
 </script></body></html>
