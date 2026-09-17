@@ -1,150 +1,196 @@
+
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BONITAS | Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;font-family:Inter}
 body{background:#fff8fb;display:flex;min-height:100vh}
-/* LOGIN CORRIGIDO - FUNDO SÓLIDO, NÃO TRANSPARENTE */
-#login{position:fixed;inset:0;background:#fff5f7;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
-#loginBox{background:#fff;padding:36px;border-radius:20px;width:100%;max-width:380px;box-shadow:0 20px 60px #0002;text-align:center;border:1px solid #f5d6e0}
-#loginBox h1{font-family:Playfair Display;font-size:28px}
-#loginBox input{width:100%;padding:13px;border:1px solid #f0c6d3;border-radius:12px;margin-top:10px}
-#loginBox button{background:#e84393;color:#fff;border:none;padding:13px;border-radius:12px;width:100%;font-weight:700;margin-top:16px;cursor:pointer}
-aside{width:260px;background:#1c1218;min-height:100vh;padding:22px;position:sticky;top:0;display:flex;flex-direction:column;justify-content:space-between}
+#login{position:fixed;inset:0;background:#fff5f7;z-index:99999;display:flex;align-items:center;justify-content:center}
+#loginBox{background:#fff;padding:32px;border-radius:20px;width:100%;max-width:380px;box-shadow:0 20px 60px #0002;text-align:center;border:1px solid #f5d6e0}
+#loginBox input{width:100%;padding:12px;border:1px solid #f0c6d3;border-radius:10px;margin-top:8px}
+aside{width:250px;background:#1c1218;min-height:100vh;padding:20px;position:sticky;top:0}
 aside h2{color:#ff5eb0;letter-spacing:5px;font-family:Playfair Display}
-aside nav a{display:block;color:#c49fb0;padding:11px 12px;border-radius:10px;margin:5px 0;text-decoration:none;font-size:14px;cursor:pointer}
+aside nav a{display:block;color:#c49fb0;padding:11px 12px;border-radius:10px;margin:5px 0;text-decoration:none;cursor:pointer}
 aside nav a.ativo{background:#2d1e27;color:#fff;font-weight:700}
-main{flex:1;padding:28px;background:#fff8fb;min-height:100vh}
-.card{background:#fff;border:1px solid #f6e1e8;border-radius:16px;padding:20px;margin-top:16px;box-shadow:0 4px 10px #0001}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
-.grid4 .card h2{color:#e84393;font-size:26px}
-input,select,textarea{width:100%;padding:11px;border:1px solid #f0c6d3;border-radius:10px;margin-top:6px;background:#fff}
-label{font-size:11px;color:#888;display:block;margin-top:14px;letter-spacing:1px;text-transform:uppercase}
-.btnPink{background:#e84393;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;font-weight:700;cursor:pointer}
-.btnDark{background:#111;color:#fff;border:none;padding:11px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+main{flex:1;padding:24px;background:#fff8fb}
+.modal{position:fixed;inset:0;background:#0006;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.formCard{background:#fff;border-radius:18px;padding:24px;width:100%;max-width:700px;max-height:90vh;overflow:auto;box-shadow:0 20px 60px #0003}
+.formCard h2{font-family:Playfair Display;font-size:22px;margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{font-size:12px;color:#666;display:block;margin-top:14px}
+input,textarea,select{width:100%;padding:10px;border:1px solid #e5c3ce;border-radius:10px;margin-top:6px;background:#fff9fb}
+textarea{height:70px}
+.checks{display:flex;gap:18px;margin-top:14px}
+.estoque{margin-top:18px}
+.estoque h3{font-size:16px;margin-bottom:10px}
+.estoqueGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.btnPink{background:#e84393;color:#fff;border:none;padding:12px 22px;border-radius:10px;font-weight:700;cursor:pointer}
+.btnDark{background:#111;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+.btnGhost{background:none;border:none;padding:10px 16px;cursor:pointer;color:#666}
 .hide{display:none}
-@media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}aside{width:80px}aside span.txt{display:none}}
+.card{background:#fff;border:1px solid #f6e1e8;border-radius:14px;padding:18px;margin-top:14px}
 </style></head><body>
 
 <div id="login"><div id="loginBox">
 <p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p>
-<h1 style="font-family:Playfair Display;margin-top:6px">Bem-vinda de volta</h1>
-<p style="color:#999;font-size:13px;margin:8px 0 16px">Entre para administrar sua loja.</p>
-<div style="text-align:left"><label>E-mail</label><input id="email" placeholder="admin@gmail.com" value="admin@gmail.com"></div>
-<div style="text-align:left"><label>Senha</label><input id="senha" type="password" placeholder="Digite sua senha"></div>
-<button onclick="entrar()">ENTRAR NO PAINEL</button>
-<p id="erro" style="color:#e84393;display:none;margin-top:10px;font-size:13px">Senha incorreta! A senha é 09282326</p>
+<h1 style="font-family:Playfair Display;font-size:26px;margin-top:6px">Bem-vinda de volta</h1>
+<div style="text-align:left;margin-top:14px"><label>E-mail</label><input id="email" value="admin@gmail.com"></div>
+<div style="text-align:left"><label>Senha</label><input id="senha" type="password" placeholder="••••••••"></div>
+<button onclick="entrar()" style="background:#e84393;color:#fff;border:none;padding:13px;border-radius:12px;width:100%;font-weight:700;margin-top:14px;cursor:pointer">ENTRAR NO PAINEL</button>
+<p id="erro" style="color:#e84393;display:none;margin-top:8px;font-size:13px">Senha incorreta!</p>
 </div></div>
 
-<aside><div><h2>BONITAS</h2>
-<nav style="margin-top:24px">
-<a id="m-geral" class="ativo" onclick="showPage('geral')">🏠 <span class="txt">Visão geral</span></a>
-<a id="m-prod" onclick="showPage('prod')">👚 <span class="txt">Produtos</span></a>
-<a id="m-ped" onclick="showPage('ped')">📦 <span class="txt">Pedidos</span></a>
-<a id="m-cup" onclick="showPage('cup')">🎟️ <span class="txt">Cupons</span></a>
-<a id="m-conf" onclick="showPage('conf')">⚙️ <span class="txt">Configurações</span></a>
-</nav></div><a onclick="sair()" style="color:#c49fb0;text-decoration:none;font-size:13px;cursor:pointer">↩ Sair</a></aside>
+<aside><h2>BONITAS</h2><nav style="margin-top:24px">
+<a id="m-geral" onclick="showPage('geral')">Visão geral</a>
+<a id="m-prod" class="ativo" onclick="showPage('prod')">Produtos</a>
+<a id="m-ped" onclick="showPage('ped')">Pedidos</a>
+<a id="m-cup" onclick="showPage('cup')">Cupons</a>
+<a id="m-conf" onclick="showPage('conf')">Configurações</a>
+</nav><a onclick="localStorage.removeItem('bonitas_log');location.reload()" style="color:#8a6a78;text-decoration:none;font-size:13px;cursor:pointer;display:block;margin-top:30px">↩ Sair</a></aside>
 
 <main>
-<!-- VISÃO GERAL BONITA COM GERENCIAMENTO -->
-<div id="p-geral">
-<p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:700">PAINEL ADMINISTRATIVO</p>
-<h1 style="font-family:Playfair Display;font-size:32px">Visão geral</h1>
-<div class="grid4">
-<div class="card"><small>Total Adquirido</small><h2 id="v-total">R$ 0,00</h2><small id="v-ped">0 pedidos</small></div>
-<div class="card"><small>Gastos Produtos</small><h2 id="v-gasto">R$ 0,00</h2><small>Custo estimado</small></div>
-<div class="card"><small>Lucro Líquido</small><h2 id="v-lucro" style="color:#0a7a42">R$ 0,00</h2><small>Lucro</small></div>
-<div class="card"><small>Produtos</small><h2 id="v-prod">0</h2><small>Ativos na loja</small></div>
+<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display">Visão geral</h1><div id="geralCards" class="card">Total vendido: R$ 0,00</div></div>
+<div id="p-prod">
+<div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font-family:Playfair Display">Produtos</h1><button class="btnDark" onclick="abrirModal()">+ Novo produto</button></div>
+<div id="listaProd" class="card">Nenhum produto ainda</div>
 </div>
-<div class="card"><h3>Últimos pedidos</h3><div id="listaGeral" style="margin-top:10px">Nenhum pedido ainda</div></div>
-</div>
-
-<!-- PRODUTOS CORRIGIDO - AGORA APARECE -->
-<div id="p-prod" class="hide">
-<div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font-family:Playfair Display">Produtos</h1><button class="btnDark" onclick="document.getElementById('formProd').classList.toggle('hide')">+ Novo produto</button></div>
-<div id="formProd" class="card hide">
-<h3>Novo produto</h3>
-<label>Nome do produto</label><input id="n-nome" placeholder="Ex: Cropped Rosa Candy">
-<label>Categoria</label><select id="n-cat"><option>Cropped Tops</option><option>Vestidos</option><option>Blusas</option><option>Conjuntos</option></select>
-<label>Preço R$</label><input id="n-preco" type="number" placeholder="59.90">
-<label>Foto URL</label><input id="n-foto" placeholder="https://... (ou deixa vazio)">
-<label>Cor</label><input id="n-cor" placeholder="Pink / Branco">
-<button class="btnPink" style="margin-top:14px" onclick="salvarProduto()">Salvar produto - Aparece no site</button>
-</div>
-<div id="listaProd" class="card">Nenhum produto</div>
-</div>
-
-<!-- PEDIDOS -->
-<div id="p-ped" class="hide"><h1 style="font-family:Playfair Display">Pedidos</h1><div id="listaPed" class="card">Nenhum pedido recebido.</div></div>
-
-<!-- CUPONS CORRIGIDO - AGORA CRIA -->
-<div id="p-cup" class="hide">
-<div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font-family:Playfair Display">Cupons</h1><button class="btnDark" onclick="document.getElementById('formCup').classList.toggle('hide')">+ NOVO CUPOM</button></div>
-<div id="formCup" class="card hide">
-<label>Código do cupom</label><input id="cupCod" placeholder="BONITAS10">
-<label>Desconto %</label><input id="cupVal" type="number" placeholder="10" value="10">
-<button class="btnPink" style="margin-top:10px" onclick="salvarCupom()">Criar cupom</button>
-</div>
-<div class="card"><div style="display:grid;grid-template-columns:1.5fr .7fr .7fr .7fr .7fr;font-weight:700;color:#999;font-size:12px;padding-bottom:10px;border-bottom:1px solid #f3dde3"><span>Código</span><span>Tipo</span><span>Valor</span><span>Usos</span><span>Status</span></div><div id="listaCupom" style="margin-top:10px">Nenhum cupom</div></div>
-</div>
-
-<!-- CONFIGURAÇÕES -->
-<div id="p-conf" class="hide"><h1 style="font-family:Playfair Display">Configurações</h1><div class="card"><label>Nome loja</label><input id="c-nome" value="BONITAS"><label>WhatsApp</label><input id="c-zap" value="558399923260"><label>Taxa entrega R$</label><input id="c-taxa" value="10.00"><label>Chave PIX</label><input value="66b5d5fe-b9af-4d26-9f27-2467300dc6e3"><button class="btnPink" style="margin-top:16px" onclick="salvarConf()">SALVAR CONFIGURAÇÕES</button></div></div>
-
+<div id="p-ped" class="hide"><h1>Pedidos</h1><div class="card">Nenhum pedido</div></div>
+<div id="p-cup" class="hide"><h1>Cupons</h1><div class="card">Nenhum cupom</div></div>
+<div id="p-conf" class="hide"><h1>Configurações</h1><div class="card"><label>WhatsApp</label><input id="c-zap" value="558399923260"><label>Taxa</label><input id="c-taxa" value="10.00"><button class="btnPink" style="margin-top:12px" onclick="alert('Salvo')">Salvar</button></div></div>
 </main>
+
+<!-- MODAL NOVO PRODUTO IGUAL SUA FOTO -->
+<div id="modalProd" class="modal hide">
+<div class="formCard">
+<h2>Novo produto</h2>
+<div class="grid2">
+<div><label>Nome *</label><input id="n-nome" placeholder="Ex: Vestido Rosa"></div>
+<div><label>Categoria *</label><select id="n-cat"><option>Cropped Tops</option><option>Vestidos</option><option>Blusas</option><option>Conjuntos</option></select></div>
+<div><label>Preço (R$) *</label><input id="n-preco" type="number" placeholder="59.90"></div>
+<div><label>Preço antigo (R$)</label><input id="n-precoAntigo" type="number" placeholder="99.90"></div>
+</div>
+<label>Descrição</label><textarea id="n-desc" placeholder="Descrição do produto..."></textarea>
+<label>Cores, separadas por vírgula *</label><input id="n-cores" value="Rosa, Branco" oninput="gerarEstoque()">
+<label>URLs de imagens, uma por linha</label><textarea id="n-urls" placeholder="https://...&#10;https://..."></textarea>
+<label>Enviar fotos (JPG, PNG ou WebP, até 5 MB)</label>
+<div style="margin-top:8px"><input type="file" id="n-files" accept="image/*" multiple><small style="color:#999" id="fileInfo">Nenhum arquivo escolhido</small></div>
+
+<div class="checks">
+<label><input type="checkbox" id="n-destaque"> Destaque</label>
+<label><input type="checkbox" id="n-novidade"> Novidade</label>
+<label><input type="checkbox" id="n-ativo" checked> Produto ativo</label>
+</div>
+
+<div class="estoque">
+<h3>Estoque por tamanho e cor</h3>
+<div id="estoqueGrid" class="estoqueGrid"></div>
+</div>
+
+<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+<button class="btnGhost" onclick="fecharModal()">Cancelar</button>
+<button class="btnPink" onclick="salvarProdutoFinal()">SALVAR PRODUTO</button>
+</div>
+</div>
+</div>
+
 <script>
 const SENHA='09282326';
-function checkLogin(){if(localStorage.getItem('bonitas_log')==='1'){document.getElementById('login').style.display='none'}else{document.getElementById('login').style.display='flex'}}
-function entrar(){if(document.getElementById('senha').value===SENHA){localStorage.setItem('bonitas_log','1');checkLogin();showPage('geral');atualizaGeral()}else{document.getElementById('erro').style.display='block'}}
-function sair(){localStorage.removeItem('bonitas_log');location.reload()}
+const TAMANHOS=['PP','P','M','G','GG'];
+function checkLogin(){if(localStorage.getItem('bonitas_log')==='1')document.getElementById('login').style.display='none'}
+function entrar(){if(document.getElementById('senha').value===SENHA){localStorage.setItem('bonitas_log','1');document.getElementById('login').style.display='none';showPage('prod')}else document.getElementById('erro').style.display='block'}
 checkLogin();
+function showPage(p){['geral','prod','ped','cup','conf'].forEach(x=>{document.getElementById('p-'+x).classList.add('hide');document.getElementById('m-'+x).classList.remove('ativo')});document.getElementById('p-'+p).classList.remove('hide');document.getElementById('m-'+p).classList.add('ativo')}
+function abrirModal(){document.getElementById('modalProd').classList.remove('hide');gerarEstoque()}
+function fecharModal(){document.getElementById('modalProd').classList.add('hide')}
 
-function showPage(p){
- ['geral','prod','ped','cup','conf'].forEach(x=>{
-   document.getElementById('p-'+x).classList.add('hide');
-   document.getElementById('m-'+x).classList.remove('ativo');
+function gerarEstoque(){
+ let cores=document.getElementById('n-cores').value.split(',').map(c=>c.trim()).filter(c=>c);
+ let grid=document.getElementById('estoqueGrid');
+ let html='';
+ TAMANHOS.forEach(t=>{
+  cores.forEach(c=>{
+   html+=`<div><label>${t} / ${c}</label><input type="number" id="est_${t}_${c}" value="0" min="0"></div>`;
+  });
  });
- document.getElementById('p-'+p).classList.remove('hide');
- document.getElementById('m-'+p).classList.add('ativo');
- if(p==='geral') atualizaGeral();
- if(p==='prod') listaProd();
- if(p==='ped') listaPed();
- if(p==='cup') listaCup();
+ grid.innerHTML=html||'<small style="color:#999">Digite cores: Rosa, Branco</small>';
 }
-function atualizaGeral(){
- let prods=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
- let peds=JSON.parse(localStorage.getItem('bonitas_pedidos')||'[]');
- let total=peds.reduce((a,b)=>a+Number(b.total||0),0);
- document.getElementById('v-total').innerText='R$ '+total.toFixed(2).replace('.',',');
- document.getElementById('v-ped').innerText=peds.length+' pedidos';
- document.getElementById('v-prod').innerText=prods.length;
- document.getElementById('v-gasto').innerText='R$ '+(prods.length*25).toFixed(2).replace('.',',');
- document.getElementById('v-lucro').innerText='R$ '+(total - prods.length*25).toFixed(2).replace('.',',');
- document.getElementById('listaGeral').innerHTML=peds.slice(-5).reverse().map(x=>`<div style="padding:8px 0;border-bottom:1px solid #f5d6e0">${x.itens} - <b>R$ ${x.total}</b> - ${x.data}</div>`).join('')||'Nenhum pedido ainda';
-}
-function salvarProduto(){
- let nome=document.getElementById('n-nome').value;if(!nome)return alert('Digite o nome');
- let p={nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||59.9,foto:document.getElementById('n-foto').value||'https://images.unsplash.com/photo-1550928431-ee0ec6db30d3?w=500',cor:document.getElementById('n-cor').value||'Pink',tag:'NOVO'};
- let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');l.push(p);localStorage.setItem('bonitas_produtos',JSON.stringify(l));
- alert('Produto salvo! Já aparece na loja');listaProd();document.getElementById('formProd').classList.add('hide');
-}
-function listaProd(){
- let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
- document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee"><span><img src="${p.foto}" style="width:36px;height:36px;object-fit:cover;border-radius:8px;vertical-align:middle;margin-right:8px">${p.nome} - R$ ${p.preco}</span><button onclick="remProd(${i})" style="color:red;background:none;border:none;cursor:pointer">Excluir</button></div>`).join(''):'Nenhum produto. Clique em + Novo produto';
-}
-function remProd(i){let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');l.splice(i,1);localStorage.setItem('bonitas_produtos',JSON.stringify(l));listaProd();atualizaGeral()}
-function listaPed(){let peds=JSON.parse(localStorage.getItem('bonitas_pedidos')||'[]');document.getElementById('listaPed').innerHTML=peds.length?peds.reverse().map(p=>`<div style="padding:10px 0;border-bottom:1px solid #eee">${p.data} - ${p.itens} - <b>R$ ${p.total}</b></div>`).join(''):'Nenhum pedido recebido.'}
-function salvarCupom(){
- let cod=document.getElementById('cupCod').value;if(!cod)return alert('Digite o código');
- let l=JSON.parse(localStorage.getItem('bonitas_cupons')||'[]');l.push({codigo:cod,valor:document.getElementById('cupVal').value+'%',usos:0,status:'Ativo'});
- localStorage.setItem('bonitas_cupons',JSON.stringify(l));alert('Cupom '+cod+' criado!');listaCup();document.getElementById('formCup').classList.add('hide');
-}
-function listaCup(){
- let l=JSON.parse(localStorage.getItem('bonitas_cupons')||'[]');
- document.getElementById('listaCupom').innerHTML=l.length?l.map((c,i)=>`<div style="display:grid;grid-template-columns:1.5fr .7fr .7fr .7fr .7fr;padding:10px 0;border-bottom:1px solid #eee"><span><b>${c.codigo}</b></span><span>Porc.</span><span>${c.valor}</span><span>${c.usos}</span><span style="color:green">${c.status} <button onclick="remCup(${i})" style="color:red;background:none;border:none">x</button></span></div>`).join(''):'Nenhum cupom cadastrado';
-}
-function remCup(i){let l=JSON.parse(localStorage.getItem('bonitas_cupons')||'[]');l.splice(i,1);localStorage.setItem('bonitas_cupons',JSON.stringify(l));listaCup()}
-function salvarConf(){localStorage.setItem('bonitas_conf',JSON.stringify({zap:document.getElementById('c-zap').value,taxa:document.getElementById('c-taxa').value,nome:document.getElementById('c-nome').value}));alert('✅ Configurações salvas!');}
 
-showPage('geral');listaProd();
+document.getElementById('n-files').addEventListener('change',e=>{
+ document.getElementById('fileInfo').innerText=e.target.files.length?e.target.files.length+' arquivo(s) escolhido(s)':'Nenhum arquivo escolhido';
+});
+
+function salvarProdutoFinal(){
+ let nome=document.getElementById('n-nome').value;
+ if(!nome)return alert('Digite o Nome *');
+ let cores=document.getElementById('n-cores').value;
+ if(!cores)return alert('Digite as Cores *');
+ // pega estoque
+ let estoque={};
+ TAMANHOS.forEach(t=>{
+  cores.split(',').forEach(c=>{
+   let cor=c.trim(); if(!cor)return;
+   let v=document.getElementById(`est_${t}_${cor}`)?.value||0;
+   estoque[`${t}/${cor}`]=Number(v);
+  });
+ });
+ let fotosUrl=document.getElementById('n-urls').value.split('\n').filter(u=>u.trim());
+ // pega fotos enviadas como base64 (primeira)
+ let fileInput=document.getElementById('n-files');
+ let fotoPrincipal=fotosUrl[0]||'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600';
+
+ let produto={
+  id:Date.now(),
+  nome,
+  cat:document.getElementById('n-cat').value,
+  preco:document.getElementById('n-preco').value||59.9,
+  precoAntigo:document.getElementById('n-precoAntigo').value||'',
+  desc:document.getElementById('n-desc').value||'',
+  cores:cores,
+  fotos:fotosUrl,
+  foto:fotoPrincipal,
+  destaque:document.getElementById('n-destaque').checked,
+  novidade:document.getElementById('n-novidade').checked,
+  ativo:document.getElementById('n-ativo').checked,
+  estoque:estoque,
+  tag:document.getElementById('n-novidade').checked?'NOVIDADE':(document.getElementById('n-destaque').checked?'DESTAQUE':'NOVO')
+ };
+
+ // Se tem arquivo, converte para base64
+ if(fileInput.files.length){
+   let reader=new FileReader();
+   reader.onload=e=>{
+     produto.foto=e.target.result;
+     finalizarSalvamento(produto);
+   };
+   reader.readAsDataURL(fileInput.files[0]);
+ }else{
+   finalizarSalvamento(produto);
+ }
+}
+
+function finalizarSalvamento(prod){
+ let lista=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
+ lista.push(prod);
+ localStorage.setItem('bonitas_produtos',JSON.stringify(lista));
+ alert('✅ Produto salvo com estoque! PP/Rosa etc.');
+ fecharModal();
+ listarProdutos();
+}
+
+function listarProdutos(){
+ let lista=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');
+ let div=document.getElementById('listaProd');
+ if(!lista.length){div.innerHTML='Nenhum produto ainda';return}
+ div.innerHTML=lista.map((p,i)=>`
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee">
+   <div style="display:flex;align-items:center;gap:10px">
+    <img src="${p.foto}" style="width:48px;height:48px;object-fit:cover;border-radius:10px">
+    <div><b>${p.nome}</b><br><small>${p.cat} • R$ ${p.preco} • ${p.cores} • Estoque: ${Object.values(p.estoque||{}).reduce((a,b)=>a+b,0)} un.</small></div>
+   </div>
+   <button onclick="remProd(${i})" style="color:red;background:none;border:none;cursor:pointer">🗑️</button>
+  </div>
+ `).join('');
+}
+function remProd(i){let l=JSON.parse(localStorage.getItem('bonitas_produtos')||'[]');l.splice(i,1);localStorage.setItem('bonitas_produtos',JSON.stringify(l));listarProdutos()}
+showPage('prod');listarProdutos();gerarEstoque();
 </script></body></html>
