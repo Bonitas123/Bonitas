@@ -21,8 +21,8 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .filtros{background:#fff;border-radius:22px;padding:20px;border:1px solid #f5d6e0;position:sticky;top:90px;height:fit-content}
 #grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .card{background:#fff;border-radius:22px;overflow:hidden;border:1px solid #f3d6e0;box-shadow:0 8px 24px #0001;cursor:pointer;display:flex;flex-direction:column}
-.card.imgBox{position:relative;background:#fff;width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.card.imgBox img{width:100%;height:100%;object-fit:contain;object-position:center top;background:#fff;display:block}
+.card.imgBox{position:relative;background:#fff;width:100%;height:380px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card.imgBox img{width:100%;height:100%;object-fit:cover;object-position:center top;background:#fff;display:block}
 .tag{position:absolute;top:12px;right:12px;background:#ffd1dc;color:#8a1740;font-size:10px;padding:6px 12px;border-radius:20px;font-weight:800}
 .tag2{position:absolute;top:12px;left:12px;background:#e84393;color:#fff;font-size:10px;padding:6px 12px;border-radius:20px;font-weight:800}
 .cardInfo{padding:14px 14px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto}
@@ -51,7 +51,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .vazio{grid-column:1/-1;text-align:center;padding:80px;background:#fff;border-radius:20px;border:1px dashed #e84393;color:#999}
 #cartBtn{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:15px 24px;border-radius:40px;font-weight:800;cursor:pointer;z-index:90;box-shadow:0 12px 30px #0004;display:flex;align-items:center;gap:8px}
 #whatsFloat{position:fixed;left:18px;bottom:18px;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px #25d36666;z-index:90;text-decoration:none;font-size:28px}
-@media(max-width:760px){header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}#hero{height:420px}#hero h1{font-size:46px}.layout{grid-template-columns:1fr;padding:14px;gap:14px}.filtros{position:relative;top:0}#grid{grid-template-columns:repeat(2,1fr);gap:10px}.card{border-radius:16px}.cardInfo{padding:10px}#sobreLoja{margin:30px auto}#sobreLoja.box{padding:32px 20px;border-radius:20px}#sobreLoja h2{font-size:32px}#carrinhoModal{width:100vw}.detalheCard{grid-template-columns:1fr;max-height:92dvh;overflow:auto}}
+@media(max-width:760px){header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}#hero{height:420px}#hero h1{font-size:46px}.layout{grid-template-columns:1fr;padding:14px;gap:14px}.filtros{position:relative;top:0}#grid{grid-template-columns:repeat(2,1fr);gap:10px}.card.imgBox{height:240px}.card{border-radius:16px}.cardInfo{padding:10px}#sobreLoja{margin:30px auto}#sobreLoja.box{padding:32px 20px;border-radius:20px}#sobreLoja h2{font-size:32px}#carrinhoModal{width:100vw}.detalheCard{grid-template-columns:1fr;max-height:92dvh;overflow:auto}}
 #checkoutModal{position:fixed;inset:0;background:#0008;backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 #checkoutModal.aberto{display:flex}
 .checkCard{background:#fff;border-radius:26px;max-width:480px;width:100%;padding:26px;max-height:92vh;overflow:auto}
@@ -70,16 +70,21 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 </div>
 <div id="sobreLoja"><div class="box"><div class="txt"><h2>Mais sobre a BONITAS</h2><p style="margin:16px 0;line-height:1.6;color:#5a2a3a">Moda feminina de João Pessoa - PB para todo Brasil.</p><p style="font-weight:800;color:#8a1740">✓ Envio rápido ✓ Troca fácil ✓ Atendimento no Whats</p></div></div></div>
 <div id="detalheModal" onclick="if(event.target===this) fecharDetalhe()"><div class="detalheCard"><img id="detImg" src=""><div style="padding:24px;overflow:auto"><span id="detCat" style="background:#ffe2ea;color:#e84393;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:800"></span><span id="detStatus" style="display:none;margin-left:6px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:800;color:#fff"></span><h1 id="detNome" style="font-family:Playfair Display;margin:14px 0 6px;color:#8a1740;font-size:32px"></h1><b id="detPreco" style="font-size:24px;color:#111"></b><div id="detEstoque" style="display:none;margin:8px 0;background:#fff5f7;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;color:#8a1740"></div><p style="color:#777;margin:12px 0">Tecido premium, não marca, veste super bem.</p><div id="selInfo">💖 Você escolheu: Tamanho <span id="selTamTxt">P</span> • Cor <span id="selCorTxt">-</span></div><b style="font-size:11px;letter-spacing:1px">TAMANHO</b><div id="detTams" style="display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap"></div><b style="font-size:11px;letter-spacing:1px">COR</b><div id="detCores" style="display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap"></div><button onclick="addDoDetalhe()" style="background:#e84393;color:#fff;width:100%;padding:18px;border:none;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;margin-top:8px">+ ADICIONAR AO CARRINHO</button></div></div></div>
+
 <div id="checkoutModal" onclick="if(event.target===this) fecharCheckout()"><div class="checkCard">
 <h2 style="font-family:Playfair Display;color:#8a1740">Seus dados para entrega 💖</h2>
 <label>Nome completo *</label><input id="ck-nome" placeholder="Ex: Maria Silva">
 <label>WhatsApp / Telefone *</label><input id="ck-tel" placeholder="Ex: 83999999999">
-<label>Endereço completo *</label><input id="ck-end" placeholder="Rua, número, bairro, cidade">
+<label>CEP *</label><div style="display:flex;gap:8px"><input id="ck-cep" placeholder="58000-000" maxlength="9" onblur="buscarCep()"><button type="button" onclick="buscarCep()" style="background:#e84393;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">Buscar</button></div>
+<label>Endereço *</label><input id="ck-end" placeholder="Rua, avenida">
+<label style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><span>Número <input id="ck-num" placeholder="123"></span><span>Bairro <input id="ck-bairro" placeholder="Bairro"></span></label>
+<label>Cidade / Estado</label><input id="ck-cidade" placeholder="João Pessoa - PB">
 <div id="ck-resumo" style="background:linear-gradient(135deg,rgba(255,209,220,.5),rgba(255,240,245,.7));backdrop-filter:blur(10px);padding:12px;border-radius:14px;margin:12px 0;font-size:13px;border:1px solid rgba(232,67,147,.2)"></div>
-<button onclick="enviarPedidoSite()" style="background:#111;color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;margin-bottom:10px">✅ CONTINUAR PELO SITE</button>
-<button onclick="enviarPedidoZap()" style="background:linear-gradient(135deg,#25d366,#1ebe5d);color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;box-shadow:0 8px 20px #25d36644">💬 CONTINUAR PELO WHATSAPP</button>
+<button onclick="enviarPedidoSite()" style="background:#111;color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;margin-bottom:10px">✅ FINALIZAR PELO SITE</button>
+<button onclick="enviarPedidoZap()" style="background:linear-gradient(135deg,#25d366,#1ebe5d);color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;box-shadow:0 8px 20px #25d36644">💬 FINALIZAR PELO WHATSAPP</button>
 <button onclick="fecharCheckout()" style="background:none;border:none;width:100%;padding:10px;margin-top:6px;color:#999">Voltar</button>
 </div></div>
+
 <div id="carrinhoModal">
 <div style="padding:20px 22px;display:flex;justify-content:space-between;border-bottom:1px solid #eee;flex-shrink:0"><h2 style="font-family:Playfair Display;color:#8a1740">Seu carrinho</h2><button onclick="fecharCarrinho()" style="background:none;border:none;font-size:22px;cursor:pointer">✕</button></div>
 <div class="carrinhoMeio"><div id="itensCarrinho"></div><div id="pagamentos" style="display:none;padding:0 20px 12px"><h4 style="margin:12px 0 8px">Forma de pagamento</h4><div class="payOpt" onclick="selPay(this,'dinheiro')"><span>💵 Dinheiro</span><small>Whats</small></div><div class="payOpt" onclick="selPay(this,'credito')"><span>💳 Crédito</span><small>1x 2x 3x</small></div><div class="payOpt" onclick="selPay(this,'debito')"><span>💳 Débito</span><small>À vista</small></div><div class="payOpt" onclick="selPay(this,'pix')"><span>🔷 PIX</span><small>QR Code</small></div><div id="parcelaBox" style="display:none;margin-top:12px"><b style="font-size:12px">ESCOLHA AS PARCELAS</b><div class="parcelas"><button onclick="setParc(1)" id="parc1">1x</button><button onclick="setParc(2)" id="parc2">2x</button><button onclick="setParc(3)" id="parc3" class="ativo">3x</button></div><div id="parcelaInfo" style="margin-top:10px;background:#fff5f7;padding:10px;border-radius:10px;text-align:center;font-size:13px"></div></div><div id="pixArea" style="display:none;text-align:center;margin-top:12px;background:#f9f9f9;padding:12px;border-radius:14px"><img id="pixQr" style="width:200px;height:200px;border-radius:12px"><p style="font-size:11px;word-break:break-all;margin-top:8px">Chave: <span id="pixChaveTxt"></span></p><b id="pixTotal" style="display:block;margin-top:6px"></b></div></div></div>
@@ -104,7 +109,7 @@ function addDoDetalhe(){add(prodSel);fecharDetalhe()}
 function add(p){let o=typeof p==='string'?JSON.parse(p):p;if(o.status=='ESGOTADO') return alert('Produto ESGOTADO');let cUsar=o.coresLista?(o.coresLista.find(x=>x.nome===corSel)||o.coresLista[0]):{nome:corSel,estoque:99,hex:'#e84393'};let ja=car.filter(x=>x.id===o.id&&x.cor===cUsar.nome).reduce((a,b)=>a+b.qtd,0);if(ja>=parseInt(cUsar.estoque)) return alert('Só temos '+cUsar.estoque+' da cor '+cUsar.nome+' em estoque!');let ex=car.find(x=>x.id===o.id&&x.tam===tamSel&&x.cor===cUsar.nome);if(ex)ex.qtd++;else car.push({...o,tam:tamSel,cor:cUsar.nome,corEstoque:cUsar.estoque,corHex:cUsar.hex,qtd:1});atualizarCarrinho();abrirCarrinho()}
 function abrirCarrinho(){document.getElementById('carrinhoModal').classList.add('aberto')}
 function fecharCarrinho(){document.getElementById('carrinhoModal').classList.remove('aberto')}
-function atualizarCarrinho(){document.getElementById('qtd').innerText=car.reduce((a,b)=>a+b.qtd,0);let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let taxa=Number(getConf().taxa||10);document.getElementById('subtotalCart').innerText='R$ '+sub.toFixed(2).replace('.',',');document.getElementById('tot').innerText=(sub+taxa).toFixed(2);let div=document.getElementById('itensCarrinho');if(!car.length){div.innerHTML='<p style="padding:50px;text-align:center;color:#999">Carrinho vazio</p>';return}div.innerHTML=car.map((p,i)=>`<div style="display:flex;gap:10px;padding:14px;border-bottom:1px solid #eee"><img src="${p.foto}" style="width:62px;height:62px;border-radius:12px;object-fit:contain;background:#fff"><div style="flex:1"><b style="font-size:12px">${p.nome}</b><br><small>${p.tam} • ${p.cor}</small><br><b>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</b><div style="display:flex;gap:8px;margin-top:6px"><button onclick="altQtd(${i},-1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">−</button><span>${p.qtd}</span><button onclick="altQtd(${i},1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">+</button></div></div><button onclick="remItem(${i})" style="background:none;border:none;color:#e84393;cursor:pointer">✕</button></div>`).join('');}
+function atualizarCarrinho(){document.getElementById('qtd').innerText=car.reduce((a,b)=>a+b.qtd,0);let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let taxa=Number(getConf().taxa||10);document.getElementById('subtotalCart').innerText='R$ '+sub.toFixed(2).replace('.',',');document.getElementById('tot').innerText=(sub+taxa).toFixed(2);let div=document.getElementById('itensCarrinho');if(!car.length){div.innerHTML='<p style="padding:50px;text-align:center;color:#999">Carrinho vazio</p>';return}div.innerHTML=car.map((p,i)=>`<div style="display:flex;gap:10px;padding:14px;border-bottom:1px solid #eee"><img src="${p.foto}" style="width:62px;height:62px;border-radius:12px;object-fit:cover;background:#fff"><div style="flex:1"><b style="font-size:12px">${p.nome}</b><br><small>${p.tam} • ${p.cor}</small><br><b>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</b><div style="display:flex;gap:8px;margin-top:6px"><button onclick="altQtd(${i},-1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">−</button><span>${p.qtd}</span><button onclick="altQtd(${i},1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">+</button></div></div><button onclick="remItem(${i})" style="background:none;border:none;color:#e84393;cursor:pointer">✕</button></div>`).join('');}
 function altQtd(i,d){let n=car[i].qtd+d;if(n<=0)car.splice(i,1);else{if(n>car[i].corEstoque) return alert('Limite estoque: '+car[i].corEstoque);car[i].qtd=n;}atualizarCarrinho()}
 function remItem(i){car.splice(i,1);atualizarCarrinho()}
 function mostrarPagamento(){if(!car.length)return alert('Carrinho vazio');document.getElementById('pagamentos').style.display='block';document.getElementById('btnIrPag').style.display='none';document.getElementById('btnFinal').style.display='block'}
@@ -114,8 +119,47 @@ function atualizarParcelas(){let conf=getConf();let total=car.reduce((a,b)=>a+Nu
 function finalizarPedido(){abrirCheckout();}
 function abrirCheckout(){if(!paySel)return alert('Escolha a forma de pagamento!');let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let total=sub+Number(conf.taxa||0);document.getElementById('ck-resumo').innerHTML=`💖 <b>Resumo:</b> ${car.reduce((a,b)=>a+b.qtd,0)} itens - R$ ${total.toFixed(2).replace('.',',')}<br><b>Pagamento:</b> ${paySel.toUpperCase()}`;document.getElementById('checkoutModal').classList.add('aberto');}
 function fecharCheckout(){document.getElementById('checkoutModal').classList.remove('aberto');}
-function pegarDados(){let nome=document.getElementById('ck-nome').value.trim();let tel=document.getElementById('ck-tel').value.trim();let end=document.getElementById('ck-end').value.trim();if(!nome||!tel||!end){alert('Preencha nome, telefone e endereço');return null;}let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let frete=Number(conf.taxa||0);let total=sub+frete;return {nome,tel,end,sub,frete,total,conf,pag:paySel==='credito'?`CREDITO ${parcSel}X`:paySel.toUpperCase()};}
-function enviarPedidoSite(){let d=pegarDados();if(!d)return;let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),blusa:car.map(p=>p.nome).join(', '),tamanho:tamSel,foto:car[0]?.foto||'',subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:new Date().toLocaleString('pt-BR')};fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{alert('✅ Pedido '+res.codigo+' salvo! Código: '+res.codigo);fecharCheckout();fecharCarrinho();car=[];atualizarCarrinho();window.location.href='/acompanhar?codigo='+res.codigo;});}
-function enviarPedidoZap(){let d=pegarDados();if(!d)return;let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),blusa:car.map(p=>p.nome).join(', '),tamanho:tamSel,foto:car[0]?.foto||'',subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:new Date().toLocaleString('pt-BR')};fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{let itensTxt=car.map(p=>`${p.qtd}x ${p.nome} Tam:${p.tam} Cor:${p.cor}`).join('\n');let msg=`PEDIDO ${res.codigo} - ${d.nome} - ${d.tel}\n${d.end}\n\n${itensTxt}\nTOTAL R$ ${d.total}\nPAG ${d.pag}`;window.open(`https://wa.me/${d.conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');fecharCheckout();fecharCarrinho();car=[];atualizarCarrinho();});}
+async function buscarCep(){
+ let cep=document.getElementById('ck-cep').value.replace(/\D/g,'');
+ if(cep.length!=8){return;}
+ try{
+  let r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+  let d=await r.json();
+  if(!d.erro){
+   document.getElementById('ck-end').value=d.logradouro;
+   document.getElementById('ck-bairro').value=d.bairro;
+   document.getElementById('ck-cidade').value=d.localidade+' - '+d.uf;
+  }
+ }catch(e){alert('CEP não encontrado');}
+}
+function pegarDados(){
+ let nome=document.getElementById('ck-nome').value.trim();
+ let tel=document.getElementById('ck-tel').value.trim();
+ let cep=document.getElementById('ck-cep').value.trim();
+ let end=document.getElementById('ck-end').value.trim();
+ let num=document.getElementById('ck-num').value.trim();
+ let bairro=document.getElementById('ck-bairro').value.trim();
+ let cidade=document.getElementById('ck-cidade').value.trim();
+ if(!nome||!tel||!cep||!end){alert('Preencha nome, telefone, CEP e endereço');return null;}
+ let enderecoCompleto=`${end}, ${num} - ${bairro} - ${cidade} - CEP:${cep}`;
+ let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let frete=Number(conf.taxa||0);let total=sub+frete;
+ return {nome,tel,cep,end:enderecoCompleto,sub,frete,total,conf,pag:paySel==='credito'?`CREDITO ${parcSel}X`:paySel.toUpperCase()};
+}
+function enviarPedidoSite(){
+ let d=pegarDados();if(!d)return;
+ let pedido={codigo:'BN'+Date.now().toString().slice(-6),nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),blusa:car.map(p=>p.nome).join(', '),tamanho:tamSel,foto:car[0]?.foto||'',subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:new Date().toLocaleString('pt-BR')};
+ fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{
+   alert('✅ Pedido '+res.codigo+' salvo! Vamos te chamar no WhatsApp! 💖');fecharCheckout();fecharCarrinho();car=[];atualizarCarrinho();
+ });
+}
+function enviarPedidoZap(){
+ let d=pegarDados();if(!d)return;
+ let pedido={codigo:'BN'+Date.now().toString().slice(-6),nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),blusa:car.map(p=>p.nome).join(', '),tamanho:tamSel,foto:car[0]?.foto||'',subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:new Date().toLocaleString('pt-BR')};
+ fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{
+   let itensTxt=car.map(p=>`${p.qtd}x ${p.nome} Tam:${p.tam} Cor:${p.cor}`).join('\n');
+   let msg=`PEDIDO ${res.codigo} - ${d.nome} - ${d.tel}\n${d.end}\n\n${itensTxt}\nTOTAL R$ ${d.total}\nPAG ${d.pag}`;
+   window.open(`https://wa.me/${d.conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');fecharCheckout();fecharCarrinho();car=[];atualizarCarrinho();
+ });
+}
 carregarDB();
 </script></body></html>
