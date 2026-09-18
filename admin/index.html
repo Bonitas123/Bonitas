@@ -28,6 +28,7 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 .uploadArea:hover{background:#ffd1dc;transform:scale(1.01)}
 #previewBox{display:none;margin-top:14px;background:#fff;border:2px solid #e84393;border-radius:16px;padding:12px;text-align:center;box-shadow:0 8px 20px rgba(232,67,147,.15)}
 #previewImg{width:100%;max-height:280px;object-fit:contain;border-radius:10px}
+.pedidoItem{background:rgba(255,255,255,.95);border:2px solid #f3d6e0;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 12px rgba(138,23,64,.08)}
 </style></head><body>
 <div id="login"><div id="loginBox">
 <p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:800">PAINEL ADMINISTRATIVO</p>
@@ -41,13 +42,15 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 </div></div>
 <aside><div><h2>BONITAS</h2><div style="color:#ff5eb0;font-size:10px;font-weight:800;letter-spacing:1px">V14 NUVEM • RAILWAY</div><nav style="margin-top:28px">
 <a id="m-geral" onclick="showPage('geral')">🏠 Visão geral</a>
+<a id="m-ped" onclick="showPage('ped')">📦 Pedidos</a>
 <a id="m-prod" class="ativo" onclick="showPage('prod')">👚 Produtos</a>
 <a id="m-cat" onclick="showPage('cat')">📂 Categorias</a>
 <a id="m-cores" onclick="showPage('cores')">🎨 Cores</a>
 <a id="m-conf" onclick="showPage('conf')">⚙️ Configurações</a>
 </nav></div><a onclick="sair()" style="color:#8a6a78;font-size:13px;cursor:pointer">↩ Sair da conta</a></aside>
 <main>
-<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Visão geral</h1><div class="card"><b id="totalProd">0 produtos</b> • <b id="totalCat">0 categorias</b> • <b id="totalCores">0 cores</b><br><small id="statusGeral"></small></div></div>
+<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Visão geral</h1><div class="card"><b id="totalProd">0 produtos</b> • <b id="totalCat">0 categorias</b> • <b id="totalCores">0 cores</b> • <b id="totalPed">0 pedidos</b><br><small id="statusGeral"></small></div></div>
+<div id="p-ped" class="hide"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Pedidos 💖</h1><button class="btnDark" onclick="carregarPedidos()">🔄 Atualizar pedidos</button></div><div id="listaPed" class="card">Carregando pedidos da nuvem...</div></div>
 <div id="p-prod"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Produtos</h1><button class="btnDark" onclick="abrirModalProd()">+ Novo produto</button></div><div id="listaProd" class="card"></div></div>
 <div id="p-cat" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Categorias</h1><div class="card"><div style="display:flex;gap:10px"><input id="novaCatNome" placeholder="Ex: Blusas, Calças, Saias"><button class="btnDark" onclick="salvarCategoria()">+ Criar</button></div><div id="listaCat" style="margin-top:14px"></div></div></div>
 <div id="p-cores" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Cores da Loja</h1>
@@ -109,19 +112,38 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <script>
 const SENHA='09282326'; let imagemBase64=''; let coresTempProd=[];
 let DB={produtos:[],categorias:[],cores:[],conf:{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3',nomeLoja:'BONITAS',insta:'@bonitas_storemodafeminina',end:'João Pessoa - PB',estoque:'3',horario:'Segunda a sábado, 9h às 18h',minimo:'0.00'},pedidos:{}};
+let PEDIDOS=[];
 async function carregarNuvem(){
  try{
   let r=await fetch('/api/dados'); let d=await r.json();
   DB={...DB,...d};
   if(!DB.produtos) DB.produtos=[]; if(!DB.categorias) DB.categorias=[]; if(!DB.cores) DB.cores=[]; if(!DB.conf) DB.conf={taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'};
   document.getElementById('nuvemStatus').innerText='✅ Nuvem conectada: '+DB.produtos.length+' produtos';
-  listarCategorias(); listarProdutos(); listarCores(); carregarConf();
+  listarCategorias(); listarProdutos(); listarCores(); carregarConf(); carregarPedidos();
  }catch(e){ document.getElementById('nuvemStatus').innerText='❌ Erro nuvem'; }
+}
+async function carregarPedidos(){
+ try{
+  let r=await fetch('/api/pedidos'); let d=await r.json();
+  PEDIDOS=Array.isArray(d)?d:(d.pedidos||[]);
+  let tot=document.getElementById('totalPed'); if(tot) tot.innerText=PEDIDOS.length+' pedidos';
+  let div=document.getElementById('listaPed');
+  if(!PEDIDOS.length){div.innerHTML='<p style="color:#999;text-align:center;padding:20px">Nenhum pedido ainda. Faça um pedido teste no site que aparece aqui.</p>';return;}
+  div.innerHTML=PEDIDOS.slice().reverse().map(p=>`
+  <div class="pedidoItem">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b style="color:#e84393;font-size:16px">📦 Pedido ${p.codigo||p.id||''}</b><small style="background:#ffe2ea;padding:4px 10px;border-radius:20px">${p.data||''}</small></div>
+    <div style="margin:12px 0;font-size:13px;line-height:1.6"><b>👤 Cliente:</b> ${p.nome||p.cliente?.nome||'-'}<br><b>📱 Whats:</b> ${p.cliente?.tel||p.tel||'-'}<br><b>📍 Endereço:</b> ${p.cliente?.end||p.end||'-'}<br>${p.cliente?.cep?'<b>📮 CEP:</b> '+p.cliente.cep:''}</div>
+    <div style="background:#fff5f7;padding:10px;border-radius:12px;font-size:12px;border:1px solid #f3d6e0">${(p.itens||[]).map(it=>`• ${it.qtd}x ${it.nome} <b>Tam:${it.tam}</b> <b>Cor:${it.cor}</b> - R$ ${it.preco}`).join('<br>')||p.blusa||''}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px"><span><b>Total:</b> R$ ${p.total||''} | <b style="background:#111;color:#fff;padding:3px 8px;border-radius:8px">${p.pagamento||p.pag||''}</b></span><a href="https://wa.me/55${(p.cliente?.tel||'').replace(/\D/g,'')}" target="_blank" style="background:#25d366;color:#fff;padding:8px 16px;border-radius:20px;text-decoration:none;font-weight:800">Chamar no Whats</a></div>
+  </div>`).join('');
+ }catch(e){
+  document.getElementById('listaPed').innerHTML='<p style="color:red">Erro: /api/pedidos não existe no server.js. Me mande seu server.js que eu arrumo.</p>';
+ }
 }
 function salvarNuvem(){
  document.getElementById('nuvemStatus').innerText='⏳ Salvando na nuvem...';
  return fetch('/api/dados',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(DB)})
- .then(()=>{ document.getElementById('nuvemStatus').innerText='✅ Salvo! Aparece em todos celulares'; listarCategorias(); listarProdutos(); listarCores(); });
+.then(()=>{ document.getElementById('nuvemStatus').innerText='✅ Salvo! Aparece em todos celulares'; listarCategorias(); listarProdutos(); listarCores(); });
 }
 function getCategorias(){return DB.categorias} function getProdutos(){return DB.produtos} function getCores(){return DB.cores} function getConf(){return DB.conf}
 function salvarCor(){let nome=document.getElementById('novaCorNome').value.trim();let hex=document.getElementById('novaCorHex').value;if(!nome) return alert('Digite nome da cor');let lista=getCores();if(lista.find(c=>c.nome.toLowerCase()===nome.toLowerCase())) return alert('Cor já existe');lista.push({nome,hex});document.getElementById('novaCorNome').value=''; salvarNuvem();}
@@ -136,14 +158,14 @@ function salvarCategoria(){ let nome=document.getElementById('novaCatNome').valu
 function remCat(i){ if(!confirm('Excluir?')) return; DB.categorias.splice(i,1); salvarNuvem(); }
 function listarCategorias(){ let cats=getCategorias(); document.getElementById('listaCat').innerHTML=cats.length?cats.map((c,i)=>`<span class="catTag">${c} <button onclick="remCat(${i})" style="background:rgba(0,0,0,.15);border:none;width:22px;height:22px;border-radius:50%;color:#8a1740;font-weight:800;cursor:pointer">✕</button></span>`).join(''):'<p style="color:#999">Nenhuma categoria ainda</p>'; document.getElementById('n-cat').innerHTML=cats.length?cats.map(c=>`<option>${c}</option>`).join(''):'<option>Crie categoria primeiro</option>'; let tc=document.getElementById('totalCat'); if(tc) tc.innerText=cats.length+' categorias'; }
 function checkLogin(){ if(localStorage.getItem('bonitas_log')==='1') document.getElementById('login').style.display='none'; }
-function entrar(){ if(document.getElementById('senha').value===SENHA){ localStorage.setItem('bonitas_log','1'); document.getElementById('login').style.display='none'; carregarNuvem(); showPage(localStorage.getItem('bonitas_page')||'prod'); } else document.getElementById('erro').style.display='block'; }
+function entrar(){ if(document.getElementById('senha').value===SENHA){ localStorage.setItem('bonitas_log','1'); document.getElementById('login').style.display='none'; carregarNuvem(); showPage(localStorage.getItem('bonitas_page')||'ped'); } else document.getElementById('erro').style.display='block'; }
 function sair(){ localStorage.removeItem('bonitas_log'); location.reload(); } checkLogin();
-function showPage(p){ ['geral','prod','cat','cores','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); let menu=document.getElementById('m-'+p); if(menu) menu.classList.add('ativo'); localStorage.setItem('bonitas_page',p); if(p==='cat') listarCategorias(); if(p==='cores') listarCores(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='geral'){ listarCategorias(); listarProdutos(); listarCores(); } }
+function showPage(p){ ['geral','ped','prod','cat','cores','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); let menu=document.getElementById('m-'+p); if(menu) menu.classList.add('ativo'); localStorage.setItem('bonitas_page',p); if(p==='cat') listarCategorias(); if(p==='cores') listarCores(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='ped') carregarPedidos(); if(p==='geral'){ listarCategorias(); listarProdutos(); listarCores(); carregarPedidos(); } }
 function carregarConf(){ let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||'558399923260'; document.getElementById('c-insta').value=c.insta||'@bonitas_storemodafeminina'; document.getElementById('c-end').value=c.end||'João Pessoa - PB'; document.getElementById('c-taxa').value=c.taxa||'10.00'; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||'Segunda a sábado, 9h às 18h'; document.getElementById('c-minimo').value=c.minimo||'0.00'; document.getElementById('c-pix').value=c.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'; }
 function abrirModalProd(){ listarCategorias(); listarCores(); if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; } if(!getCores().length){ alert('⚠️ Crie cores primeiro em 🎨 Cores - ex: Rosa, Preto'); showPage('cores'); return; } removerImagem(); coresTempProd=[]; renderCoresTemp(); document.getElementById('modalProd').classList.remove('hide'); }
 function fecharModalProd(){ document.getElementById('modalProd').classList.add('hide'); }
 function salvarProdutoFinal(){ let nome=document.getElementById('n-nome').value.trim(); if(!nome) return alert('Digite o nome do produto'); let foto=imagemBase64||document.getElementById('n-urls').value.trim(); if(!foto) return alert('⚠️ Escolha uma imagem até 5MB!'); if(coresTempProd.length===0) return alert('⚠️ Adicione pelo menos 1 cor com estoque!'); let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',status:document.getElementById('n-status').value||'NORMAL',foto,coresLista:coresTempProd,cores:coresTempProd.map(c=>c.nome).join(',')}; DB.produtos.unshift(prod); fecharModalProd(); salvarNuvem(); }
 function listarProdutos(){ let l=getProdutos(); let tp=document.getElementById('totalProd'); if(tp) tp.innerText=l.length+' produtos'; document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> ${p.status?`<small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px;margin-left:4px">${p.status}</small>`:''} • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}</span></span><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>'; }
 function salvarConf(){ DB.conf={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; salvarNuvem(); alert('✅ Configurações salvas na nuvem!'); }
-if(localStorage.getItem('bonitas_log')==='1'){ carregarNuvem(); let paginaSalva=localStorage.getItem('bonitas_page')||'prod'; showPage(paginaSalva); }
+if(localStorage.getItem('bonitas_log')==='1'){ carregarNuvem(); let paginaSalva=localStorage.getItem('bonitas_page')||'ped'; showPage(paginaSalva); }
 </script></body></html>
