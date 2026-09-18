@@ -11,7 +11,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 #hero{position:relative;height:520px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:#8a1740}
 #hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#8a174055 0%,#fff5f7cc 75%,#fff5f7 100%)}
-#hero.content{position:relative;z-index:2;max-width:600px;padding:20px}
+#hero .content{position:relative;z-index:2;max-width:600px;padding:20px}
 #hero h1{font-family:Playfair Display;font-size:80px;color:#8a1740;line-height:.9;font-weight:800;text-shadow:0 2px 20px #fff}
 #hero p{letter-spacing:7px;color:#8a1740;font-weight:800;margin-top:10px;font-size:12px}
 .buscaWrap{margin:24px auto 0;background:#fff;border-radius:50px;display:flex;align-items:center;padding:6px 6px 6px 20px;box-shadow:0 12px 30px #8a174022;max-width:560px;border:1px solid #f3d6e0}
@@ -25,7 +25,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .imgBox img{width:100%;height:100%;object-fit:contain!important;object-position:center center;background:#fff;display:block}
 .tag{position:absolute;top:12px;right:12px;background:#ffd1dc;color:#8a1740;font-size:10px;padding:6px 12px;border-radius:20px;font-weight:800;z-index:2}
 .tag2{position:absolute;top:12px;left:12px;background:#e84393;color:#fff;font-size:10px;padding:6px 12px;border-radius:20px;font-weight:800;z-index:2}
-.cardInfo{padding:14px 14px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto}
+.cardInfo{padding:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto}
 .preco{color:#8a1740;font-weight:800;font-size:16px}
 .add{background:#e84393;color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer;flex-shrink:0}
 .tam button{padding:9px;border:1.5px solid #f0c6d3;background:#f9f0f3;border-radius:10px;cursor:pointer;font-weight:600}
@@ -38,7 +38,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 #carrinhoModal{position:fixed;right:0;top:0;width:420px;max-width:100vw;height:100dvh;background:#fff;z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:.35s;box-shadow:-20px 0 60px #0002}
 #carrinhoModal.aberto{transform:translateX(0)}
 .carrinhoMeio{flex:1;overflow:auto;min-height:0}
-.carrinhoRodape{flex-shrink:0;background:#fff;border-top:2.5px solid #e84393;padding:18px 20px;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.carrinhoRodape{flex-shrink:0;background:#fff;border-top:2.5px solid #e84393;padding:18px 20px}
 .payOpt{border:1.5px solid #f0c6d3;padding:12px 14px;border-radius:14px;margin:8px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .payOpt.ativo{border-color:#e84393;background:#fff0f5}
 .parcelas{display:flex;gap:8px;margin-top:10px}
@@ -56,19 +56,19 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 #checkoutModal.aberto{display:flex}
 .checkCard{background:#fff;border-radius:26px;max-width:480px;width:100%;padding:26px;max-height:92vh;overflow:auto}
 .checkCard input{width:100%;padding:13px;border:1.5px solid #e5c3ce;border-radius:12px;margin:6px 0}
-.det-btn{padding:10px 16px;border:1.5px solid #f0c6d3;border-radius:12px;background:rgba(255,255,255,.8);cursor:pointer;font-weight:600;transition:.2s}
-.det-btn.ativo{background:rgba(232,67,147,.15);backdrop-filter:blur(10px);border:2px solid #e84393;color:#8a1740;font-weight:800}
-.det-cor{padding:10px 16px;border:1.5px solid #f0c6d3;border-radius:24px;background:rgba(255,255,255,.8);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;transition:.2s}
-.det-cor.ativo{background:rgba(255,209,220,.55);backdrop-filter:blur(12px);border:2px solid #e84393;color:#8a1740;font-weight:800}
-#selInfo{background:linear-gradient(135deg,rgba(255,209,220,.6),rgba(255,240,245,.8));backdrop-filter:blur(12px);border:1.5px solid rgba(232,67,147,.25);padding:12px 16px;border-radius:16px;margin:12px 0;font-size:12px;font-weight:800;color:#8a1740}
-/* PIX FINAL BONITO */
+.det-btn{padding:10px 16px;border:1.5px solid #f0c6d3;border-radius:12px;background:rgba(255,255,255,.8);cursor:pointer;font-weight:600}
+.det-btn.ativo{background:rgba(232,67,147,.15);border:2px solid #e84393;color:#8a1740;font-weight:800}
+.det-cor{padding:10px 16px;border:1.5px solid #f0c6d3;border-radius:24px;background:rgba(255,255,255,.8);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600}
+.det-cor.ativo{background:rgba(255,209,220,.55);border:2px solid #e84393;color:#8a1740;font-weight:800}
+#selInfo{background:linear-gradient(135deg,rgba(255,209,220,.6),rgba(255,240,245,.8));padding:12px 16px;border-radius:16px;margin:12px 0;font-size:12px;font-weight:800;color:#8a1740}
 #pixFinalModal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px);z-index:700;display:none;align-items:center;justify-content:center;padding:16px}
 #pixFinalModal.aberto{display:flex}
-.pixCard{background:linear-gradient(180deg,#fff 0%,#fff5f7 100%);border-radius:28px;max-width:420px;width:100%;padding:28px;text-align:center;box-shadow:0 30px 80px #0005;border:1px solid #ffe2ea}
-.pixQrWrap{background:#fff;padding:14px;border-radius:20px;display:inline-block;box-shadow:0 8px 30px #0001;border:2px solid #e84393;margin:14px 0}
+.pixCard{background:linear-gradient(180deg,#fff 0%,#fff5f7 100%);border-radius:28px;max-width:420px;width:100%;padding:28px;text-align:center;box-shadow:0 30px 80px #0005;border:1px solid #ffe2ea;animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.pixQrWrap{background:#fff;padding:14px;border-radius:20px;display:inline-block;border:2px solid #e84393;margin:14px 0;box-shadow:0 8px 30px #0001}
 .timerBox{background:#111;color:#fff;padding:10px 18px;border-radius:30px;display:inline-flex;gap:8px;font-weight:800;letter-spacing:1px;margin:12px 0}
 .chaveBox{background:#fff0f5;border:1.5px dashed #e84393;padding:12px;border-radius:14px;word-break:break-all;font-size:12px;margin:12px 0;text-align:left}
-.btnCopy{background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;border:none;padding:13px;width:100%;border-radius:12px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px #e8439350}
+.btnCopy{background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;border:none;padding:13px;width:100%;border-radius:12px;font-weight:800;cursor:pointer}
 </style></head><body>
 <header><b>BONITAS</b><div style="display:flex;gap:18px;align-items:center"><a onclick="document.getElementById('produtosAncora').scrollIntoView({behavior:'smooth'})">Loja</a><a onclick="document.getElementById('sobreLoja').scrollIntoView({behavior:'smooth'})">Sobre</a><a href="/admin" style="color:#999;font-size:12px">Admin</a><span onclick="abrirCarrinho()" style="cursor:pointer;font-size:18px">🛒 <b id="qtd" style="background:#e84393;color:#fff;border-radius:50%;padding:2px 7px;font-size:12px;margin-left:2px">0</b></span></div></header>
 <div id="hero"><img class="bg" src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1400&q=80"><div class="content"><h1>Loja</h1><p>FEITO PARA VOCÊ</p><div class="buscaWrap"><input id="busca" placeholder="Buscar blusa, vestido, calça..." oninput="render()"><button onclick="render()">Buscar</button></div><div style="margin-top:20px"><button onclick="document.getElementById('produtosAncora').scrollIntoView({behavior:'smooth'})" style="background:#111;color:#fff;border:none;padding:13px 30px;border-radius:30px;font-weight:800;cursor:pointer">Ver coleção ↓</button></div></div></div>
@@ -83,16 +83,17 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 <h2 style="font-family:Playfair Display;color:#8a1740">Seus dados para entrega 💖</h2>
 <label>Nome completo *</label><input id="ck-nome" placeholder="Ex: Maria Silva">
 <label>WhatsApp / Telefone *</label><input id="ck-tel" placeholder="Ex: 83999999999">
-<label>CEP *</label><div style="display:flex;gap:8px"><input id="ck-cep" placeholder="58000-000" maxlength="9" onblur="buscarCep()"><button type="button" onclick="buscarCep()" style="background:#e84393;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">Buscar</button></div>
+<label>CEP *</label><div style="display:flex;gap:8px"><input id="ck-cep" placeholder="58000-000" maxlength="9" onblur="buscarCep()"><button type="button" onclick="buscarCep()" style="background:#e84393;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:800">Buscar</button></div>
 <label>Endereço *</label><input id="ck-end" placeholder="Rua, avenida">
 <label style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><span>Número <input id="ck-num" placeholder="123"></span><span>Bairro <input id="ck-bairro" placeholder="Bairro"></span></label>
 <label>Cidade / Estado</label><input id="ck-cidade" placeholder="João Pessoa - PB">
-<div id="ck-resumo" style="background:linear-gradient(135deg,rgba(255,209,220,.5),rgba(255,240,245,.7));backdrop-filter:blur(10px);padding:12px;border-radius:14px;margin:12px 0;font-size:13px;border:1px solid rgba(232,67,147,.2)"></div>
+<div id="ck-resumo" style="background:linear-gradient(135deg,rgba(255,209,220,.5),rgba(255,240,245,.7));padding:12px;border-radius:14px;margin:12px 0;font-size:13px;border:1px solid rgba(232,67,147,.2)"></div>
 <button onclick="enviarPedidoSite()" style="background:#111;color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;margin-bottom:10px">✅ FINALIZAR PELO SITE</button>
-<button onclick="enviarPedidoZap()" style="background:linear-gradient(135deg,#25d366,#1ebe5d);color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;box-shadow:0 8px 20px #25d36644">💬 FINALIZAR PELO WHATSAPP</button>
+<button onclick="enviarPedidoZap()" style="background:linear-gradient(135deg,#25d366,#1ebe5d);color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800">💬 FINALIZAR PELO WHATSAPP</button>
 <button onclick="fecharCheckout()" style="background:none;border:none;width:100%;padding:10px;margin-top:6px;color:#999">Voltar</button>
 </div></div>
 
+<!-- PIX BONITO SEM CODIGO -->
 <div id="pixFinalModal" onclick="if(event.target===this) fecharPixFinal()"><div class="pixCard">
 <div style="font-size:44px">💖</div>
 <h2 style="font-family:Playfair Display;color:#8a1740;font-size:26px;margin-top:6px">Pedido criado!</h2>
@@ -100,15 +101,14 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 <div class="timerBox">⏳ Expira em <span id="timer">23:59:59</span></div>
 <div class="pixQrWrap"><img id="pixFinalQr" style="width:220px;height:220px;border-radius:14px;display:block"></div>
 <b id="pixFinalTotal" style="font-size:22px;color:#111;display:block"></b>
-<small id="pixPedidoCodigo" style="color:#e84393;font-weight:800"></small>
 <div style="text-align:left;margin-top:14px"><small style="font-weight:800;letter-spacing:1px;color:#8a1740;font-size:10px">CHAVE PIX COPIA E COLA</small><div class="chaveBox" id="pixFinalChave"></div><button class="btnCopy" onclick="copiarPix()">📋 COPIAR CHAVE PIX</button></div>
-<p style="font-size:11px;color:#8a5a6a;margin-top:14px;line-height:1.4">Após pagar, envie o comprovante no WhatsApp.<br>Se não pagar em 24h, o pedido é cancelado automaticamente.</p>
+<p style="font-size:11px;color:#8a5a6a;margin-top:14px;line-height:1.4">Após pagar, envie o comprovante no WhatsApp.<br>Se não pagar em 24h, o pedido é cancelado.</p>
 <button onclick="fecharPixFinal()" style="margin-top:16px;background:#111;color:#fff;border:none;padding:14px;width:100%;border-radius:14px;font-weight:800;cursor:pointer">FECHAR</button>
 </div></div>
 
 <div id="carrinhoModal">
 <div style="padding:20px 22px;display:flex;justify-content:space-between;border-bottom:1px solid #eee;flex-shrink:0"><h2 style="font-family:Playfair Display;color:#8a1740">Seu carrinho</h2><button onclick="fecharCarrinho()" style="background:none;border:none;font-size:22px;cursor:pointer">✕</button></div>
-<div class="carrinhoMeio"><div id="itensCarrinho"></div><div id="pagamentos" style="display:none;padding:0 20px 12px"><h4 style="margin:12px 0 8px">Forma de pagamento</h4><div class="payOpt" onclick="selPay(this,'dinheiro')"><span>💵 Dinheiro</span><small>Whats</small></div><div class="payOpt" onclick="selPay(this,'credito')"><span>💳 Crédito</span><small>1x 2x 3x</small></div><div class="payOpt" onclick="selPay(this,'debito')"><span>💳 Débito</span><small>À vista</small></div><div class="payOpt" onclick="selPay(this,'pix')"><span>🔷 PIX</span><small>24h QR</small></div><div id="parcelaBox" style="display:none;margin-top:12px"><b style="font-size:12px">ESCOLHA AS PARCELAS</b><div class="parcelas"><button onclick="setParc(1)" id="parc1">1x</button><button onclick="setParc(2)" id="parc2">2x</button><button onclick="setParc(3)" id="parc3" class="ativo">3x</button></div><div id="parcelaInfo" style="margin-top:10px;background:#fff5f7;padding:10px;border-radius:10px;text-align:center;font-size:13px"></div></div><div id="pixArea" style="display:none;text-align:center;margin-top:12px;background:#f9f9f9;padding:12px;border-radius:14px"><img id="pixQr" style="width:200px;height:200px;border-radius:12px"><p style="font-size:11px;word-break:break-all;margin-top:8px">Chave: <span id="pixChaveTxt"></span></p><b id="pixTotal" style="display:block;margin-top:6px"></b></div></div></div>
+<div class="carrinhoMeio"><div id="itensCarrinho"></div><div id="pagamentos" style="display:none;padding:0 20px 12px"><h4 style="margin:12px 0 8px">Forma de pagamento</h4><div class="payOpt" onclick="selPay(this,'dinheiro')"><span>💵 Dinheiro</span></div><div class="payOpt" onclick="selPay(this,'credito')"><span>💳 Crédito</span><small>1x 2x 3x</small></div><div class="payOpt" onclick="selPay(this,'debito')"><span>💳 Débito</span></div><div class="payOpt" onclick="selPay(this,'pix')"><span>🔷 PIX</span><small>QR 24h</small></div><div id="parcelaBox" style="display:none;margin-top:12px"><b style="font-size:12px">PARCELAS</b><div class="parcelas"><button onclick="setParc(1)" id="parc1">1x</button><button onclick="setParc(2)" id="parc2">2x</button><button onclick="setParc(3)" id="parc3" class="ativo">3x</button></div><div id="parcelaInfo" style="margin-top:10px;background:#fff5f7;padding:10px;border-radius:10px;text-align:center;font-size:13px"></div></div><div id="pixArea" style="display:none;text-align:center;margin-top:12px;background:#f9f9f9;padding:12px;border-radius:14px"><img id="pixQr" style="width:200px;height:200px;border-radius:12px"><p style="font-size:11px;word-break:break-all;margin-top:8px">Chave: <span id="pixChaveTxt"></span></p><b id="pixTotal" style="display:block;margin-top:6px"></b></div></div></div>
 <div class="carrinhoRodape"><div style="display:flex;justify-content:space-between;margin-bottom:14px;font-size:15px"><span>Subtotal</span><b id="subtotalCart">R$ 0,00</b></div><button id="btnIrPag" style="background:#111;color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;font-size:15px" onclick="mostrarPagamento()">ESCOLHER PAGAMENTO</button><button id="btnFinal" style="display:none;background:#e84393;color:#fff;width:100%;padding:18px;border:none;border-radius:14px;font-weight:900;font-size:16px" onclick="finalizarPedido()">FINALIZAR PEDIDO →</button></div>
 </div>
 <div id="cartBtn" onclick="abrirCarrinho()">🛒 R$ <span id="tot">0.00</span></div>
@@ -116,83 +116,82 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 <script>
 let DB={produtos:[],categorias:[],cores:[],conf:{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'}};
 let car=[], tamSel='P', paySel='', parcSel=3, prodSel=null, corSel='Rosa', corEstoqueSel=999, timerInterval=null;
-async function carregarDB(){try{let r=await fetch('/api/dados');DB=await r.json();renderFiltros();render();}catch(e){document.getElementById('grid').innerHTML='<p style="padding:40px;text-align:center">Erro ao carregar da nuvem Railway</p>';}}
+async function carregarDB(){try{let r=await fetch('/api/dados?v='+Date.now(),{cache:'no-store'});DB=await r.json();renderFiltros();render();}catch(e){document.getElementById('grid').innerHTML='<p style="padding:40px;text-align:center">Erro nuvem</p>';}}
 function getConf(){return DB.conf||{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'}}function getCategorias(){return DB.categorias||[]}function getProds(){return DB.produtos||[]}
 function setTam(el,t){document.querySelectorAll('.tam button').forEach(b=>b.classList.remove('ativo'));if(el)el.classList.add('ativo');tamSel=t;render()}
-function renderFiltros(){let cats=getCategorias();document.getElementById('filtroCats').innerHTML=cats.length?cats.map(c=>`<label style="display:block;margin:6px 0;font-size:13px"><input type="checkbox" class="fcat" value="${c}" checked onchange="render()"> ${c}</label>`).join(''):'<small style="color:#999">Nenhuma categoria</small>'}
-function render(){let lista=getProds();let busca=document.getElementById('busca').value.toLowerCase();let cats=[...document.querySelectorAll('.fcat:checked')].map(c=>c.value);let pmax=Number(document.getElementById('pmax').value);lista=lista.filter(p=>{if(busca&&!p.nome.toLowerCase().includes(busca))return false;if(cats.length&&!cats.includes(p.cat))return false;if(Number(p.preco)>pmax)return false;return true});let grid=document.getElementById('grid');if(!lista.length){grid.innerHTML=`<div class="vazio"><div style="font-size:48px">🛍️</div><h3>Nenhum produto</h3></div>`;return}grid.innerHTML=lista.map(p=>{let total=p.coresLista?p.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0):0;let tagStatus=(p.status&&p.status!=='NORMAL')?`<span class="tag2" style="background:${p.status=='ESGOTADO'?'#111':'#e84393'}">${p.status}</span>`:'';return `<div class="card" onclick='openDetalhe(${JSON.stringify(p).replace(/'/g,"&#39;")})'><div class="imgBox"><img src="${p.foto}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x500?text=BONITAS'"><span class="tag">${p.cat||'BONITAS'}</span>${tagStatus}</div><div class="cardInfo"><div><b style="font-size:12px;text-transform:uppercase">${p.nome}</b><br><span class="preco">R$ ${Number(p.preco).toFixed(2).replace('.',',')}</span><br><small style="font-size:10px;color:#8a5a6a">📦 ${total} un</small></div><button class="add" onclick="event.stopPropagation();add(${JSON.stringify(p).replace(/'/g,"&#39;")})">+</button></div></div>`}).join('');}
+function renderFiltros(){let cats=getCategorias();document.getElementById('filtroCats').innerHTML=cats.map(c=>`<label style="display:block;margin:6px 0;font-size:13px"><input type="checkbox" class="fcat" value="${c}" checked onchange="render()"> ${c}</label>`).join('');}
+function render(){let lista=getProds();let busca=document.getElementById('busca').value.toLowerCase();let cats=[...document.querySelectorAll('.fcat:checked')].map(c=>c.value);let pmax=Number(document.getElementById('pmax').value);lista=lista.filter(p=>{if(busca&&!p.nome.toLowerCase().includes(busca))return false;if(cats.length&&!cats.includes(p.cat))return false;if(Number(p.preco)>pmax)return false;return true});let grid=document.getElementById('grid');if(!lista.length){grid.innerHTML=`<div class="vazio">Nenhum produto</div>`;return}grid.innerHTML=lista.map(p=>{let total=p.coresLista?p.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0):0;let tagStatus=(p.status&&p.status!=='NORMAL')?`<span class="tag2" style="background:${p.status=='ESGOTADO'?'#111':'#e84393'}">${p.status}</span>`:'';return `<div class="card" onclick='openDetalhe(${JSON.stringify(p).replace(/'/g,"&#39;")})'><div class="imgBox"><img src="${p.foto}"><span class="tag">${p.cat||''}</span>${tagStatus}</div><div class="cardInfo"><div><b style="font-size:12px;text-transform:uppercase">${p.nome}</b><br><span class="preco">R$ ${Number(p.preco).toFixed(2).replace('.',',')}</span><br><small style="font-size:10px;color:#8a5a6a">📦 ${total} un</small></div><button class="add" onclick="event.stopPropagation();add(${JSON.stringify(p).replace(/'/g,"&#39;")})">+</button></div></div>`}).join('');}
 function atualizaSelInfo(){document.getElementById('selTamTxt').innerText=tamSel;document.getElementById('selCorTxt').innerText=corSel;}
 function setTamDetalhe(el,t){document.querySelectorAll('#detTams button').forEach(b=>b.classList.remove('ativo'));el.classList.add('ativo');tamSel=t;atualizaSelInfo();}
-function setCorDetalhe(el,nome,estoque,hex){document.querySelectorAll('#detCores button').forEach(b=>b.classList.remove('ativo'));el.classList.add('ativo');corSel=nome;corEstoqueSel=estoque;atualizaSelInfo();}
-function openDetalhe(p){prodSel=typeof p==='string'?JSON.parse(p):p;document.getElementById('detImg').src=prodSel.foto;document.getElementById('detNome').innerText=prodSel.nome;document.getElementById('detCat').innerText=prodSel.cat;document.getElementById('detPreco').innerText='R$ '+Number(prodSel.preco).toFixed(2).replace('.',',');let st=document.getElementById('detStatus');if(prodSel.status&&prodSel.status!=='NORMAL'){st.innerText=prodSel.status;st.style.display='inline-block';st.style.background=prodSel.status=='ESGOTADO'?'#111':'#e84393';}else st.style.display='none';let box=document.getElementById('detEstoque');if(prodSel.coresLista){let total=prodSel.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0);box.style.display='block';box.innerText=`📦 Total: ${total} unidades | ${prodSel.coresLista.length} cores`;}else{box.style.display='none'}document.getElementById('detTams').innerHTML=['PP','P','M','G','GG'].map(t=>`<button class="det-btn ${t===tamSel?'ativo':''}" onclick="setTamDetalhe(this,'${t}')">${t}</button>`).join('');let cores=prodSel.coresLista||[];document.getElementById('detCores').innerHTML=cores.map(c=>{let esg=parseInt(c.estoque)==0;return `<button class="det-cor ${c.nome===corSel?'ativo':''}" ${esg?'disabled':''} onclick="setCorDetalhe(this,'${c.nome}',${c.estoque},'${c.hex}')" style="opacity:${esg?0.5:1}"><span style="width:12px;height:12px;border-radius:50%;background:${c.hex};display:inline-block;border:1px solid #0001"></span>${c.nome} (${c.estoque})</button>`}).join('');if(cores[0]&&!cores.find(c=>c.nome===corSel)){corSel=cores[0].nome;corEstoqueSel=cores[0].estoque;}atualizaSelInfo();document.getElementById('detalheModal').classList.add('aberto')}
+function setCorDetalhe(el,nome,estoque){document.querySelectorAll('#detCores button').forEach(b=>b.classList.remove('ativo'));el.classList.add('ativo');corSel=nome;corEstoqueSel=estoque;atualizaSelInfo();}
+function openDetalhe(p){prodSel=typeof p==='string'?JSON.parse(p):p;document.getElementById('detImg').src=prodSel.foto;document.getElementById('detNome').innerText=prodSel.nome;document.getElementById('detCat').innerText=prodSel.cat;document.getElementById('detPreco').innerText='R$ '+Number(prodSel.preco).toFixed(2).replace('.',',');document.getElementById('detTams').innerHTML=['PP','P','M','G','GG'].map(t=>`<button class="det-btn ${t===tamSel?'ativo':''}" onclick="setTamDetalhe(this,'${t}')">${t}</button>`).join('');let cores=prodSel.coresLista||[];document.getElementById('detCores').innerHTML=cores.map(c=>`<button class="det-cor ${c.nome===corSel?'ativo':''}" onclick="setCorDetalhe(this,'${c.nome}',${c.estoque})"><span style="width:12px;height:12px;border-radius:50%;background:${c.hex}"></span>${c.nome} (${c.estoque})</button>`).join('');if(cores[0])corSel=cores[0].nome;atualizaSelInfo();document.getElementById('detalheModal').classList.add('aberto')}
 function fecharDetalhe(){document.getElementById('detalheModal').classList.remove('aberto')}
 function addDoDetalhe(){add(prodSel);fecharDetalhe()}
-function add(p){let o=typeof p==='string'?JSON.parse(p):p;if(o.status=='ESGOTADO') return alert('Produto ESGOTADO');let cUsar=o.coresLista?(o.coresLista.find(x=>x.nome===corSel)||o.coresLista[0]):{nome:corSel,estoque:99,hex:'#e84393'};let ja=car.filter(x=>x.id===o.id&&x.cor===cUsar.nome).reduce((a,b)=>a+b.qtd,0);if(ja>=parseInt(cUsar.estoque)) return alert('Só temos '+cUsar.estoque+' da cor '+cUsar.nome+'!');let ex=car.find(x=>x.id===o.id&&x.tam===tamSel&&x.cor===cUsar.nome);if(ex)ex.qtd++;else car.push({...o,tam:tamSel,cor:cUsar.nome,corEstoque:cUsar.estoque,corHex:cUsar.hex,qtd:1});atualizarCarrinho();abrirCarrinho()}
-function abrirCarrinho(){document.getElementById('carrinhoModal').classList.add('aberto')}
-function fecharCarrinho(){document.getElementById('carrinhoModal').classList.remove('aberto')}
-function atualizarCarrinho(){document.getElementById('qtd').innerText=car.reduce((a,b)=>a+b.qtd,0);let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let taxa=Number(getConf().taxa||10);document.getElementById('subtotalCart').innerText='R$ '+sub.toFixed(2).replace('.',',');document.getElementById('tot').innerText=(sub+taxa).toFixed(2);let div=document.getElementById('itensCarrinho');if(!car.length){div.innerHTML='<p style="padding:50px;text-align:center;color:#999">Carrinho vazio</p>';return}div.innerHTML=car.map((p,i)=>`<div style="display:flex;gap:10px;padding:14px;border-bottom:1px solid #eee"><img src="${p.foto}" style="width:62px;height:62px;border-radius:12px;object-fit:contain;background:#fff"><div style="flex:1"><b style="font-size:12px">${p.nome}</b><br><small>${p.tam} • ${p.cor}</small><br><b>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</b><div style="display:flex;gap:8px;margin-top:6px"><button onclick="altQtd(${i},-1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff">−</button><span>${p.qtd}</span><button onclick="altQtd(${i},1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff">+</button></div></div><button onclick="remItem(${i})" style="background:none;border:none;color:#e84393">✕</button></div>`).join('');}
-function altQtd(i,d){let n=car[i].qtd+d;if(n<=0)car.splice(i,1);else{if(n>car[i].corEstoque) return alert('Limite estoque: '+car[i].corEstoque);car[i].qtd=n;}atualizarCarrinho()}
-function remItem(i){car.splice(i,1);atualizarCarrinho()}
-function mostrarPagamento(){if(!car.length)return alert('Carrinho vazio');document.getElementById('pagamentos').style.display='block';document.getElementById('btnIrPag').style.display='none';document.getElementById('btnFinal').style.display='block'}
-function selPay(el,tipo){document.querySelectorAll('.payOpt').forEach(o=>o.classList.remove('ativo'));el.classList.add('ativo');paySel=tipo;document.getElementById('pixArea').style.display='none';document.getElementById('parcelaBox').style.display='none';let conf=getConf();let total=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0)+Number(conf.taxa||10);if(tipo==='pix'){document.getElementById('pixArea').style.display='block';document.getElementById('pixChaveTxt').innerText=conf.pix;document.getElementById('pixTotal').innerText='Total: R$ '+total.toFixed(2).replace('.',',');document.getElementById('pixQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(conf.pix)}`}if(tipo==='credito'){document.getElementById('parcelaBox').style.display='block';atualizarParcelas()}}
-function setParc(n){parcSel=n;document.querySelectorAll('.parcelas button').forEach(b=>b.classList.remove('ativo'));document.getElementById('parc'+n).classList.add('ativo');atualizarParcelas()}
-function atualizarParcelas(){let conf=getConf();let total=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0)+Number(conf.taxa||10);document.getElementById('parcelaInfo').innerHTML=`💳 <b>${parcSel}x de R$ ${(total/parcSel).toFixed(2).replace('.',',')} sem juros</b><br>Total R$ ${total.toFixed(2).replace('.',',')}`}
+function add(p){let o=typeof p==='string'?JSON.parse(p):p;if(o.status=='ESGOTADO')return alert('ESGOTADO');let cUsar=o.coresLista?(o.coresLista.find(x=>x.nome===corSel)||o.coresLista[0]):{nome:corSel,estoque:99};let ex=car.find(x=>x.id===o.id&&x.tam===tamSel&&x.cor===cUsar.nome);if(ex)ex.qtd++;else car.push({...o,tam:tamSel,cor:cUsar.nome,corEstoque:cUsar.estoque,qtd:1});atualizarCarrinho();abrirCarrinho()}
+function abrirCarrinho(){document.getElementById('carrinhoModal').classList.add('aberto')}function fecharCarrinho(){document.getElementById('carrinhoModal').classList.remove('aberto')}
+function atualizarCarrinho(){document.getElementById('qtd').innerText=car.reduce((a,b)=>a+b.qtd,0);let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let taxa=Number(getConf().taxa||10);document.getElementById('subtotalCart').innerText='R$ '+sub.toFixed(2).replace('.',',');document.getElementById('tot').innerText=(sub+taxa).toFixed(2);document.getElementById('itensCarrinho').innerHTML=car.map((p,i)=>`<div style="padding:10px;border-bottom:1px solid #eee">${p.nome} ${p.tam} ${p.cor} x${p.qtd}</div>`).join('');}
+function mostrarPagamento(){if(!car.length)return alert('Vazio');document.getElementById('pagamentos').style.display='block';document.getElementById('btnIrPag').style.display='none';document.getElementById('btnFinal').style.display='block'}
+function selPay(el,t){document.querySelectorAll('.payOpt').forEach(o=>o.classList.remove('ativo'));el.classList.add('ativo');paySel=t;document.getElementById('pixArea').style.display=t==='pix'?'block':'none';document.getElementById('parcelaBox').style.display=t==='credito'?'block':'none';if(t==='pix'){let conf=getConf();let total=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0)+Number(conf.taxa||0);document.getElementById('pixChaveTxt').innerText=conf.pix;document.getElementById('pixTotal').innerText='Total R$ '+total.toFixed(2);document.getElementById('pixQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(conf.pix)}`}}
+function setParc(n){parcSel=n;document.querySelectorAll('.parcelas button').forEach(b=>b.classList.remove('ativo'));document.getElementById('parc'+n).classList.add('ativo');}
 function finalizarPedido(){abrirCheckout();}
-function abrirCheckout(){if(!paySel)return alert('Escolha a forma de pagamento!');let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let total=sub+Number(conf.taxa||0);document.getElementById('ck-resumo').innerHTML=`💖 <b>Resumo:</b> ${car.reduce((a,b)=>a+b.qtd,0)} itens - R$ ${total.toFixed(2).replace('.',',')}<br><b>Pagamento:</b> ${paySel.toUpperCase()}`;document.getElementById('checkoutModal').classList.add('aberto');}
+function abrirCheckout(){if(!paySel)return alert('Escolha pagamento');let total=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0)+Number(getConf().taxa||0);document.getElementById('ck-resumo').innerText=`${car.length} itens - R$ ${total.toFixed(2)} - ${paySel}`;document.getElementById('checkoutModal').classList.add('aberto');}
 function fecharCheckout(){document.getElementById('checkoutModal').classList.remove('aberto');}
-async function buscarCep(){
- let cep=document.getElementById('ck-cep').value.replace(/\D/g,'');
- if(cep.length!=8){return;}
- try{
-  let r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-  let d=await r.json();
-  if(!d.erro){
-   document.getElementById('ck-end').value=d.logradouro;
-   document.getElementById('ck-bairro').value=d.bairro;
-   document.getElementById('ck-cidade').value=d.localidade+' - '+d.uf;
-  }
- }catch(e){alert('CEP não encontrado');}
-}
-function pegarDados(){
- let nome=document.getElementById('ck-nome').value.trim();
- let tel=document.getElementById('ck-tel').value.trim();
- let cep=document.getElementById('ck-cep').value.trim();
- let end=document.getElementById('ck-end').value.trim();
- let num=document.getElementById('ck-num').value.trim();
- let bairro=document.getElementById('ck-bairro').value.trim();
- let cidade=document.getElementById('ck-cidade').value.trim();
- if(!nome||!tel||!cep||!end){alert('Preencha nome, telefone, CEP e endereço');return null;}
- let enderecoCompleto=`${end}, ${num} - ${bairro} - ${cidade} - CEP:${cep}`;
- let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let frete=Number(conf.taxa||0);let total=sub+frete;
- return {nome,tel,cep,end:enderecoCompleto,sub,frete,total,conf,pag:paySel==='credito'?`CREDITO ${parcSel}X`:paySel.toUpperCase()};
-}
+async function buscarCep(){let cep=document.getElementById('ck-cep').value.replace(/\D/g,'');if(cep.length!=8)return;let r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);let d=await r.json();if(!d.erro){document.getElementById('ck-end').value=d.logradouro;document.getElementById('ck-bairro').value=d.bairro;document.getElementById('ck-cidade').value=d.localidade+' - '+d.uf;}}
+function pegarDados(){let nome=document.getElementById('ck-nome').value.trim();let tel=document.getElementById('ck-tel').value.trim();let cep=document.getElementById('ck-cep').value.trim();let end=document.getElementById('ck-end').value.trim();let num=document.getElementById('ck-num').value.trim();let bairro=document.getElementById('ck-bairro').value.trim();let cidade=document.getElementById('ck-cidade').value.trim();if(!nome||!tel||!cep||!end){alert('Preencha tudo');return null;}let enderecoCompleto=`${end}, ${num} - ${bairro} - ${cidade} - CEP:${cep}`;let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let frete=Number(conf.taxa||0);let total=sub+frete;return {nome,tel,cep,end:enderecoCompleto,sub,frete,total,conf,pag:paySel==='credito'?`CREDITO ${parcSel}X`:paySel.toUpperCase()}}
+
+// SITE -> PIX BONITO SEM CODIGO
 function enviarPedidoSite(){
  let d=pegarDados();if(!d)return;
- let pedido={codigo:'BN'+Date.now().toString().slice(-6),nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),blusa:car.map(p=>p.nome).join(', '),tamanho:tamSel,foto:car[0]?.foto||'',subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:new Date().toLocaleString('pt-BR')};
+ let data=new Date().toLocaleString('pt-BR');
+ let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:data};
  fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{
    fecharCheckout();
    if(d.pag.includes('PIX')){
      document.getElementById('pixFinalChave').innerText=d.conf.pix;
      document.getElementById('pixFinalTotal').innerText='Total: R$ '+d.total.toFixed(2).replace('.',',');
-     document.getElementById('pixPedidoCodigo').innerText='Pedido '+res.codigo;
-     document.getElementById('pixFinalQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(d.conf.pix+'|'+d.total+'|'+res.codigo)}`;
+     document.getElementById('pixFinalQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(d.conf.pix)}`;
      document.getElementById('pixFinalModal').classList.add('aberto');
      iniciarTimer();
    }else{
-     alert('✅ Pedido '+res.codigo+' criado! Vamos te chamar no WhatsApp! 💖');car=[];atualizarCarrinho();fecharCarrinho();
+     alert('✅ Pedido criado!');car=[];atualizarCarrinho();fecharCarrinho();
    }
  });
 }
-function copiarPix(){navigator.clipboard.writeText(document.getElementById('pixFinalChave').innerText);alert('Chave PIX copiada! 💖');}
+function copiarPix(){navigator.clipboard.writeText(document.getElementById('pixFinalChave').innerText);alert('Chave copiada! 💖');}
 function fecharPixFinal(){document.getElementById('pixFinalModal').classList.remove('aberto');if(timerInterval)clearInterval(timerInterval);car=[];atualizarCarrinho();fecharCarrinho();}
 function iniciarTimer(){let s=24*3600;if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(()=>{s--;if(s<0)s=0;let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;document.getElementById('timer').innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;},1000);}
+
+// ZAP BONITO SEM CODIGO
 function enviarPedidoZap(){
  let d=pegarDados();if(!d)return;
- let pedido={codigo:'BN'+Date.now().toString().slice(-6),nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),blusa:car.map(p=>p.nome).join(', '),tamanho:tamSel,foto:car[0]?.foto||'',subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:new Date().toLocaleString('pt-BR')};
+ let conf=getConf();let data=new Date().toLocaleString('pt-BR');
+ let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:data};
  fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{
-   let itensTxt=car.map(p=>`${p.qtd}x ${p.nome} Tam:${p.tam} Cor:${p.cor}`).join('\n');
-   let msg=`PEDIDO ${res.codigo} - ${d.nome} - ${d.tel}\n${d.end}\n\n${itensTxt}\nTOTAL R$ ${d.total}\nPAG ${d.pag}`;
-   window.open(`https://wa.me/${d.conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');fecharCheckout();car=[];atualizarCarrinho();fecharCarrinho();
+   let itensTxt = car.map((p,i)=>`${i+1}x ${p.nome.toUpperCase()}\nTamanho: ${p.tam}\nCor: ${p.cor}\nR$ ${Number(p.preco).toFixed(2).replace('.',',')}`).join('\n\n');
+   let enderecoTxt = d.end.includes('RETIRADA')? '📍 RETIRADA NA LOJA\nCombinar horário pelo WhatsApp' : `📍 ENTREGA\n${d.end}`;
+   let msg=`#### NOVO PEDIDO BONITAS ####
+
+📅 ${data}
+
+👤 CLIENTE
+${d.nome}
+📞 ${d.tel}
+
+${enderecoTxt}
+
+------- ITENS -------
+
+${itensTxt}
+
+
+SUBTOTAL: R$ ${d.sub.toFixed(2).replace('.',',')}
+FRETE: R$ ${d.frete.toFixed(2).replace('.',',')}
+TOTAL: R$ ${d.total.toFixed(2).replace('.',',')}
+
+PAGAMENTO: ${d.pag}
+
+Pedido realizado pelo site BONITAS 💗`;
+   window.open(`https://wa.me/${conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');fecharCheckout();car=[];atualizarCarrinho();fecharCarrinho();
  });
 }
 carregarDB();
