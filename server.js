@@ -36,9 +36,24 @@ app.post('/api/dados',(req,res)=>{
   res.json({ok:true});
 });
 
-// ===== SEUS PEDIDOS (mantive igual) =====
+// ===== SEUS PEDIDOS =====
 app.get('/api/todos-pedidos',(req,res)=>res.json(db.pedidos||{}));
-app.post('/api/pedido',(req,res)=>{const c='B'+Math.floor(1000+Math.random()*9000);db.pedidos[c]={codigo:c,...req.body,status:'Novo',pagamento:'Falta pagar',data:new Date().toLocaleDateString('pt-BR')};salvar();res.json({codigo:c})});
+
+// ROTA NOVA QUE FALTAVA - PRA SEU ACOMPANHAR.HTML ORIGINAL FUNCIONAR
+app.get('/api/pedido/:codigo',(req,res)=>{
+  let c = req.params.codigo.toUpperCase();
+  let p = db.pedidos[c];
+  if(!p) return res.json({erro:'Pedido não encontrado'});
+  res.json(p);
+});
+
+app.post('/api/pedido',(req,res)=>{
+  const c='B'+Math.floor(1000+Math.random()*9000);
+  // mantém tudo que vem do site: nome, cliente, itens, total etc
+  db.pedidos[c]={codigo:c,...req.body,status:req.body.status||'Preparando',pagamento:req.body.pagamento||'Falta pagar',data:new Date().toLocaleDateString('pt-BR')};
+  salvar();
+  res.json({codigo:c})
+});
 app.post('/api/pedido/pagamento',(req,res)=>{if(db.pedidos[req.body.codigo])db.pedidos[req.body.codigo].pagamento=req.body.pagamento;salvar();res.json({ok:true})});
 app.post('/api/pedido/status',(req,res)=>{if(db.pedidos[req.body.codigo])db.pedidos[req.body.codigo].status=req.body.status;salvar();res.json({ok:true})});
 
