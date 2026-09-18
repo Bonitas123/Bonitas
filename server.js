@@ -25,7 +25,6 @@ function salvar(){fs.writeFileSync('data.json',JSON.stringify(db,null,2))}
 
 // ===== API NUVEM - PRODUTOS =====
 app.get('/api/dados',(req,res)=> res.json(db));
-
 app.post('/api/dados',(req,res)=>{
   db.produtos = req.body.produtos || db.produtos;
   db.categorias = req.body.categorias || db.categorias;
@@ -36,10 +35,14 @@ app.post('/api/dados',(req,res)=>{
   res.json({ok:true});
 });
 
-// ===== SEUS PEDIDOS =====
+// ===== PEDIDOS - CORRIGIDO PRA SEU ADMIN NOVO =====
+app.get('/api/pedidos',(req,res)=>{
+  // seu admin espera array, seu db é objeto {codigo: pedido}
+  let lista = Object.values(db.pedidos||{});
+  res.json(lista);
+});
 app.get('/api/todos-pedidos',(req,res)=>res.json(db.pedidos||{}));
 
-// ROTA NOVA QUE FALTAVA - PRA SEU ACOMPANHAR.HTML ORIGINAL FUNCIONAR
 app.get('/api/pedido/:codigo',(req,res)=>{
   let c = req.params.codigo.toUpperCase();
   let p = db.pedidos[c];
@@ -48,9 +51,8 @@ app.get('/api/pedido/:codigo',(req,res)=>{
 });
 
 app.post('/api/pedido',(req,res)=>{
-  const c='B'+Math.floor(1000+Math.random()*9000);
-  // mantém tudo que vem do site: nome, cliente, itens, total etc
-  db.pedidos[c]={codigo:c,...req.body,status:req.body.status||'Preparando',pagamento:req.body.pagamento||'Falta pagar',data:new Date().toLocaleDateString('pt-BR')};
+  const c='BN'+Math.floor(1000+Math.random()*9000);
+  db.pedidos[c]={codigo:c,...req.body,status:req.body.status||'Preparando',pagamento:req.body.pagamento||req.body.pag||'Falta pagar',data:new Date().toLocaleString('pt-BR')};
   salvar();
   res.json({codigo:c})
 });
@@ -58,8 +60,11 @@ app.post('/api/pedido/pagamento',(req,res)=>{if(db.pedidos[req.body.codigo])db.p
 app.post('/api/pedido/status',(req,res)=>{if(db.pedidos[req.body.codigo])db.pedidos[req.body.codigo].status=req.body.status;salvar();res.json({ok:true})});
 
 // ROTAS
-app.get('/admin',(req,res)=>res.sendFile(path.join(__dirname,'admin','index.html')));
-app.get('/acompanhar',(req,res)=>res.sendFile(path.join(__dirname,'acompanhar.html')));
+app.get('/admin',(req,res)=>{
+  if(fs.existsSync(path.join(__dirname,'admin','index.html'))) return res.sendFile(path.join(__dirname,'admin','index.html'));
+  if(fs.existsSync(path.join(__dirname,'admin.html'))) return res.sendFile(path.join(__dirname,'admin.html'));
+  res.sendFile(path.join(__dirname,'index.html'));
+});
 app.get('/',(req,res)=>res.sendFile(path.join(__dirname,'index.html')));
 
 app.listen(process.env.PORT||3000,'0.0.0.0',()=>console.log('BONITAS OK'));
