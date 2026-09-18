@@ -5,7 +5,6 @@
 <style>
 *{box-sizing:border-box;margin:0;font-family:Inter}
 body{background:#fff8fb;display:flex;min-height:100vh;overflow-x:hidden}
-/* FUNDO BONITO COM IMAGEM */
 #login{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1400&q=80') center/cover no-repeat}
 #login::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,94,176,.5),rgba(138,23,64,.7))}
 #login::after{content:'';position:absolute;inset:0;background:rgba(255,245,247,.25);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -44,13 +43,28 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <a id="m-geral" onclick="showPage('geral')">🏠 Visão geral</a>
 <a id="m-prod" class="ativo" onclick="showPage('prod')">👚 Produtos</a>
 <a id="m-cat" onclick="showPage('cat')">📂 Categorias</a>
+<!-- V14 CORES - ADICIONADO -->
+<a id="m-cores" onclick="showPage('cores')">🎨 Cores</a>
 <a id="m-conf" onclick="showPage('conf')">⚙️ Configurações</a>
 </nav></div><a onclick="sair()" style="color:#8a6a78;font-size:13px;cursor:pointer">↩ Sair da conta</a></aside>
 
 <main>
-<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Visão geral</h1><div class="card"><b id="totalProd">0 produtos</b> • <b id="totalCat">0 categorias</b></div></div>
+<div id="p-geral" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Visão geral</h1><div class="card"><b id="totalProd">0 produtos</b> • <b id="totalCat">0 categorias</b> • <b id="totalCores">0 cores</b></div></div>
 <div id="p-prod"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Produtos</h1><button class="btnDark" onclick="abrirModalProd()">+ Novo produto</button></div><div id="listaProd" class="card"></div></div>
 <div id="p-cat" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Categorias</h1><div class="card"><div style="display:flex;gap:10px"><input id="novaCatNome" placeholder="Ex: Blusas, Calças, Saias"><button class="btnDark" onclick="salvarCategoria()">+ Criar</button></div><div id="listaCat" style="margin-top:14px"></div></div></div>
+
+<!-- V14 CORES - ADICIONADO - PÁGINA NOVA -->
+<div id="p-cores" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Cores da Loja</h1>
+<div class="card">
+<p style="font-size:12px;color:#8a5a6a">Crie só as cores que você tem. Ex: Rosa Bebê, Preto, Branco. Depois usa nos produtos com estoque.</p>
+<div style="display:flex;gap:10px;margin-top:14px;align-items:center">
+<input id="novaCorNome" placeholder="Nome ex: Rosa Bebê" style="flex:1">
+<input type="color" id="novaCorHex" value="#e84393" style="width:60px;height:48px;padding:4px;border-radius:12px">
+<button class="btnDark" onclick="salvarCor()">+ Criar cor</button>
+</div>
+<div id="listaCores" style="margin-top:14px"></div>
+</div>
+</div>
 
 <div id="p-conf" class="hide">
 <h1 style="font-family:Playfair Display;color:#8a1740;font-size:32px">Configurações da loja</h1>
@@ -75,32 +89,50 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 
 <div id="modalProd" class="modal hide"><div class="formCard">
 <h2 style="font-family:Playfair Display;color:#8a1740;font-size:24px">Novo produto</h2>
-<p style="background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;padding:6px 12px;border-radius:8px;font-weight:800;font-size:11px;display:inline-block;margin:8px 0">V11 COM UPLOAD 5MB + FUNDO BONITO</p>
+<p style="background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;padding:6px 12px;border-radius:8px;font-weight:800;font-size:11px;display:inline-block;margin:8px 0">V14 COM CORES + ESTOQUE</p>
 <label>Nome do produto *</label><input id="n-nome" placeholder="Ex: Calça Wide Leg Rosa">
 <label>Categoria * (só aparece o que você criou)</label><select id="n-cat"></select>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label>Preço *</label><input id="n-preco" type="number" placeholder="59.90"></div><div><label>Preço antigo (opcional)</label><input id="n-precoAnt" placeholder="99.90"></div></div>
-<label>Cores (separadas por vírgula)</label><input id="n-cores" value="Rosa, Branco, Preto">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label>Preço *</label><input id="n-preco" type="number" placeholder="59.90"></div><div><label>Status</label><select id="n-status"><option value="NORMAL">NORMAL</option><option value="NOVO">✨ NOVO</option><option value="LIMITADO">🔥 LIMITADO</option><option value="ULTIMAS">⚠️ ÚLTIMAS</option><option value="ESGOTADO">🚫 ESGOTADO</option><option value="PROMO">💖 PROMO</option></select></div></div>
 
-<label style="color:#e84393;font-weight:800;font-size:13px">📸 IMAGEM DO PRODUTO - ATÉ 5MB *</label>
+<!-- V14 CORES - ADICIONADO NO MODAL PRODUTO -->
+<div style="background:#fff5f7;padding:14px;border-radius:12px;border:1px solid #f3d6e0;margin-top:16px">
+<label style="margin-top:0;color:#8a1740">🎨 CORES COM ESTOQUE - ESCOLHA SÓ AS CORES QUE TEM</label>
+<div style="display:flex;gap:8px;margin-top:8px">
+<select id="n-corSelect" style="flex:1"></select>
+<input id="n-corEstoque" type="number" placeholder="Qtd" style="width:90px">
+<button type="button" onclick="addCorTemp()" style="background:#111;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:800">+</button>
+</div>
+<div id="n-coresLista" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
+<small style="color:#999;font-size:11px">Ex: Rosa Bebê 15 unidades, Preto 0 unidades (ESGOTADO)</small>
+</div>
+
+<label style="color:#e84393;font-weight:800;font-size:13px;margin-top:16px">📸 IMAGEM DO PRODUTO - ATÉ 5MB *</label>
 <div class="uploadArea">
 <div style="font-size:36px">📸</div>
 <b style="color:#8a1740">Clique aqui para escolher foto</b><br>
-<small style="color:#8a5a6a;font-weight:600">PNG, JPG ou WEBP até 5MB - foto não corta mais!</small>
+<small style="color:#8a5a6a;font-weight:600">PNG, JPG ou WEBP até 5MB</small>
 <input type="file" id="n-file" accept="image/*" style="margin-top:12px;width:100%;font-weight:700;cursor:pointer">
 </div>
-
-<div id="previewBox"><img id="previewImg"><p style="color:#0a8a3d;font-weight:800;margin-top:8px">✅ Imagem carregada! Pronta pra salvar</p><button onclick="removerImagem()" style="margin-top:8px;background:#ffe2ea;border:none;padding:8px 16px;border-radius:10px;color:#8a1740;font-weight:700;cursor:pointer">✕ Remover imagem</button></div>
-
-<label style="margin-top:16px">Ou cole URL da imagem (opcional)</label><textarea id="n-urls" placeholder="https://... cole aqui se quiser" rows="2"></textarea>
+<div id="previewBox"><img id="previewImg"><p style="color:#0a8a3d;font-weight:800;margin-top:8px">✅ Imagem carregada!</p><button onclick="removerImagem()" style="margin-top:8px;background:#ffe2ea;border:none;padding:8px 16px;border-radius:10px;color:#8a1740;font-weight:700;cursor:pointer">✕ Remover imagem</button></div>
+<label style="margin-top:16px">Ou cole URL da imagem</label><textarea id="n-urls" placeholder="https://..." rows="2"></textarea>
 
 <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px"><button onclick="fecharModalProd()" style="background:none;border:none;padding:12px;color:#8a6a78;cursor:pointer;font-weight:600">Cancelar</button><button class="btnPink" style="width:auto;padding:12px 28px;margin:0" onclick="salvarProdutoFinal()">SALVAR PRODUTO</button></div>
 </div></div>
 
 <script>
-const SENHA='09282326'; let imagemBase64='';
+const SENHA='09282326'; let imagemBase64=''; let coresTempProd=[];
+// ORIGINAL SEU - NÃO MEXI
 function getCategorias(){try{return JSON.parse(localStorage.getItem('bonitas_categorias')||'[]')}catch{return []}}
 function getProdutos(){try{return JSON.parse(localStorage.getItem('bonitas_produtos')||'[]')}catch{return []}}
 function getConf(){try{return JSON.parse(localStorage.getItem('bonitas_conf')||'null')}catch{return null}}
+// V14 CORES - ADICIONADO
+function getCores(){try{return JSON.parse(localStorage.getItem('bonitas_cores')||'[]')}catch{return []}}
+function salvarCor(){let nome=document.getElementById('novaCorNome').value.trim();let hex=document.getElementById('novaCorHex').value;if(!nome) return alert('Digite nome da cor');let lista=getCores();if(lista.find(c=>c.nome.toLowerCase()===nome.toLowerCase())) return alert('Cor já existe');lista.push({nome,hex});localStorage.setItem('bonitas_cores',JSON.stringify(lista));document.getElementById('novaCorNome').value='';listarCores();}
+function remCor(i){if(!confirm('Excluir cor?')) return;let l=getCores();l.splice(i,1);localStorage.setItem('bonitas_cores',JSON.stringify(l));listarCores();}
+function listarCores(){let lista=getCores();document.getElementById('listaCores').innerHTML=lista.length?lista.map((c,i)=>`<span class="catTag" style="border:2px solid ${c.hex}"><span style="width:18px;height:18px;border-radius:50%;background:${c.hex};display:inline-block;border:1px solid #0001"></span> ${c.nome} <small>${c.hex}</small> <button onclick="remCor(${i})" style="background:rgba(0,0,0,.15);border:none;width:22px;height:22px;border-radius:50%;color:#8a1740;font-weight:800;cursor:pointer">✕</button></span>`).join(''):'<p style="color:#999">Nenhuma cor ainda. Crie Rosa, Preto, Branco...</p>';document.getElementById('n-corSelect').innerHTML=lista.length?lista.map(c=>`<option value="${c.nome}|${c.hex}">${c.nome}</option>`).join(''):'<option value="">Crie cores em 🎨 Cores</option>';let el=document.getElementById('totalCores');if(el) el.innerText=lista.length+' cores';}
+function addCorTemp(){let sel=document.getElementById('n-corSelect').value;if(!sel||!sel.includes('|')) return alert('Crie cores primeiro em 🎨 Cores');let [nome,hex]=sel.split('|');let est=parseInt(document.getElementById('n-corEstoque').value);if(isNaN(est)) return alert('Digite quantidade');if(coresTempProd.find(c=>c.nome===nome)) return alert('Cor já adicionada');coresTempProd.push({nome,hex,estoque:est});document.getElementById('n-corEstoque').value='';renderCoresTemp();}
+function renderCoresTemp(){document.getElementById('n-coresLista').innerHTML=coresTempProd.map((c,i)=>`<span style="background:#fff;border:1.5px solid ${c.hex};padding:6px 12px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px;font-weight:700"><span style="width:14px;height:14px;border-radius:50%;background:${c.hex}"></span>${c.nome} (${c.estoque}) <b onclick="coresTempProd.splice(${i},1);renderCoresTemp()" style="color:red;cursor:pointer;margin-left:6px">✕</b></span>`).join('');}
+
 document.getElementById('n-file').addEventListener('change',function(e){
  let file=e.target.files[0]; if(!file) return;
  if(file.size>5*1024*1024){ alert('❌ Imagem muito grande! Máximo 5MB. Sua imagem tem '+(file.size/1024/1024).toFixed(2)+'MB'); this.value=''; return; }
@@ -116,13 +148,13 @@ function listarCategorias(){ let cats=getCategorias(); document.getElementById('
 function checkLogin(){ if(localStorage.getItem('bonitas_log')==='1') document.getElementById('login').style.display='none'; }
 function entrar(){ if(document.getElementById('senha').value===SENHA){ localStorage.setItem('bonitas_log','1'); document.getElementById('login').style.display='none'; showPage(localStorage.getItem('bonitas_page')||'prod'); } else document.getElementById('erro').style.display='block'; }
 function sair(){ localStorage.removeItem('bonitas_log'); location.reload(); } checkLogin();
-function showPage(p){ ['geral','prod','cat','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); document.getElementById('m-'+p).classList.add('ativo'); localStorage.setItem('bonitas_page',p); if(p==='cat') listarCategorias(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='geral'){ listarCategorias(); listarProdutos(); } }
+function showPage(p){ ['geral','prod','cat','cores','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); let menu=document.getElementById('m-'+p); if(menu) menu.classList.add('ativo'); localStorage.setItem('bonitas_page',p); if(p==='cat') listarCategorias(); if(p==='cores') listarCores(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='geral'){ listarCategorias(); listarProdutos(); listarCores(); } }
 function carregarConf(){ let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||'558399923260'; document.getElementById('c-insta').value=c.insta||'@bonitas_storemodafeminina'; document.getElementById('c-end').value=c.end||'João Pessoa - PB'; document.getElementById('c-taxa').value=c.taxa||'10.00'; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||'Segunda a sábado, 9h às 18h'; document.getElementById('c-minimo').value=c.minimo||'0.00'; document.getElementById('c-pix').value=c.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'; }
-function abrirModalProd(){ listarCategorias(); if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; } removerImagem(); document.getElementById('modalProd').classList.remove('hide'); }
+function abrirModalProd(){ listarCategorias(); listarCores(); if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; } if(!getCores().length){ alert('⚠️ Crie cores primeiro em 🎨 Cores - ex: Rosa, Preto'); showPage('cores'); return; } removerImagem(); coresTempProd=[]; renderCoresTemp(); document.getElementById('modalProd').classList.remove('hide'); }
 function fecharModalProd(){ document.getElementById('modalProd').classList.add('hide'); }
-function salvarProdutoFinal(){ let nome=document.getElementById('n-nome').value.trim(); if(!nome) return alert('Digite o nome do produto'); let foto=imagemBase64||document.getElementById('n-urls').value.trim(); if(!foto) return alert('⚠️ Escolha uma imagem até 5MB! Clique no quadrado rosa 📸'); let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',precoAnt:document.getElementById('n-precoAnt').value,foto,cores:document.getElementById('n-cores').value}; let l=getProdutos(); l.push(prod); localStorage.setItem('bonitas_produtos',JSON.stringify(l)); alert('✅ Produto salvo com foto!'); fecharModalProd(); listarProdutos(); }
-function listarProdutos(){ let l=getProdutos(); document.getElementById('totalProd').innerText=l.length+' produtos'; document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> • R$ ${p.preco}</span></span><button onclick="let a=getProdutos();a.splice(${i},1);localStorage.setItem('bonitas_produtos',JSON.stringify(a));listarProdutos()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>'; }
+function salvarProdutoFinal(){ let nome=document.getElementById('n-nome').value.trim(); if(!nome) return alert('Digite o nome do produto'); let foto=imagemBase64||document.getElementById('n-urls').value.trim(); if(!foto) return alert('⚠️ Escolha uma imagem até 5MB!'); if(coresTempProd.length===0) return alert('⚠️ Adicione pelo menos 1 cor com estoque! Ex: Rosa 15'); let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',status:document.getElementById('n-status').value||'NORMAL',foto,coresLista:coresTempProd,cores:coresTempProd.map(c=>c.nome).join(',')}; let l=getProdutos(); l.push(prod); localStorage.setItem('bonitas_produtos',JSON.stringify(l)); alert('✅ Produto salvo com cores e estoque!'); fecharModalProd(); listarProdutos(); }
+function listarProdutos(){ let l=getProdutos(); document.getElementById('totalProd').innerText=l.length+' produtos'; document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> ${p.status?`<small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px;margin-left:4px">${p.status}</small>`:''} • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}</span></span><button onclick="let a=getProdutos();a.splice(${i},1);localStorage.setItem('bonitas_produtos',JSON.stringify(a));listarProdutos()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>'; }
 function salvarConf(){ let c={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; localStorage.setItem('bonitas_conf',JSON.stringify(c)); alert('✅ Configurações salvas!'); }
 let paginaSalva=localStorage.getItem('bonitas_page')||'prod'; if(localStorage.getItem('bonitas_log')==='1') showPage(paginaSalva);
-listarCategorias(); listarProdutos(); carregarConf();
+listarCategorias(); listarProdutos(); listarCores(); carregarConf();
 </script></body></html>
