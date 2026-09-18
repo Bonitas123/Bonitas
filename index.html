@@ -14,7 +14,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 #hero{position:relative;height:520px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:#8a1740}
 #hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#8a174055 0%,#fff5f7cc 75%,#fff5f7 100%)}
-#hero .content{position:relative;z-index:2;max-width:600px;padding:20px}
+#hero.content{position:relative;z-index:2;max-width:600px;padding:20px}
 #hero h1{font-family:Playfair Display;font-size:80px;color:#8a1740;line-height:.9;font-weight:800;text-shadow:0 2px 20px #fff}
 #hero p{letter-spacing:7px;color:#8a1740;font-weight:800;margin-top:10px;font-size:12px}
 .buscaWrap{margin:24px auto 0;background:#fff;border-radius:50px;display:flex;align-items:center;padding:6px 6px 6px 20px;box-shadow:0 12px 30px #8a174022;max-width:560px;border:1px solid #f3d6e0}
@@ -23,27 +23,20 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .layout{max-width:1320px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:300px 1fr;gap:24px}
 .filtros{background:#fff;border-radius:22px;padding:20px;border:1px solid #f5d6e0;position:sticky;top:90px;height:fit-content}
 #grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-/* CARD FIXO - NÃO MEXE MAIS AO ROLAR */
 .card{background:#fff;border-radius:22px;overflow:hidden;border:1px solid #f3d6e0;box-shadow:0 8px 24px #0001;cursor:pointer;display:flex;flex-direction:column;will-change:auto}
-.card .imgBox{position:relative;background:#fff;width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.card .imgBox img{width:100%;height:100%;object-fit:contain;object-position:center top;background:#fff;display:block}
+.card.imgBox{position:relative;background:#fff;width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card.imgBox img{width:100%;height:100%;object-fit:contain;object-position:center top;background:#fff;display:block}
 .tag{position:absolute;top:12px;right:12px;background:#ffd1dc;color:#8a1740;font-size:10px;padding:6px 12px;border-radius:20px;font-weight:800}
 .cardInfo{padding:14px 14px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto}
 .preco{color:#8a1740;font-weight:800;font-size:16px}
 .add{background:#e84393;color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer;flex-shrink:0}
 .tam button{padding:9px;border:1.5px solid #f0c6d3;background:#f9f0f3;border-radius:10px;cursor:pointer;font-weight:600}
 .tam button.ativo{background:#fde2ea;border-color:#e84393;color:#8a1740;font-weight:800}
-/* hover só no PC */
-@media(hover:hover){
-.card:hover{transform:translateY(-4px);box-shadow:0 16px 36px #8a174022}
-.card:hover .imgBox img{transform:scale(1.02)}
-.card .imgBox img{transition:transform .25s}
-.card{transition:transform .2s,box-shadow .2s}
-}
+@media(hover:hover){.card:hover{transform:translateY(-4px);box-shadow:0 16px 36px #8a174022}.card:hover.imgBox img{transform:scale(1.02)}.card.imgBox img{transition:transform.25s}.card{transition:transform.2s,box-shadow.2s}}
 #sobreLoja{max-width:1320px;margin:60px auto;padding:0 20px}
-#sobreLoja .box{padding:60px 36px;background:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200') center/cover no-repeat;border-radius:28px;position:relative;overflow:hidden}
-#sobreLoja .box::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#fff 45%,#ffffffbb 100%)}
-#sobreLoja .txt{position:relative;z-index:2;max-width:560px}
+#sobreLoja.box{padding:60px 36px;background:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200') center/cover no-repeat;border-radius:28px;position:relative;overflow:hidden}
+#sobreLoja.box::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#fff 45%,#ffffffbb 100%)}
+#sobreLoja.txt{position:relative;z-index:2;max-width:560px}
 #sobreLoja h2{font-family:Playfair Display;font-size:46px;color:#8a1740;line-height:1}
 #carrinhoModal{position:fixed;right:0;top:0;width:420px;max-width:100vw;height:100dvh;background:#fff;z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:.35s cubic-bezier(.2,.8,.2,1);box-shadow:-20px 0 60px #0002}
 #carrinhoModal.aberto{transform:translateX(0)}
@@ -62,18 +55,11 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 #cartBtn{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:15px 24px;border-radius:40px;font-weight:800;cursor:pointer;z-index:90;box-shadow:0 12px 30px #0004;display:flex;align-items:center;gap:8px}
 #whatsFloat{position:fixed;left:18px;bottom:18px;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px #25d36666;z-index:90;text-decoration:none;font-size:28px}
 @media(max-width:1024px){#grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:280px 1fr}}
-@media(max-width:760px){
-header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}
-#hero{height:420px}#hero h1{font-size:46px}
-.layout{grid-template-columns:1fr;padding:14px;gap:14px}.filtros{position:relative;top:0}
-#grid{grid-template-columns:repeat(2,1fr);gap:10px}
-.card{border-radius:16px}.cardInfo{padding:10px}
-#sobreLoja{margin:30px auto}#sobreLoja .box{padding:32px 20px;border-radius:20px}#sobreLoja h2{font-size:32px}
-#carrinhoModal{width:100vw}
-.detalheCard{grid-template-columns:1fr;max-height:92dvh;overflow:auto}
-#cartBtn{right:12px;bottom:12px;padding:12px 18px;font-size:14px}
-#whatsFloat{left:12px;bottom:12px;width:50px;height:50px;font-size:24px}
-}
+@media(max-width:760px){header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}#hero{height:420px}#hero h1{font-size:46px}.layout{grid-template-columns:1fr;padding:14px;gap:14px}.filtros{position:relative;top:0}#grid{grid-template-columns:repeat(2,1fr);gap:10px}.card{border-radius:16px}.cardInfo{padding:10px}#sobreLoja{margin:30px auto}#sobreLoja.box{padding:32px 20px;border-radius:20px}#sobreLoja h2{font-size:32px}#carrinhoModal{width:100vw}.detalheCard{grid-template-columns:1fr;max-height:92dvh;overflow:auto}#cartBtn{right:12px;bottom:12px;padding:12px 18px;font-size:14px}#whatsFloat{left:12px;bottom:12px;width:50px;height:50px;font-size:24px}}
+/* V14 - SÓ ISSO ADICIONADO */
+.tag2{position:absolute;top:12px;left:12px;color:#fff;font-size:10px;padding:6px 12px;border-radius:20px;font-weight:800;z-index:2}
+.corDot{width:12px;height:12px;border-radius:50%;border:1px solid #0002;display:inline-block}
+.estoqueTxt{font-size:10px;color:#8a1740;font-weight:700;margin-top:4px;display:block}
 </style>
 </head>
 <body>
@@ -84,7 +70,7 @@ header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}
 <div id="grid"></div>
 </div>
 <div id="sobreLoja"><div class="box"><div class="txt"><h2>Mais sobre a BONITAS</h2><p style="margin:16px 0;line-height:1.6;color:#5a2a3a">Moda feminina de João Pessoa - PB para todo Brasil. Peças escolhidas a mão, tecido confortável, caimento perfeito e preço justo.</p><p style="font-weight:800;color:#8a1740">✓ Envio rápido ✓ Troca fácil ✓ Atendimento no Whats</p></div></div></div>
-<div id="detalheModal" onclick="if(event.target===this) fecharDetalhe()"><div class="detalheCard"><img id="detImg" src=""><div style="padding:24px;overflow:auto"><span id="detCat" style="background:#ffe2ea;color:#e84393;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:800"></span><h1 id="detNome" style="font-family:Playfair Display;margin:14px 0 6px;color:#8a1740;font-size:32px"></h1><b id="detPreco" style="font-size:24px;color:#111"></b><p style="color:#777;margin:12px 0">Tecido premium, não marca, veste super bem. Modelo usa tamanho P.</p><b style="font-size:11px;letter-spacing:1px">TAMANHO</b><div id="detTams" style="display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap"></div><b style="font-size:11px;letter-spacing:1px">COR</b><div id="detCores" style="display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap"></div><button onclick="addDoDetalhe()" style="background:#e84393;color:#fff;width:100%;padding:18px;border:none;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;margin-top:8px">+ ADICIONAR AO CARRINHO</button></div></div></div>
+<div id="detalheModal" onclick="if(event.target===this) fecharDetalhe()"><div class="detalheCard"><img id="detImg" src=""><div style="padding:24px;overflow:auto"><span id="detCat" style="background:#ffe2ea;color:#e84393;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:800"></span><span id="detStatus" style="margin-left:6px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:800;color:#fff;display:none"></span><h1 id="detNome" style="font-family:Playfair Display;margin:14px 0 6px;color:#8a1740;font-size:32px"></h1><b id="detPreco" style="font-size:24px;color:#111"></b><div id="detEstoqueInfo" style="margin:8px 0;background:#fff5f7;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;color:#8a1740"></div><p style="color:#777;margin:12px 0">Tecido premium, não marca, veste super bem. Modelo usa tamanho P.</p><b style="font-size:11px;letter-spacing:1px">TAMANHO</b><div id="detTams" style="display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap"></div><b style="font-size:11px;letter-spacing:1px">COR - COM ESTOQUE</b><div id="detCores" style="display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap"></div><button onclick="addDoDetalhe()" style="background:#e84393;color:#fff;width:100%;padding:18px;border:none;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;margin-top:8px">+ ADICIONAR AO CARRINHO</button></div></div></div>
 <div id="carrinhoModal">
 <div style="padding:20px 22px;display:flex;justify-content:space-between;border-bottom:1px solid #eee;flex-shrink:0"><h2 style="font-family:Playfair Display;color:#8a1740">Seu carrinho</h2><button onclick="fecharCarrinho()" style="background:none;border:none;font-size:22px;cursor:pointer">✕</button></div>
 <div class="carrinhoMeio">
@@ -108,21 +94,81 @@ header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}
 <div id="cartBtn" onclick="abrirCarrinho()">🛒 R$ <span id="tot">0.00</span></div>
 <a id="whatsFloat" href="https://wa.me/558399923260" target="_blank">💬</a>
 <script>
-let car=[], tamSel='P', paySel='', parcSel=3, prodSel=null, corSel='Rosa';
+let car=[], tamSel='P', paySel='', parcSel=3, prodSel=null, corSel='Rosa', corEstoqueSel=99, corHexSel='#e84393';
 function getConf(){let c=JSON.parse(localStorage.getItem('bonitas_conf')||'null');if(!c||!c.pix)return{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'};return c;}
 function getCategorias(){return JSON.parse(localStorage.getItem('bonitas_categorias')||'[]')}
 function getProds(){return JSON.parse(localStorage.getItem('bonitas_produtos')||'[]')}
 function setTam(el,t){document.querySelectorAll('.tam button').forEach(b=>b.classList.remove('ativo'));if(el)el.classList.add('ativo');tamSel=t;render()}
 function renderFiltros(){let cats=getCategorias();document.getElementById('filtroCats').innerHTML=cats.length?cats.map(c=>`<label style="display:block;margin:6px 0;font-size:13px"><input type="checkbox" class="fcat" value="${c}" checked onchange="render()"> ${c}</label>`).join(''):'<small style="color:#999">Nenhuma categoria</small>'}
-function render(){let lista=getProds();let busca=document.getElementById('busca').value.toLowerCase();let cats=[...document.querySelectorAll('.fcat:checked')].map(c=>c.value);let pmax=Number(document.getElementById('pmax').value);lista=lista.filter(p=>{if(busca&&!p.nome.toLowerCase().includes(busca))return false;if(cats.length&&!cats.includes(p.cat))return false;if(Number(p.preco)>pmax)return false;return true});let grid=document.getElementById('grid');if(!lista.length){grid.innerHTML=`<div class="vazio"><div style="font-size:48px">🛍️</div><h3>Nenhum produto</h3><p>Crie no admin no mesmo celular</p></div>`;return}grid.innerHTML=lista.map(p=>`<div class="card" onclick='openDetalhe(${JSON.stringify(p).replace(/'/g,"&#39;")})'><div class="imgBox"><img src="${p.foto}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x500?text=BONITAS'"><span class="tag">${p.cat||'BONITAS'}</span></div><div class="cardInfo"><div><b style="font-size:12px;text-transform:uppercase">${p.nome}</b><br><span class="preco">R$ ${Number(p.preco).toFixed(2).replace('.',',')}</span></div><button class="add" onclick="event.stopPropagation();add(${JSON.stringify(p).replace(/'/g,"&#39;")})">+</button></div></div>`).join('');}
-function openDetalhe(p){prodSel=typeof p==='string'?JSON.parse(p):p;document.getElementById('detImg').src=prodSel.foto;document.getElementById('detNome').innerText=prodSel.nome;document.getElementById('detCat').innerText=prodSel.cat;document.getElementById('detPreco').innerText='R$ '+Number(prodSel.preco).toFixed(2).replace('.',',');let cores=(prodSel.cores||'Rosa,Branco').split(',');document.getElementById('detTams').innerHTML=['PP','P','M','G','GG'].map(t=>`<button onclick="tamSel='${t}'" style="padding:8px 14px;border:1px solid #eee;border-radius:10px;background:#fff;cursor:pointer">${t}</button>`).join('');document.getElementById('detCores').innerHTML=cores.map(c=>`<button onclick="corSel='${c.trim()}'" style="padding:8px 14px;border:1px solid #eee;border-radius:20px;background:#fff;cursor:pointer">${c.trim()}</button>`).join('');document.getElementById('detalheModal').classList.add('aberto')}
+function render(){
+ let lista=getProds();
+ let busca=document.getElementById('busca').value.toLowerCase();
+ let cats=[...document.querySelectorAll('.fcat:checked')].map(c=>c.value);
+ let pmax=Number(document.getElementById('pmax').value);
+ lista=lista.filter(p=>{if(busca&&!p.nome.toLowerCase().includes(busca))return false;if(cats.length&&!cats.includes(p.cat))return false;if(Number(p.preco)>pmax)return false;return true});
+ let grid=document.getElementById('grid');
+ if(!lista.length){grid.innerHTML=`<div class="vazio"><div style="font-size:48px">🛍️</div><h3>Nenhum produto</h3><p>Crie no admin no mesmo celular</p></div>`;return}
+ grid.innerHTML=lista.map(p=>{
+  let total = p.coresLista? p.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0) : 0;
+  let statusTag = '';
+  if(p.status && p.status!=='NORMAL'){
+    let bg = p.status=='NOVO'?'#e84393':p.status=='LIMITADO'?'#ff6b00':p.status=='ESGOTADO'?'#111':p.status=='PROMO'?'#8a1740':'#d00000';
+    statusTag = `<span class="tag2" style="background:${bg}">${p.status}</span>`;
+  }
+  // V14 - mostra estoque e bolinhas
+  let estoqueHtml = '';
+  if(p.coresLista){
+    estoqueHtml = `<span class="estoqueTxt">📦 ${total} em estoque • ${p.coresLista.map(c=>`<span class="corDot" style="background:${c.hex}"></span>${c.nome}(${c.estoque})`).join(' ')}</span>`;
+  } else if(p.cores){
+    estoqueHtml = `<span class="estoqueTxt">🎨 ${p.cores}</span>`;
+  }
+  return `<div class="card" onclick='openDetalhe(${JSON.stringify(p).replace(/'/g,"&#39;")})'><div class="imgBox"><img src="${p.foto}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x500?text=BONITAS'"><span class="tag">${p.cat||'BONITAS'}</span>${statusTag}</div><div class="cardInfo"><div><b style="font-size:12px;text-transform:uppercase">${p.nome}</b><br><span class="preco">R$ ${Number(p.preco).toFixed(2).replace('.',',')}</span>${estoqueHtml}</div><button class="add" onclick="event.stopPropagation();add(${JSON.stringify(p).replace(/'/g,"&#39;")})">+</button></div></div>`
+ }).join('');
+}
+function openDetalhe(p){
+ prodSel=typeof p==='string'?JSON.parse(p):p;
+ document.getElementById('detImg').src=prodSel.foto;
+ document.getElementById('detNome').innerText=prodSel.nome;
+ document.getElementById('detCat').innerText=prodSel.cat;
+ document.getElementById('detPreco').innerText='R$ '+Number(prodSel.preco).toFixed(2).replace('.',',');
+ let stEl=document.getElementById('detStatus');
+ if(prodSel.status && prodSel.status!=='NORMAL'){stEl.innerText=prodSel.status;stEl.style.display='inline-block';stEl.style.background=prodSel.status=='NOVO'?'#e84393':prodSel.status=='ESGOTADO'?'#111':'#8a1740';}else stEl.style.display='none';
+ let total = prodSel.coresLista? prodSel.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0) : 0;
+ document.getElementById('detEstoqueInfo').innerText = prodSel.coresLista? `📦 Total em estoque: ${total} unidades | ${prodSel.coresLista.length} cores` : '';
+ document.getElementById('detTams').innerHTML=['PP','P','M','G','GG'].map(t=>`<button onclick="tamSel='${t}'" style="padding:8px 14px;border:1px solid #eee;border-radius:10px;background:#fff;cursor:pointer">${t}</button>`).join('');
+ let cores = prodSel.coresLista || (prodSel.cores||'Rosa').split(',').map(c=>({nome:c.trim(),hex:'#e84393',estoque:99}));
+ document.getElementById('detCores').innerHTML=cores.map(c=>{
+   let esg = parseInt(c.estoque)==0;
+   return `<button onclick="corSel='${c.nome}';corEstoqueSel=${c.estoque};corHexSel='${c.hex}';document.getElementById('detEstoqueInfo').innerText='Cor ${c.nome}: ${c.estoque} unidades ${esg?'ESGOTADO':''}'" ${esg?'disabled':''} style="padding:8px 14px;border:1px solid #eee;border-radius:20px;background:${esg?'#f0f0f0':'#fff'};cursor:${esg?'not-allowed':'pointer'};opacity:${esg?0.5:1};display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:50%;background:${c.hex};display:inline-block;border:1px solid #0001"></span>${c.nome} (${c.estoque}) ${esg?'ESGOTADO':''}</button>`
+ }).join('');
+ document.getElementById('detalheModal').classList.add('aberto')
+}
 function fecharDetalhe(){document.getElementById('detalheModal').classList.remove('aberto')}
 function addDoDetalhe(){add(prodSel);fecharDetalhe()}
-function add(p){let o=typeof p==='string'?JSON.parse(p):p;let ex=car.find(x=>x.id===o.id && x.tam===tamSel);if(ex)ex.qtd++;else car.push({...o,tam:tamSel,cor:corSel,qtd:1});atualizarCarrinho();abrirCarrinho()}
+function add(p){
+ let o=typeof p==='string'?JSON.parse(p):p;
+ if(o.status=='ESGOTADO') return alert('Produto ESGOTADO');
+ // V14 - verifica estoque por cor
+ let corUsar = corSel;
+ let estoqueUsar = corEstoqueSel;
+ let hexUsar = corHexSel;
+ if(o.coresLista){
+   if(!o.coresLista.find(c=>c.nome===corSel)){
+     corUsar = o.coresLista[0].nome;
+     estoqueUsar = o.coresLista[0].estoque;
+     hexUsar = o.coresLista[0].hex;
+   }
+ }
+ let ja = car.filter(x=>x.id===o.id && x.cor===corUsar).reduce((a,b)=>a+b.qtd,0);
+ if(ja >= estoqueUsar) return alert(`Só temos ${estoqueUsar} da cor ${corUsar} em estoque!`);
+ let ex=car.find(x=>x.id===o.id && x.tam===tamSel && x.cor===corUsar);
+ if(ex) ex.qtd++; else car.push({...o,tam:tamSel,cor:corUsar,corEstoque:estoqueUsar,corHex:hexUsar,qtd:1});
+ atualizarCarrinho();abrirCarrinho()
+}
 function abrirCarrinho(){document.getElementById('carrinhoModal').classList.add('aberto')}
 function fecharCarrinho(){document.getElementById('carrinhoModal').classList.remove('aberto')}
-function atualizarCarrinho(){document.getElementById('qtd').innerText=car.reduce((a,b)=>a+b.qtd,0);let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let taxa=Number(getConf().taxa||10);document.getElementById('subtotalCart').innerText='R$ '+sub.toFixed(2).replace('.',',');document.getElementById('tot').innerText=(sub+taxa).toFixed(2);let div=document.getElementById('itensCarrinho');if(!car.length){div.innerHTML='<p style="padding:50px;text-align:center;color:#999">Carrinho vazio</p>';return}div.innerHTML=car.map((p,i)=>`<div class="carrinhoItem"><img src="${p.foto}" style="width:62px;height:62px;border-radius:12px;object-fit:contain;background:#fff"><div style="flex:1"><b style="font-size:12px">${p.nome}</b><br><small>${p.tam} • ${p.cor}</small><br><b>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</b><div style="display:flex;gap:8px;margin-top:6px"><button onclick="altQtd(${i},-1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">−</button><span>${p.qtd}</span><button onclick="altQtd(${i},1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">+</button></div></div><button onclick="remItem(${i})" style="background:none;border:none;color:#e84393;cursor:pointer">✕</button></div>`).join('');}
-function altQtd(i,d){car[i].qtd+=d;if(car[i].qtd<=0)car.splice(i,1);atualizarCarrinho()}
+function atualizarCarrinho(){document.getElementById('qtd').innerText=car.reduce((a,b)=>a+b.qtd,0);let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let taxa=Number(getConf().taxa||10);document.getElementById('subtotalCart').innerText='R$ '+sub.toFixed(2).replace('.',',');document.getElementById('tot').innerText=(sub+taxa).toFixed(2);let div=document.getElementById('itensCarrinho');if(!car.length){div.innerHTML='<p style="padding:50px;text-align:center;color:#999">Carrinho vazio</p>';return}div.innerHTML=car.map((p,i)=>`<div class="carrinhoItem"><img src="${p.foto}" style="width:62px;height:62px;border-radius:12px;object-fit:contain;background:#fff"><div style="flex:1"><b style="font-size:12px">${p.nome}</b><br><small>${p.tam} • <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:50%;background:${p.corHex||'#e84393'};display:inline-block"></span>${p.cor}</span> • ${p.corEstoque} em estoque</small><br><b>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</b><div style="display:flex;gap:8px;margin-top:6px"><button onclick="altQtd(${i},-1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">−</button><span>${p.qtd}/${p.corEstoque}</span><button onclick="altQtd(${i},1)" style="width:26px;height:26px;border:1px solid #eee;border-radius:8px;background:#fff;cursor:pointer">+</button></div></div><button onclick="remItem(${i})" style="background:none;border:none;color:#e84393;cursor:pointer">✕</button></div>`).join('');}
+function altQtd(i,d){let n=car[i].qtd+d;if(n<=0)car.splice(i,1);else{if(n>car[i].corEstoque) return alert('Limite estoque: '+car[i].corEstoque);car[i].qtd=n;}atualizarCarrinho()}
 function remItem(i){car.splice(i,1);atualizarCarrinho()}
 function mostrarPagamento(){if(!car.length)return alert('Carrinho vazio');document.getElementById('pagamentos').style.display='block';document.getElementById('btnIrPag').style.display='none';document.getElementById('btnFinal').style.display='block'}
 function selPay(el,tipo){document.querySelectorAll('.payOpt').forEach(o=>o.classList.remove('ativo'));el.classList.add('ativo');paySel=tipo;document.getElementById('pixArea').style.display='none';document.getElementById('parcelaBox').style.display='none';let conf=getConf();let total=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0)+Number(conf.taxa||10);if(tipo==='pix'){document.getElementById('pixArea').style.display='block';document.getElementById('pixChaveTxt').innerText=conf.pix;document.getElementById('pixTotal').innerText='Total: R$ '+total.toFixed(2).replace('.',',');document.getElementById('pixQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(conf.pix)}`}if(tipo==='credito'){document.getElementById('parcelaBox').style.display='block';atualizarParcelas()}}
@@ -135,8 +181,8 @@ function finalizarPedido(){
   let frete=Number(conf.taxa||0);
   let total=sub+frete;
   let data=new Date().toLocaleString('pt-BR');
-  let itensTxt = car.map(p=>`${p.qtd}x ${p.nome.toUpperCase()}\nTamanho: ${p.tam}\nCor: ${p.cor}\nR$ ${Number(p.preco).toFixed(2).replace('.',',')}`).join('\n\n');
-  let pagTxt = paySel==='credito' ? `CRÉDITO ${parcSel}X` : paySel.toUpperCase();
+  let itensTxt = car.map(p=>`${p.qtd}x ${p.nome.toUpperCase()}\nTamanho: ${p.tam}\nCor: ${p.cor} (${p.qtd}/${p.corEstoque} em estoque)\nR$ ${Number(p.preco).toFixed(2).replace('.',',')}`).join('\n\n');
+  let pagTxt = paySel==='credito'? `CRÉDITO ${parcSel}X` : paySel.toUpperCase();
   let msg = `#### NOVO PEDIDO BONITAS ####\n\n📅 ${data}\n\n\n------- ITENS -------\n\n${itensTxt}\n\n---------------------\n\nSUBTOTAL: R$ ${sub.toFixed(2).replace('.',',')}\nDESCONTO: R$ 0,00\nFRETE: R$ ${frete.toFixed(2).replace('.',',')}\nTOTAL: R$ ${total.toFixed(2).replace('.',',')}\n\nPAGAMENTO: ${pagTxt}\n\nPedido realizado pelo site BONITAS 💗`;
   window.open(`https://wa.me/${conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');
   car=[]; atualizarCarrinho(); fecharCarrinho();
@@ -144,4 +190,4 @@ function finalizarPedido(){
 renderFiltros();render();
 </script>
 </body>
-  </html>
+</html>
