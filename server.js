@@ -37,7 +37,6 @@ function salvar(){
   }catch(e){console.log('Erro salvar',e.message)}
 }
 
-// ===== API NUVEM =====
 app.get('/api/dados',(req,res)=>{
   res.set('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma','no-cache');
@@ -53,7 +52,6 @@ app.post('/api/dados',(req,res)=>{
   res.json({ok:true, qtd:db.produtos.length});
 });
 
-// ===== PEDIDOS =====
 app.get('/api/pedidos',(req,res)=>{
   res.set('Cache-Control','no-store');
   res.json(Object.values(db.pedidos||{}));
@@ -70,16 +68,34 @@ app.post('/api/pedido',(req,res)=>{
   res.json({codigo:c});
 });
 
-// ADICIONADO - GARANTE BANNER ROSA (NÃO MUDA NADA DO QUE JÁ TINHA)
+// ADICIONADO - GARANTE BANNER ROSA
 app.get('/banner-rosa.jpg',(req,res)=>{
   let p1=path.join(__dirname,'banner-rosa.jpg');
   let p2=path.join(__dirname,'public','banner-rosa.jpg');
   if(fs.existsSync(p1)) return res.sendFile(p1);
   if(fs.existsSync(p2)) return res.sendFile(p2);
-  res.status(404).send('Banner não encontrado, suba banner-rosa.jpg na raiz');
+  res.status(404).send('Banner não encontrado');
 });
 
-// ROTAS
+// ADICIONADO - CARTÃO PAGO - APARECE PAGO NO ADMIN
+app.post('/api/pagar-cartao-bonitas',(req,res)=>{
+  try{
+    let {total, nome, numero, parcelas, pedido} = req.body;
+    const c='BN'+Math.floor(1000+Math.random()*9000);
+    db.pedidos[c]={
+      codigo:c,
+    ...pedido,
+      pagamento:`CARTÃO ${parcelas}X - Final ${numero.slice(-4)} - PAGO`,
+      status:'PAGO 💳',
+      data:new Date().toLocaleString('pt-BR'),
+      cartao_final: numero.slice(-4),
+      pago:true
+    };
+    salvar();
+    res.json({aprovado:true, codigo:c});
+  }catch(e){ res.json({aprovado:false, erro:e.message}); }
+});
+
 app.get('/admin',(req,res)=>{
   if(fs.existsSync(path.join(__dirname,'admin','index.html'))) return res.sendFile(path.join(__dirname,'admin','index.html'));
   if(fs.existsSync(path.join(__dirname,'admin.html'))) return res.sendFile(path.join(__dirname,'admin.html'));
