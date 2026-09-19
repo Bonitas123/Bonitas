@@ -84,7 +84,7 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 </div>
 </main>
 <div id="modalProd" class="modal hide"><div class="formCard">
-<h2 style="font-family:Playfair Display;color:#8a1740;font-size:24px">Novo produto</h2>
+<h2 id="tituloModalProd" style="font-family:Playfair Display;color:#8a1740;font-size:24px">Novo produto</h2>
 <p style="background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;padding:6px 12px;border-radius:8px;font-weight:800;font-size:11px;display:inline-block;margin:8px 0">V14 COM CORES + ESTOQUE - NUVEM</p>
 <label>Nome do produto *</label><input id="n-nome" placeholder="Ex: Calça Wide Leg Rosa">
 <label>Categoria * (só aparece o que você criou)</label><select id="n-cat"></select>
@@ -104,7 +104,6 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <div id="n-coresLista" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
 </div>
 
-<!-- ADICIONADO AGORA - IGUAL SUA FOTO -->
 <div id="areaGrade" style="display:none;margin-top:16px">
 <label style="font-size:15px;color:#111;font-weight:800;text-transform:none;margin:0 0 4px 0">Estoque por tamanho e cor</label>
 <div id="gradeEstoque" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px"></div>
@@ -120,12 +119,12 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 </div>
 <div id="previewBox"><img id="previewImg"><p style="color:#0a8a3d;font-weight:800;margin-top:8px">✅ Imagem carregada!</p><button onclick="removerImagem()" style="margin-top:8px;background:#ffe2ea;border:none;padding:8px 16px;border-radius:10px;color:#8a1740;font-weight:700;cursor:pointer">✕ Remover imagem</button></div>
 <label style="margin-top:16px">Ou cole URL da imagem</label><textarea id="n-urls" placeholder="https://..." rows="2"></textarea>
-<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px"><button onclick="fecharModalProd()" style="background:none;border:none;padding:12px;color:#8a6a78;cursor:pointer;font-weight:600">Cancelar</button><button class="btnPink" style="width:auto;padding:12px 28px;margin:0" onclick="salvarProdutoFinal()">SALVAR NA NUVEM</button></div>
+<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px"><button onclick="fecharModalProd()" style="background:none;border:none;padding:12px;color:#8a6a78;cursor:pointer;font-weight:600">Cancelar</button><button id="btnSalvarProd" class="btnPink" style="width:auto;padding:12px 28px;margin:0" onclick="salvarProdutoFinal()">SALVAR NA NUVEM</button></div>
 </div></div>
 <script>
 const SENHA='09282326'; const TAMANHOS=['PP','P','M','G','GG']; let imagemBase64=''; let coresTempProd=[];
 let DB={produtos:[],categorias:[],cores:[],conf:{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3',nomeLoja:'BONITAS',insta:'@bonitas_storemodafeminina',end:'João Pessoa - PB',estoque:'3',horario:'Segunda a sábado, 9h às 18h',minimo:'0.00'},pedidos:{}};
-let PEDIDOS=[];
+let PEDIDOS=[]; let editandoId=null;
 async function carregarNuvem(){
  try{
   let r=await fetch('/api/dados'); let d=await r.json();
@@ -143,14 +142,14 @@ async function carregarPedidos(){
   let div=document.getElementById('listaPed');
   if(!PEDIDOS.length){div.innerHTML='<p style="color:#999;text-align:center;padding:20px">Nenhum pedido ainda. Faça um pedido teste no site que aparece aqui.</p>';return;}
   div.innerHTML=PEDIDOS.slice().reverse().map(p=>`
-  <div class="pedidoItem">
-    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b style="color:#e84393;font-size:16px">📦 Pedido</b><small style="background:#ffe2ea;padding:4px 10px;border-radius:20px">${p.data||''}</small></div>
+  <div class="pedidoItem" style="${p.pago||p.status?.includes('PAGO')?'border:2px solid #0a8a3d;background:#f0fff4':''}">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b style="color:${p.pago||p.status?.includes('PAGO')?'#0a8a3d':'#e84393'};font-size:16px">${p.pago||p.status?.includes('PAGO')?'✅ PAGO':'📦 Pedido'} ${p.status||''}</b><small style="background:${p.pago?'#0a8a3d':'#ffe2ea'};color:${p.pago?'#fff':'#000'};padding:4px 10px;border-radius:20px">${p.data||''}</small></div>
     <div style="margin:12px 0;font-size:13px;line-height:1.6"><b>👤 Cliente:</b> ${p.nome||p.cliente?.nome||'-'}<br><b>📱 Whats:</b> ${p.cliente?.tel||p.tel||'-'}<br><b>📍 Endereço:</b> ${p.cliente?.end||p.end||'-'}<br>${p.cliente?.cep?'<b>📮 CEP:</b> '+p.cliente.cep:''}</div>
     <div style="background:#fff5f7;padding:10px;border-radius:12px;font-size:12px;border:1px solid #f3d6e0">${(p.itens||[]).map(it=>`• ${it.qtd}x ${it.nome} <b>Tam:${it.tam}</b> <b>Cor:${it.cor}</b> - R$ ${it.preco}`).join('<br>')||p.blusa||''}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px"><span><b>Total:</b> R$ ${p.total||''} | <b style="background:#111;color:#fff;padding:3px 8px;border-radius:8px">${p.pagamento||p.pag||''}</b></span><a href="https://wa.me/55${(p.cliente?.tel||'').replace(/\D/g,'')}" target="_blank" style="background:#25d366;color:#fff;padding:8px 16px;border-radius:20px;text-decoration:none;font-weight:800">Chamar no Whats</a></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px"><span><b>Total:</b> R$ ${p.total||''} | <b style="background:${p.pago?'#0a8a3d':'#111'};color:#fff;padding:3px 8px;border-radius:8px">${p.pagamento||p.pag||''}</b></span><a href="https://wa.me/55${(p.cliente?.tel||'').replace(/\D/g,'')}" target="_blank" style="background:#25d366;color:#fff;padding:8px 16px;border-radius:20px;text-decoration:none;font-weight:800">Chamar no Whats</a></div>
   </div>`).join('');
  }catch(e){
-  document.getElementById('listaPed').innerHTML='<p style="color:red">Erro: /api/pedidos não existe no server.js. Me mande seu server.js que eu arrumo.</p>';
+  document.getElementById('listaPed').innerHTML='<p style="color:red">Erro: /api/pedidos não existe</p>';
  }
 }
 function salvarNuvem(){
@@ -162,8 +161,6 @@ function getCategorias(){return DB.categorias} function getProdutos(){return DB.
 function salvarCor(){let nome=document.getElementById('novaCorNome').value.trim();let hex=document.getElementById('novaCorHex').value;if(!nome) return alert('Digite nome da cor');let lista=getCores();if(lista.find(c=>c.nome.toLowerCase()===nome.toLowerCase())) return alert('Cor já existe');lista.push({nome,hex});document.getElementById('novaCorNome').value=''; salvarNuvem();}
 function remCor(i){if(!confirm('Excluir cor?')) return; DB.cores.splice(i,1); salvarNuvem();}
 function listarCores(){let lista=getCores();document.getElementById('listaCores').innerHTML=lista.length?lista.map((c,i)=>`<span class="catTag" style="border:2px solid ${c.hex}"><span style="width:18px;height:18px;border-radius:50%;background:${c.hex};display:inline-block;border:1px solid #0001"></span> ${c.nome} <small>${c.hex}</small> <button onclick="remCor(${i})" style="background:rgba(0,0,0,.15);border:none;width:22px;height:22px;border-radius:50%;color:#8a1740;font-weight:800;cursor:pointer">✕</button></span>`).join(''):'<p style="color:#999">Nenhuma cor ainda. Crie Rosa, Preto, Branco...</p>';document.getElementById('n-corSelect').innerHTML=lista.length?lista.map(c=>`<option value="${c.nome}|${c.hex}">${c.nome}</option>`).join(''):'<option value="">Crie cores em 🎨 Cores</option>';let el=document.getElementById('totalCores');if(el) el.innerText=lista.length+' cores';}
-
-// ORIGINAL SEU + ADICAO DA GRADE
 function addCorTemp(){
  let sel=document.getElementById('n-corSelect').value;if(!sel||!sel.includes('|')) return alert('Crie cores primeiro em 🎨 Cores');
  let [nome,hex]=sel.split('|');
@@ -186,7 +183,15 @@ function renderGrade(){
  TAMANHOS.forEach(tam=>{
    coresTempProd.forEach(cor=>{
      let key = `${tam}_${cor.nome}`.replace(/\s/g,'_');
-     html+=`<div style="background:#fff5f7;padding:10px;border-radius:14px;border:1px solid #f3d6e0"><label style="font-size:12px;color:#111;font-weight:700;text-transform:none;margin:0 0 6px 0;display:block">${tam} / ${cor.nome}</label><input id="est_${key}" type="number" value="0" min="0" oninput="atualizarTotalGrade()" placeholder="0" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5c3ce;background:#fff"></div>`;
+     let valorExistente = 0;
+     if(editandoId){
+       let pEdit = DB.produtos.find(p=>p.id===editandoId);
+       if(pEdit && pEdit.estoqueGrade){
+         let chaveBusca = tam+' / '+cor.nome;
+         if(pEdit.estoqueGrade[chaveBusca]!==undefined) valorExistente = pEdit.estoqueGrade[chaveBusca];
+       }
+     }
+     html+=`<div style="background:#fff5f7;padding:10px;border-radius:14px;border:1px solid #f3d6e0"><label style="font-size:12px;color:#111;font-weight:700;text-transform:none;margin:0 0 6px 0;display:block">${tam} / ${cor.nome}</label><input id="est_${key}" type="number" value="${valorExistente}" min="0" oninput="atualizarTotalGrade()" placeholder="0" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5c3ce;background:#fff"></div>`;
    });
  });
  grid.innerHTML=html;
@@ -197,7 +202,6 @@ function atualizarTotalGrade(){
  document.querySelectorAll('#gradeEstoque input').forEach(inp=>{ total+=parseInt(inp.value)||0; });
  document.getElementById('totalGrade').innerText=total;
 }
-
 document.getElementById('n-file').addEventListener('change',function(e){ let file=e.target.files[0]; if(!file) return; if(file.size>5*1024*1024){ alert('❌ Imagem muito grande! Máximo 5MB. Sua imagem tem '+(file.size/1024/1024).toFixed(2)+'MB'); this.value=''; return; } let reader=new FileReader(); reader.onload=ev=>{ imagemBase64=ev.target.result; document.getElementById('previewImg').src=imagemBase64; document.getElementById('previewBox').style.display='block'; }; reader.readAsDataURL(file); });
 document.getElementById('n-urls').addEventListener('input',function(){ let url=this.value.trim(); if(url.startsWith('http')){ imagemBase64=url; document.getElementById('previewImg').src=url; document.getElementById('previewBox').style.display='block'; } });
 function removerImagem(){ imagemBase64=''; document.getElementById('n-file').value=''; document.getElementById('n-urls').value=''; document.getElementById('previewBox').style.display='none'; }
@@ -228,13 +232,43 @@ function abrirModalProd(){
  listarCategorias(); listarCores();
  if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; }
  if(!getCores().length){ alert('⚠️ Crie cores primeiro em 🎨 Cores - ex: Rosa, Preto'); showPage('cores'); return; }
- removerImagem(); coresTempProd=[]; renderCoresTemp(); renderGrade();
- document.getElementById('n-estoqueTotal').value='';
- document.getElementById('n-nome').value='';
- document.getElementById('n-preco').value='';
+ if(editandoId===null){
+   removerImagem(); coresTempProd=[]; renderCoresTemp(); renderGrade();
+   document.getElementById('n-estoqueTotal').value='';
+   document.getElementById('n-nome').value='';
+   document.getElementById('n-preco').value='';
+   document.getElementById('n-urls').value='';
+   document.getElementById('tituloModalProd').innerText='Novo produto';
+   document.getElementById('btnSalvarProd').innerText='SALVAR NA NUVEM';
+ }
  document.getElementById('modalProd').classList.remove('hide');
 }
-function fecharModalProd(){ document.getElementById('modalProd').classList.add('hide'); }
+function fecharModalProd(){ document.getElementById('modalProd').classList.add('hide'); editandoId=null; removerImagem(); coresTempProd=[]; }
+function editarProduto(i){
+ let p = DB.produtos[i];
+ if(!p) return;
+ editandoId = p.id;
+ listarCategorias(); listarCores();
+ document.getElementById('n-nome').value = p.nome||'';
+ document.getElementById('n-cat').value = p.cat||'';
+ document.getElementById('n-preco').value = p.preco||'';
+ document.getElementById('n-status').value = p.status||'NORMAL';
+ document.getElementById('n-estoqueTotal').value = p.estoqueTotal||'';
+ document.getElementById('n-urls').value = (p.foto && p.foto.startsWith('http'))? p.foto : '';
+ imagemBase64 = p.foto||'';
+ if(imagemBase64){
+   document.getElementById('previewImg').src = imagemBase64;
+   document.getElementById('previewBox').style.display='block';
+ }else{
+   document.getElementById('previewBox').style.display='none';
+ }
+ coresTempProd = p.coresLista? JSON.parse(JSON.stringify(p.coresLista)) : [];
+ renderCoresTemp();
+ renderGrade();
+ document.getElementById('tituloModalProd').innerText='Editar produto: '+p.nome;
+ document.getElementById('btnSalvarProd').innerText='💾 ATUALIZAR PRODUTO';
+ document.getElementById('modalProd').classList.remove('hide');
+}
 function salvarProdutoFinal(){
  let nome=document.getElementById('n-nome').value.trim();
  if(!nome) return alert('Digite o nome do produto');
@@ -243,17 +277,22 @@ function salvarProdutoFinal(){
  let foto=imagemBase64||document.getElementById('n-urls').value.trim();
  if(!foto) return alert('⚠️ Escolha uma imagem até 5MB!');
  if(coresTempProd.length===0) return alert('⚠️ Adicione pelo menos 1 cor com estoque!');
- // ADICIONADO: pega grade da foto
  let estoqueGrade={};
  document.querySelectorAll('#gradeEstoque input').forEach(inp=>{
-   let k = inp.id.replace('est_','').replace(/_/g,' / ');
-   // reconverte para formato PP / Rosa
    let parts = inp.id.replace('est_','').split('_');
    let tam = parts[0];
    let cor = parts.slice(1).join(' ');
    let key = tam+' / '+cor;
    estoqueGrade[key]=parseInt(inp.value)||0;
  });
+ if(editandoId!==null){
+   let idx = DB.produtos.findIndex(p=>p.id===editandoId);
+   if(idx>=0){
+     DB.produtos[idx] = {...DB.produtos[idx], nome, cat:document.getElementById('n-cat').value, preco:document.getElementById('n-preco').value||'59.90', status:document.getElementById('n-status').value||'NORMAL', foto, estoqueTotal, coresLista:coresTempProd, cores:coresTempProd.map(c=>c.nome).join(','), estoqueGrade };
+     fecharModalProd(); salvarNuvem(); alert('✅ Produto atualizado!');
+     return;
+   }
+ }
  let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',status:document.getElementById('n-status').value||'NORMAL',foto,estoqueTotal:estoqueTotal,coresLista:coresTempProd,cores:coresTempProd.map(c=>c.nome).join(','),estoqueGrade:estoqueGrade};
  DB.produtos.unshift(prod); fecharModalProd(); salvarNuvem();
 }
@@ -263,7 +302,7 @@ function listarProdutos(){
  document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>{
    let est = p.estoqueTotal || (p.coresLista? p.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0):0);
    let gradeTxt = p.estoqueGrade? Object.entries(p.estoqueGrade).filter(([k,v])=>v>0).map(([k,v])=>k+':'+v).join(' | ') : '';
-   return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> <small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px">📦 ${est} un</small> • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}<br><small style="font-size:10px;color:#e84393">${gradeTxt}</small></span></span><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`
+   return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8;gap:10px"><span style="display:flex;align-items:center;gap:10px;flex:1"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span style="flex:1"><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> <small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px">📦 ${est} un</small> • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}<br><small style="font-size:10px;color:#e84393">${gradeTxt}</small></span></span><div style="display:flex;gap:6px"><button onclick="editarProduto(${i})" style="background:#111;color:#fff;border:none;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700">✏️ Editar</button><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div></div>`
  }).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>';
 }
 function salvarConf(){ DB.conf={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; salvarNuvem(); alert('✅ Configurações salvas na nuvem!'); }
