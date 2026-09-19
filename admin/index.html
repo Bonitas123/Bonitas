@@ -29,6 +29,12 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 #previewBox{display:none;margin-top:14px;background:#fff;border:2px solid #e84393;border-radius:16px;padding:12px;text-align:center;box-shadow:0 8px 20px rgba(232,67,147,.15)}
 #previewImg{width:100%;max-height:280px;object-fit:contain;border-radius:10px}
 .pedidoItem{background:rgba(255,255,255,.95);border:2px solid #f3d6e0;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 12px rgba(138,23,64,.08)}
+/* ADICIONADO - GRADE ESTOQUE IGUAL SUA FOTO */
+.gradeEstoque{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.gradeItem{background:#fff0f5;padding:10px;border-radius:12px;border:1px solid #f3d6e0}
+.gradeItem label{margin:0 0 6px 0;font-size:12px;color:#111;text-transform:none;font-weight:700}
+.gradeItem input{margin:0;background:#fff}
+@media(max-width:600px){.gradeEstoque{grid-template-columns:1fr 1fr}}
 </style></head><body>
 <div id="login"><div id="loginBox">
 <p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:800">PAINEL ADMINISTRATIVO</p>
@@ -103,6 +109,15 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 </div>
 <div id="n-coresLista" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
 </div>
+
+<!-- ADICIONADO - IGUAL SUA FOTO -->
+<div id="areaGrade" style="display:none;margin-top:18px">
+<label style="font-size:16px;color:#111;text-transform:none;font-weight:800">Estoque por tamanho e cor</label>
+<p style="font-size:11px;color:#8a5a6a">Igual da sua foto - PP/Rosa, P/Branco...</p>
+<div id="gradeEstoque" class="gradeEstoque"></div>
+<div style="margin-top:12px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;text-align:center">Total grade: <span id="totalGrade">0</span> un</div>
+</div>
+
 <label style="color:#e84393;font-weight:800;font-size:13px;margin-top:16px">📸 IMAGEM DO PRODUTO - ATÉ 5MB *</label>
 <div class="uploadArea">
 <div style="font-size:36px">📸</div>
@@ -115,7 +130,7 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px"><button onclick="fecharModalProd()" style="background:none;border:none;padding:12px;color:#8a6a78;cursor:pointer;font-weight:600">Cancelar</button><button class="btnPink" style="width:auto;padding:12px 28px;margin:0" onclick="salvarProdutoFinal()">SALVAR NA NUVEM</button></div>
 </div></div>
 <script>
-const SENHA='09282326'; let imagemBase64=''; let coresTempProd=[];
+const SENHA='09282326'; const TAMANHOS=['PP','P','M','G','GG']; let imagemBase64=''; let coresTempProd=[];
 let DB={produtos:[],categorias:[],cores:[],conf:{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3',nomeLoja:'BONITAS',insta:'@bonitas_storemodafeminina',end:'João Pessoa - PB',estoque:'3',horario:'Segunda a sábado, 9h às 18h',minimo:'0.00'},pedidos:{}};
 let PEDIDOS=[];
 async function carregarNuvem(){
@@ -154,8 +169,39 @@ function getCategorias(){return DB.categorias} function getProdutos(){return DB.
 function salvarCor(){let nome=document.getElementById('novaCorNome').value.trim();let hex=document.getElementById('novaCorHex').value;if(!nome) return alert('Digite nome da cor');let lista=getCores();if(lista.find(c=>c.nome.toLowerCase()===nome.toLowerCase())) return alert('Cor já existe');lista.push({nome,hex});document.getElementById('novaCorNome').value=''; salvarNuvem();}
 function remCor(i){if(!confirm('Excluir cor?')) return; DB.cores.splice(i,1); salvarNuvem();}
 function listarCores(){let lista=getCores();document.getElementById('listaCores').innerHTML=lista.length?lista.map((c,i)=>`<span class="catTag" style="border:2px solid ${c.hex}"><span style="width:18px;height:18px;border-radius:50%;background:${c.hex};display:inline-block;border:1px solid #0001"></span> ${c.nome} <small>${c.hex}</small> <button onclick="remCor(${i})" style="background:rgba(0,0,0,.15);border:none;width:22px;height:22px;border-radius:50%;color:#8a1740;font-weight:800;cursor:pointer">✕</button></span>`).join(''):'<p style="color:#999">Nenhuma cor ainda. Crie Rosa, Preto, Branco...</p>';document.getElementById('n-corSelect').innerHTML=lista.length?lista.map(c=>`<option value="${c.nome}|${c.hex}">${c.nome}</option>`).join(''):'<option value="">Crie cores em 🎨 Cores</option>';let el=document.getElementById('totalCores');if(el) el.innerText=lista.length+' cores';}
-function addCorTemp(){let sel=document.getElementById('n-corSelect').value;if(!sel||!sel.includes('|')) return alert('Crie cores primeiro em 🎨 Cores');let [nome,hex]=sel.split('|');let est=parseInt(document.getElementById('n-corEstoque').value);if(isNaN(est)) return alert('Digite quantidade');if(coresTempProd.find(c=>c.nome===nome)) return alert('Cor já adicionada');coresTempProd.push({nome,hex,estoque:est});document.getElementById('n-corEstoque').value='';renderCoresTemp();}
-function renderCoresTemp(){document.getElementById('n-coresLista').innerHTML=coresTempProd.map((c,i)=>`<span style="background:#fff;border:1.5px solid ${c.hex};padding:6px 12px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px;font-weight:700"><span style="width:14px;height:14px;border-radius:50%;background:${c.hex}"></span>${c.nome} (${c.estoque}) <b onclick="coresTempProd.splice(${i},1);renderCoresTemp()" style="color:red;cursor:pointer;margin-left:6px">✕</b></span>`).join('');}
+// SEU ORIGINAL + GRADE ADICIONADA
+function addCorTemp(){
+ let sel=document.getElementById('n-corSelect').value;if(!sel||!sel.includes('|')) return alert('Crie cores primeiro em 🎨 Cores');
+ let [nome,hex]=sel.split('|');
+ let est=parseInt(document.getElementById('n-corEstoque').value);if(isNaN(est)) est=0;
+ if(coresTempProd.find(c=>c.nome===nome)) return alert('Cor já adicionada');
+ coresTempProd.push({nome,hex,estoque:est});
+ document.getElementById('n-corEstoque').value='';
+ renderCoresTemp();
+ renderGrade();
+}
+function renderCoresTemp(){document.getElementById('n-coresLista').innerHTML=coresTempProd.map((c,i)=>`<span style="background:#fff;border:1.5px solid ${c.hex};padding:6px 12px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px;font-weight:700"><span style="width:14px;height:14px;border-radius:50%;background:${c.hex}"></span>${c.nome} (${c.estoque}) <b onclick="coresTempProd.splice(${i},1);renderCoresTemp();renderGrade()" style="color:red;cursor:pointer;margin-left:6px">✕</b></span>`).join('');}
+function renderGrade(){
+ let area=document.getElementById('areaGrade');
+ let grid=document.getElementById('gradeEstoque');
+ if(coresTempProd.length===0){area.style.display='none';grid.innerHTML='';return;}
+ area.style.display='block';
+ let html='';
+ TAMANHOS.forEach(tam=>{
+   coresTempProd.forEach(cor=>{
+     let key = `${tam}_${cor.nome}`.replace(/\s/g,'_');
+     html+=`<div class="gradeItem"><label>${tam} / ${cor.nome}</label><input id="est_${key}" type="number" value="0" min="0" oninput="atualizarTotalGrade()" placeholder="0"></div>`;
+   });
+ });
+ grid.innerHTML=html;
+ atualizarTotalGrade();
+}
+function atualizarTotalGrade(){
+ let total=0;
+ document.querySelectorAll('#gradeEstoque input').forEach(inp=>{ total+=parseInt(inp.value)||0; });
+ document.getElementById('totalGrade').innerText=total;
+ document.getElementById('n-estoqueTotal').value=total;
+}
 document.getElementById('n-file').addEventListener('change',function(e){ let file=e.target.files[0]; if(!file) return; if(file.size>5*1024*1024){ alert('❌ Imagem muito grande! Máximo 5MB. Sua imagem tem '+(file.size/1024/1024).toFixed(2)+'MB'); this.value=''; return; } let reader=new FileReader(); reader.onload=ev=>{ imagemBase64=ev.target.result; document.getElementById('previewImg').src=imagemBase64; document.getElementById('previewBox').style.display='block'; }; reader.readAsDataURL(file); });
 document.getElementById('n-urls').addEventListener('input',function(){ let url=this.value.trim(); if(url.startsWith('http')){ imagemBase64=url; document.getElementById('previewImg').src=url; document.getElementById('previewBox').style.display='block'; } });
 function removerImagem(){ imagemBase64=''; document.getElementById('n-file').value=''; document.getElementById('n-urls').value=''; document.getElementById('previewBox').style.display='none'; }
@@ -186,7 +232,7 @@ function abrirModalProd(){
  listarCategorias(); listarCores();
  if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; }
  if(!getCores().length){ alert('⚠️ Crie cores primeiro em 🎨 Cores - ex: Rosa, Preto'); showPage('cores'); return; }
- removerImagem(); coresTempProd=[]; renderCoresTemp();
+ removerImagem(); coresTempProd=[]; renderCoresTemp(); renderGrade();
  document.getElementById('n-estoqueTotal').value='';
  document.getElementById('n-nome').value='';
  document.getElementById('n-preco').value='';
@@ -196,12 +242,26 @@ function fecharModalProd(){ document.getElementById('modalProd').classList.add('
 function salvarProdutoFinal(){
  let nome=document.getElementById('n-nome').value.trim();
  if(!nome) return alert('Digite o nome do produto');
- let estoqueTotal = parseInt(document.getElementById('n-estoqueTotal').value);
- if(isNaN(estoqueTotal)) return alert('⚠️ Digite o ESTOQUE embaixo da categoria!');
  let foto=imagemBase64||document.getElementById('n-urls').value.trim();
  if(!foto) return alert('⚠️ Escolha uma imagem até 5MB!');
  if(coresTempProd.length===0) return alert('⚠️ Adicione pelo menos 1 cor com estoque!');
- let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',status:document.getElementById('n-status').value||'NORMAL',foto,estoqueTotal:estoqueTotal,coresLista:coresTempProd,cores:coresTempProd.map(c=>c.nome).join(',')};
+ // PEGA GRADE
+ let estoqueGrade={}; let estoqueTotal=0; let porCor={};
+ TAMANHOS.forEach(tam=>{
+   coresTempProd.forEach(cor=>{
+     let key = `${tam}_${cor.nome}`.replace(/\s/g,'_');
+     let inp=document.getElementById('est_'+key);
+     let qtd=inp?parseInt(inp.value)||0:0;
+     estoqueGrade[`${tam}/${cor.nome}`]=qtd;
+     estoqueTotal+=qtd;
+     if(!porCor[cor.nome]) porCor[cor.nome]=0;
+     porCor[cor.nome]+=qtd;
+   });
+ });
+ if(estoqueTotal===0) estoqueTotal = parseInt(document.getElementById('n-estoqueTotal').value)||0;
+ // Atualiza coresLista com total por cor da grade
+ let coresLista = coresTempProd.map(c=>({nome:c.nome,hex:c.hex,estoque:porCor[c.nome]||c.estoque||0}));
+ let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',status:document.getElementById('n-status').value||'NORMAL',foto,estoqueTotal:estoqueTotal,estoqueGrade:estoqueGrade,coresLista:coresLista,cores:coresLista.map(c=>c.nome).join(',')};
  DB.produtos.unshift(prod); fecharModalProd(); salvarNuvem();
 }
 function listarProdutos(){
@@ -209,7 +269,8 @@ function listarProdutos(){
  let tp=document.getElementById('totalProd'); if(tp) tp.innerText=l.length+' produtos';
  document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>{
    let est = p.estoqueTotal || (p.coresLista? p.coresLista.reduce((a,b)=>a+(parseInt(b.estoque)||0),0):0);
-   return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> <small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px">📦 ${est} un</small> • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}</span></span><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`
+   let detalhe = p.estoqueGrade ? Object.entries(p.estoqueGrade).filter(([k,v])=>v>0).map(([k,v])=>k+':'+v).join(' | ') : '';
+   return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> <small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px">📦 ${est} un</small><br><small style="font-size:10px;color:#8a5a6a">${detalhe||(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}</small></span></span><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`
  }).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>';
 }
 function salvarConf(){ DB.conf={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; salvarNuvem(); alert('✅ Configurações salvas na nuvem!'); }
