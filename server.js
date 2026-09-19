@@ -70,6 +70,15 @@ app.post('/api/pedido',(req,res)=>{
   res.json({codigo:c});
 });
 
+// ADICIONADO - GARANTE BANNER ROSA (NÃO MUDA NADA DO QUE JÁ TINHA)
+app.get('/banner-rosa.jpg',(req,res)=>{
+  let p1=path.join(__dirname,'banner-rosa.jpg');
+  let p2=path.join(__dirname,'public','banner-rosa.jpg');
+  if(fs.existsSync(p1)) return res.sendFile(p1);
+  if(fs.existsSync(p2)) return res.sendFile(p2);
+  res.status(404).send('Banner não encontrado, suba banner-rosa.jpg na raiz');
+});
+
 // ROTAS
 app.get('/admin',(req,res)=>{
   if(fs.existsSync(path.join(__dirname,'admin','index.html'))) return res.sendFile(path.join(__dirname,'admin','index.html'));
