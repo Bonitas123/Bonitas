@@ -33,9 +33,9 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <div id="login"><div id="loginBox">
 <p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:800">PAINEL ADMINISTRATIVO</p>
 <h1 style="font-family:Playfair Display;font-size:28px;color:#8a1740;margin:8px 0">Bem-vinda à Bonitas</h1>
-<p style="color:#8a5a6a;font-size:12px"> Bonitas </p>
+<p style="color:#8a5a6a;font-size:12px">Digite sua senha para entrar</p>
 <div style="text-align:left;margin-top:18px"><label>E-mail</label><input id="email" value="admin@gmail.com"></div>
-<div style="text-align:left"><label>Senha</label><input id="senha" type="password" value="09282326"></div>
+<div style="text-align:left"><label>Senha</label><input id="senha" type="password" value="" placeholder="Digite 09282326"></div>
 <button onclick="entrar()" style="background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-weight:800;margin-top:18px;cursor:pointer;box-shadow:0 8px 20px #e8439350">ENTRAR NO PAINEL →</button>
 <p id="erro" style="color:#e84393;display:none;margin-top:10px;font-weight:700">Senha incorreta!</p>
 <p id="nuvemStatus" style="font-size:11px;color:#0a8a3d;margin-top:10px;font-weight:700">Conectando na nuvem Railway...</p>
@@ -55,7 +55,7 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <div id="p-cat" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Categorias</h1><div class="card"><div style="display:flex;gap:10px"><input id="novaCatNome" placeholder="Ex: Blusas, Calças, Saias"><button class="btnDark" onclick="salvarCategoria()">+ Criar</button></div><div id="listaCat" style="margin-top:14px"></div></div></div>
 <div id="p-cores" class="hide"><h1 style="font-family:Playfair Display;font-size:32px;color:#8a1740">Cores da Loja</h1>
 <div class="card">
-<p style="font-size:12px;color:#8a5a6a">Crie só as cores que você tem. Ex: Rosa Bebê, Preto, Branco. Depois usa nos produtos com estoque.</p>
+<p style="font-size:12px;color:#8a5a6a">Crie só as cores que você tem. Ex: Rosa Bebê, Preto, Branco.</p>
 <div style="display:flex;gap:10px;margin-top:14px;align-items:center">
 <input id="novaCorNome" placeholder="Nome ex: Rosa Bebê" style="flex:1">
 <input type="color" id="novaCorHex" value="#e84393" style="width:60px;height:48px;padding:4px;border-radius:12px">
@@ -131,7 +131,7 @@ async function carregarPedidos(){
   if(!PEDIDOS.length){div.innerHTML='<p style="color:#999;text-align:center;padding:20px">Nenhum pedido ainda. Faça um pedido teste no site que aparece aqui.</p>';return;}
   div.innerHTML=PEDIDOS.slice().reverse().map(p=>`
   <div class="pedidoItem">
-    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b style="color:#e84393;font-size:16px">📦 Pedido ${p.codigo||p.id||''}</b><small style="background:#ffe2ea;padding:4px 10px;border-radius:20px">${p.data||''}</small></div>
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b style="color:#e84393;font-size:16px">📦 Pedido</b><small style="background:#ffe2ea;padding:4px 10px;border-radius:20px">${p.data||''}</small></div>
     <div style="margin:12px 0;font-size:13px;line-height:1.6"><b>👤 Cliente:</b> ${p.nome||p.cliente?.nome||'-'}<br><b>📱 Whats:</b> ${p.cliente?.tel||p.tel||'-'}<br><b>📍 Endereço:</b> ${p.cliente?.end||p.end||'-'}<br>${p.cliente?.cep?'<b>📮 CEP:</b> '+p.cliente.cep:''}</div>
     <div style="background:#fff5f7;padding:10px;border-radius:12px;font-size:12px;border:1px solid #f3d6e0">${(p.itens||[]).map(it=>`• ${it.qtd}x ${it.nome} <b>Tam:${it.tam}</b> <b>Cor:${it.cor}</b> - R$ ${it.preco}`).join('<br>')||p.blusa||''}</div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px"><span><b>Total:</b> R$ ${p.total||''} | <b style="background:#111;color:#fff;padding:3px 8px;border-radius:8px">${p.pagamento||p.pag||''}</b></span><a href="https://wa.me/55${(p.cliente?.tel||'').replace(/\D/g,'')}" target="_blank" style="background:#25d366;color:#fff;padding:8px 16px;border-radius:20px;text-decoration:none;font-weight:800">Chamar no Whats</a></div>
@@ -157,15 +157,34 @@ function removerImagem(){ imagemBase64=''; document.getElementById('n-file').val
 function salvarCategoria(){ let nome=document.getElementById('novaCatNome').value.trim(); if(!nome) return alert('Digite o nome'); if(getCategorias().map(c=>c.toLowerCase()).includes(nome.toLowerCase())) return alert('Já existe!'); DB.categorias.push(nome); document.getElementById('novaCatNome').value=''; salvarNuvem(); }
 function remCat(i){ if(!confirm('Excluir?')) return; DB.categorias.splice(i,1); salvarNuvem(); }
 function listarCategorias(){ let cats=getCategorias(); document.getElementById('listaCat').innerHTML=cats.length?cats.map((c,i)=>`<span class="catTag">${c} <button onclick="remCat(${i})" style="background:rgba(0,0,0,.15);border:none;width:22px;height:22px;border-radius:50%;color:#8a1740;font-weight:800;cursor:pointer">✕</button></span>`).join(''):'<p style="color:#999">Nenhuma categoria ainda</p>'; document.getElementById('n-cat').innerHTML=cats.length?cats.map(c=>`<option>${c}</option>`).join(''):'<option>Crie categoria primeiro</option>'; let tc=document.getElementById('totalCat'); if(tc) tc.innerText=cats.length+' categorias'; }
-function checkLogin(){ if(localStorage.getItem('bonitas_log')==='1') document.getElementById('login').style.display='none'; }
-function entrar(){ if(document.getElementById('senha').value===SENHA){ localStorage.setItem('bonitas_log','1'); document.getElementById('login').style.display='none'; carregarNuvem(); showPage(localStorage.getItem('bonitas_page')||'ped'); } else document.getElementById('erro').style.display='block'; }
-function sair(){ localStorage.removeItem('bonitas_log'); location.reload(); } checkLogin();
-function showPage(p){ ['geral','ped','prod','cat','cores','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); let menu=document.getElementById('m-'+p); if(menu) menu.classList.add('ativo'); localStorage.setItem('bonitas_page',p); if(p==='cat') listarCategorias(); if(p==='cores') listarCores(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='ped') carregarPedidos(); if(p==='geral'){ listarCategorias(); listarProdutos(); listarCores(); carregarPedidos(); } }
+
+// ===== LOGIN CONSERTADO - NÃO FICA LOGADO PRA SEMPRE =====
+function entrar(){
+  if(document.getElementById('senha').value===SENHA){
+    sessionStorage.setItem('bonitas_log','1'); // só nessa aba, fecha e pede senha de novo
+    localStorage.removeItem('bonitas_log'); // remove o antigo que ficava pra sempre
+    document.getElementById('login').style.display='none';
+    carregarNuvem();
+    showPage('ped');
+  } else {
+    document.getElementById('erro').style.display='block';
+  }
+}
+function sair(){
+  sessionStorage.removeItem('bonitas_log');
+  localStorage.removeItem('bonitas_log');
+  localStorage.removeItem('bonitas_page');
+  location.reload();
+}
+
+// Sempre pede senha quando entra em /admin
+document.getElementById('login').style.display='flex';
+
+function showPage(p){ ['geral','ped','prod','cat','cores','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); let menu=document.getElementById('m-'+p); if(menu) menu.classList.add('ativo'); if(p==='cat') listarCategorias(); if(p==='cores') listarCores(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='ped') carregarPedidos(); if(p==='geral'){ listarCategorias(); listarProdutos(); listarCores(); carregarPedidos(); } }
 function carregarConf(){ let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||'558399923260'; document.getElementById('c-insta').value=c.insta||'@bonitas_storemodafeminina'; document.getElementById('c-end').value=c.end||'João Pessoa - PB'; document.getElementById('c-taxa').value=c.taxa||'10.00'; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||'Segunda a sábado, 9h às 18h'; document.getElementById('c-minimo').value=c.minimo||'0.00'; document.getElementById('c-pix').value=c.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'; }
 function abrirModalProd(){ listarCategorias(); listarCores(); if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; } if(!getCores().length){ alert('⚠️ Crie cores primeiro em 🎨 Cores - ex: Rosa, Preto'); showPage('cores'); return; } removerImagem(); coresTempProd=[]; renderCoresTemp(); document.getElementById('modalProd').classList.remove('hide'); }
 function fecharModalProd(){ document.getElementById('modalProd').classList.add('hide'); }
 function salvarProdutoFinal(){ let nome=document.getElementById('n-nome').value.trim(); if(!nome) return alert('Digite o nome do produto'); let foto=imagemBase64||document.getElementById('n-urls').value.trim(); if(!foto) return alert('⚠️ Escolha uma imagem até 5MB!'); if(coresTempProd.length===0) return alert('⚠️ Adicione pelo menos 1 cor com estoque!'); let prod={id:Date.now(),nome,cat:document.getElementById('n-cat').value,preco:document.getElementById('n-preco').value||'59.90',status:document.getElementById('n-status').value||'NORMAL',foto,coresLista:coresTempProd,cores:coresTempProd.map(c=>c.nome).join(',')}; DB.produtos.unshift(prod); fecharModalProd(); salvarNuvem(); }
 function listarProdutos(){ let l=getProdutos(); let tp=document.getElementById('totalProd'); if(tp) tp.innerText=l.length+' produtos'; document.getElementById('listaProd').innerHTML=l.length?l.map((p,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8"><span style="display:flex;align-items:center;gap:10px"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> ${p.status?`<small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px;margin-left:4px">${p.status}</small>`:''} • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}</span></span><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div>`).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>'; }
 function salvarConf(){ DB.conf={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; salvarNuvem(); alert('✅ Configurações salvas na nuvem!'); }
-if(localStorage.getItem('bonitas_log')==='1'){ carregarNuvem(); let paginaSalva=localStorage.getItem('bonitas_page')||'ped'; showPage(paginaSalva); }
 </script></body></html>
