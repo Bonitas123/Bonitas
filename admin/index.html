@@ -30,6 +30,7 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 #previewImg{width:100%;max-height:280px;object-fit:contain;border-radius:10px}
 .pedidoItem{background:rgba(255,255,255,.95);border:2px solid #f3d6e0;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 12px rgba(138,23,64,.08)}
 </style></head><body>
+<div id="notifBanner" style="display:none;position:fixed;top:0;left:0;right:0;background:#0a8a3d;color:#fff;padding:16px;text-align:center;font-weight:800;z-index:999999">🔔 NOVO PEDIDO PAGO NO CARTÃO! 💳</div>
 <div id="login"><div id="loginBox">
 <p style="color:#e84393;letter-spacing:3px;font-size:11px;font-weight:800">PAINEL ADMINISTRATIVO</p>
 <h1 style="font-family:Playfair Display;font-size:28px;color:#8a1740;margin:8px 0">Bem-vinda à Bonitas</h1>
@@ -88,11 +89,9 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 <p style="background:linear-gradient(135deg,#e84393,#ff5eb0);color:#fff;padding:6px 12px;border-radius:8px;font-weight:800;font-size:11px;display:inline-block;margin:8px 0">V14 COM CORES + ESTOQUE - NUVEM</p>
 <label>Nome do produto *</label><input id="n-nome" placeholder="Ex: Calça Wide Leg Rosa">
 <label>Categoria * (só aparece o que você criou)</label><select id="n-cat"></select>
-
 <label style="background:linear-gradient(135deg,#ffe2ea,#ffd1dc);padding:10px 12px;border-radius:10px;color:#8a1740;font-weight:800;display:block">📦 ESTOQUE - Quantas camisas tem no total?</label>
 <input id="n-estoqueTotal" type="number" placeholder="Ex: 50" style="border:2px solid #e84393;font-weight:700;font-size:16px">
 <small style="color:#8a5a6a;font-size:11px;display:block;margin-top:4px">Digite quantas unidades tem dessa camisa</small>
-
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label>Preço *</label><input id="n-preco" type="number" placeholder="59.90"></div><div><label>Status</label><select id="n-status"><option value="NORMAL">NORMAL</option><option value="NOVO">✨ NOVO</option><option value="LIMITADO">🔥 LIMITADO</option><option value="ULTIMAS">⚠️ ÚLTIMAS</option><option value="ESGOTADO">🚫 ESGOTADO</option><option value="PROMO">💖 PROMO</option></select></div></div>
 <div style="background:#fff5f7;padding:14px;border-radius:12px;border:1px solid #f3d6e0;margin-top:16px">
 <label style="margin-top:0;color:#8a1740">🎨 CORES COM ESTOQUE - ESCOLHA SÓ AS CORES QUE TEM</label>
@@ -103,13 +102,11 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 </div>
 <div id="n-coresLista" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
 </div>
-
 <div id="areaGrade" style="display:none;margin-top:16px">
 <label style="font-size:15px;color:#111;font-weight:800;text-transform:none;margin:0 0 4px 0">Estoque por tamanho e cor</label>
 <div id="gradeEstoque" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px"></div>
 <div style="margin-top:10px;background:#111;color:#fff;padding:10px;border-radius:10px;text-align:center;font-weight:800">Total grade: <span id="totalGrade">0</span> un</div>
 </div>
-
 <label style="color:#e84393;font-weight:800;font-size:13px;margin-top:16px">📸 IMAGEM DO PRODUTO - ATÉ 5MB *</label>
 <div class="uploadArea">
 <div style="font-size:36px">📸</div>
@@ -125,6 +122,15 @@ input:focus,textarea:focus,select:focus{border-color:#e84393;box-shadow:0 0 0 3p
 const SENHA='09282326'; const TAMANHOS=['PP','P','M','G','GG']; let imagemBase64=''; let coresTempProd=[];
 let DB={produtos:[],categorias:[],cores:[],conf:{taxa:10,zap:'558399923260',pix:'66b5d5fe-b9af-4d26-9f27-2467300dc6e3',nomeLoja:'BONITAS',insta:'@bonitas_storemodafeminina',end:'João Pessoa - PB',estoque:'3',horario:'Segunda a sábado, 9h às 18h',minimo:'0.00'},pedidos:{}};
 let PEDIDOS=[]; let editandoId=null;
+// ADICIONADO - CONSERTO DO 00,00 E NOTIFICAÇÃO
+let ultimoTotalPedidos=0;
+let somNotificacao=new Audio('https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c8d501.mp3?filename=notification-sound-7062.mp3');
+function parseTaxa(v){
+  if(v===null||v===undefined||v==='') return 0;
+  let s=String(v).trim().replace('R$','').replace(',','.').trim();
+  let n=parseFloat(s);
+  return isNaN(n)?0:n;
+}
 async function carregarNuvem(){
  try{
   let r=await fetch('/api/dados'); let d=await r.json();
@@ -138,6 +144,21 @@ async function carregarPedidos(){
  try{
   let r=await fetch('/api/pedidos'); let d=await r.json();
   PEDIDOS=Array.isArray(d)?d:(d.pedidos||[]);
+  // NOTIFICAÇÃO PAGO
+  if(PEDIDOS.length>ultimoTotalPedidos && ultimoTotalPedidos!==0){
+    let ultimo=PEDIDOS[PEDIDOS.length-1];
+    if(ultimo.pago || (ultimo.status&&ultimo.status.includes('PAGO'))){
+      somNotificacao.play().catch(()=>{});
+      let b=document.getElementById('notifBanner');
+      b.style.display='block';
+      b.innerHTML=`🔔 NOVO PEDIDO PAGO! 💳 ${ultimo.nome||ultimo.cliente?.nome} - R$ ${ultimo.total}`;
+      setTimeout(()=>b.style.display='none',8000);
+      if(Notification && Notification.permission==="granted"){
+        new Notification("BONITAS - PEDIDO PAGO 💳",{body:`${ultimo.nome} pagou R$ ${ultimo.total}`});
+      }
+    }
+  }
+  ultimoTotalPedidos=PEDIDOS.length;
   let tot=document.getElementById('totalPed'); if(tot) tot.innerText=PEDIDOS.length+' pedidos';
   let div=document.getElementById('listaPed');
   if(!PEDIDOS.length){div.innerHTML='<p style="color:#999;text-align:center;padding:20px">Nenhum pedido ainda. Faça um pedido teste no site que aparece aqui.</p>';return;}
@@ -213,8 +234,10 @@ function entrar(){
     sessionStorage.setItem('bonitas_log','1');
     localStorage.removeItem('bonitas_log');
     document.getElementById('login').style.display='none';
+    if(Notification && Notification.permission!=="granted"){Notification.requestPermission();}
     carregarNuvem();
     showPage('ped');
+    setInterval(carregarPedidos,10000);
   } else {
     document.getElementById('erro').style.display='block';
   }
@@ -227,7 +250,7 @@ function sair(){
 }
 document.getElementById('login').style.display='flex';
 function showPage(p){ ['geral','ped','prod','cat','cores','conf'].forEach(x=>{ let el=document.getElementById('p-'+x); if(el) el.classList.add('hide'); let m=document.getElementById('m-'+x); if(m) m.classList.remove('ativo'); }); document.getElementById('p-'+p).classList.remove('hide'); let menu=document.getElementById('m-'+p); if(menu) menu.classList.add('ativo'); if(p==='cat') listarCategorias(); if(p==='cores') listarCores(); if(p==='prod') listarProdutos(); if(p==='conf') carregarConf(); if(p==='ped') carregarPedidos(); if(p==='geral'){ listarCategorias(); listarProdutos(); listarCores(); carregarPedidos(); } }
-function carregarConf(){ let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||'558399923260'; document.getElementById('c-insta').value=c.insta||'@bonitas_storemodafeminina'; document.getElementById('c-end').value=c.end||'João Pessoa - PB'; document.getElementById('c-taxa').value=c.taxa||'10.00'; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||'Segunda a sábado, 9h às 18h'; document.getElementById('c-minimo').value=c.minimo||'0.00'; document.getElementById('c-pix').value=c.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'; }
+function carregarConf(){ let c=getConf(); if(!c) return; document.getElementById('c-nomeLoja').value=c.nomeLoja||'BONITAS'; document.getElementById('c-zap').value=c.zap||'558399923260'; document.getElementById('c-insta').value=c.insta||'@bonitas_storemodafeminina'; document.getElementById('c-end').value=c.end||'João Pessoa - PB'; document.getElementById('c-taxa').value=c.taxa||'0'; document.getElementById('c-estoque').value=c.estoque||'3'; document.getElementById('c-horario').value=c.horario||'Segunda a sábado, 9h às 18h'; document.getElementById('c-minimo').value=c.minimo||'0.00'; document.getElementById('c-pix').value=c.pix||'66b5d5fe-b9af-4d26-9f27-2467300dc6e3'; }
 function abrirModalProd(){
  listarCategorias(); listarCores();
  if(!getCategorias().length){ alert('⚠️ Crie uma categoria primeiro em 📂 Categorias'); showPage('cat'); return; }
@@ -305,5 +328,22 @@ function listarProdutos(){
    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5e1e8;gap:10px"><span style="display:flex;align-items:center;gap:10px;flex:1"><img src="${p.foto}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;background:#fff"><span style="flex:1"><b style="color:#8a1740">${p.nome}</b><br><small style="background:#ffe2ea;padding:3px 8px;border-radius:10px;color:#8a1740;font-weight:700">${p.cat}</small> <small style="background:#111;color:#fff;padding:3px 8px;border-radius:10px">📦 ${est} un</small> • R$ ${p.preco} • ${(p.coresLista||[]).map(c=>c.nome+'('+c.estoque+')').join(' ')}<br><small style="font-size:10px;color:#e84393">${gradeTxt}</small></span></span><div style="display:flex;gap:6px"><button onclick="editarProduto(${i})" style="background:#111;color:#fff;border:none;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700">✏️ Editar</button><button onclick="DB.produtos.splice(${i},1);salvarNuvem()" style="color:#e84393;background:#ffe2ea;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700">Excluir</button></div></div>`
  }).join(''):'<p style="color:#999;text-align:center;padding:24px">Nenhum produto ainda. Clique em + Novo produto!</p>';
 }
-function salvarConf(){ DB.conf={nomeLoja:document.getElementById('c-nomeLoja').value,zap:document.getElementById('c-zap').value,insta:document.getElementById('c-insta').value,end:document.getElementById('c-end').value,taxa:document.getElementById('c-taxa').value,estoque:document.getElementById('c-estoque').value,horario:document.getElementById('c-horario').value,minimo:document.getElementById('c-minimo').value,pix:document.getElementById('c-pix').value}; salvarNuvem(); alert('✅ Configurações salvas na nuvem!'); }
-</script></body></html>
+// CORRIGIDO - ACEITA 00,00 COM VIRGULA
+function salvarConf(){
+  let taxaRaw=document.getElementById('c-taxa').value;
+  let taxa=parseTaxa(taxaRaw);
+  DB.conf={
+    nomeLoja:document.getElementById('c-nomeLoja').value,
+    zap:document.getElementById('c-zap').value,
+    insta:document.getElementById('c-insta').value,
+    end:document.getElementById('c-end').value,
+    taxa:taxa,
+    estoque:document.getElementById('c-estoque').value,
+    horario:document.getElementById('c-horario').value,
+    minimo:document.getElementById('c-minimo').value,
+    pix:document.getElementById('c-pix').value
+  };
+  salvarNuvem();
+  alert('✅ Configurações salvas! Taxa: R$ '+taxa.toFixed(2));
+}
+</script></body></html> 
