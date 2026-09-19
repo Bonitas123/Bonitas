@@ -5,20 +5,14 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter}
 body{background:#fff5f7;color:#2a1a1a;overflow-x:hidden}
-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid #f3d6e0}
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.98);backdrop-filter:blur(14px);display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid #f3d6e0}
 header b{font-family:Playfair Display;color:#8a1740;letter-spacing:4px;font-size:26px}
 header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-size:14px}
-#hero{position:relative;height:520px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:#8a1740}
-#hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#8a174055 0%,#fff5f7cc 75%,#fff5f7 100%)}
-#hero.content{position:relative;z-index:2;max-width:600px;padding:20px}
-#hero h1{font-family:Playfair Display;font-size:80px;color:#8a1740;line-height:.9;font-weight:800;text-shadow:0 2px 20px #fff}
-#hero p{letter-spacing:7px;color:#8a1740;font-weight:800;margin-top:10px;font-size:12px}
-.buscaWrap{margin:24px auto 0;background:#fff;border-radius:50px;display:flex;align-items:center;padding:6px 6px 6px 20px;box-shadow:0 12px 30px #8a174022;max-width:560px;border:1px solid #f3d6e0}
-.buscaWrap input{flex:1;border:none;outline:none;font-size:15px}
-.buscaWrap button{background:#e84393;color:#fff;border:none;padding:12px 26px;border-radius:40px;font-weight:800;cursor:pointer}
+#hero{position:relative;height:520px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:linear-gradient(135deg,#e84393 0%,#ff5eb0 45%,#fff5f7 100%)}
+#hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+#hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,rgba(255,245,247,.5) 60%,#fff5f7 100%)}
 .layout{max-width:1320px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:300px 1fr;gap:24px}
-.filtros{background:#fff;border-radius:22px;padding:20px;border:1px solid #f5d6e0;position:sticky;top:90px;height:fit-content}
+.filtros{background:#fff;border-radius:22px;padding:20px;border:1px solid #f5d6e0;position:sticky;top:90px;height:fit-content;box-shadow:0 8px 24px rgba(232,67,147,.08)}
 #grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .card{background:#fff;border-radius:22px;overflow:hidden;border:1px solid #f3d6e0;box-shadow:0 8px 24px #0001;cursor:pointer;display:flex;flex-direction:column}
 .imgBox{position:relative;width:100%;height:380px;background:#fff;overflow:hidden;display:block}
@@ -31,8 +25,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .tam button{padding:9px;border:1.5px solid #f0c6d3;background:#f9f0f3;border-radius:10px;cursor:pointer;font-weight:600}
 .tam button.ativo{background:#fde2ea;border-color:#e84393;color:#8a1740;font-weight:800}
 #sobreLoja{max-width:1320px;margin:60px auto;padding:0 20px}
-#sobreLoja.box{padding:60px 36px;background:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200') center/cover no-repeat;border-radius:28px;position:relative;overflow:hidden}
-#sobreLoja.box::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#fff 45%,#ffffffbb 100%)}
+#sobreLoja.box{padding:60px 36px;background:linear-gradient(135deg,#fff 0%,#ffe2ea 100%);border-radius:28px;position:relative;overflow:hidden;border:1px solid #f3d6e0}
 #sobreLoja.txt{position:relative;z-index:2;max-width:560px}
 #sobreLoja h2{font-family:Playfair Display;font-size:46px;color:#8a1740;line-height:1}
 #carrinhoModal{position:fixed;right:0;top:0;width:420px;max-width:100vw;height:100dvh;background:#fff;z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:.35s;box-shadow:-20px 0 60px #0002}
@@ -51,7 +44,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .vazio{grid-column:1/-1;text-align:center;padding:80px;background:#fff;border-radius:20px;border:1px dashed #e84393;color:#999}
 #cartBtn{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:15px 24px;border-radius:40px;font-weight:800;cursor:pointer;z-index:90;box-shadow:0 12px 30px #0004;display:flex;align-items:center;gap:8px}
 #whatsFloat{position:fixed;left:18px;bottom:18px;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px #25d36666;z-index:90;text-decoration:none;font-size:28px}
-@media(max-width:760px){header{padding:12px 16px}header b{font-size:20px;letter-spacing:2px}#hero{height:420px}#hero h1{font-size:46px}.layout{grid-template-columns:1fr;padding:14px;gap:14px}.filtros{position:relative;top:0}#grid{grid-template-columns:repeat(2,1fr);gap:10px}.imgBox{height:240px}.card{border-radius:16px}.cardInfo{padding:10px}#sobreLoja{margin:30px auto}#sobreLoja.box{padding:32px 20px;border-radius:20px}#sobreLoja h2{font-size:32px}#carrinhoModal{width:100vw}.detalheCard{grid-template-columns:1fr;max-height:92dvh;overflow:auto}}
+@media(max-width:760px){header{padding:12px 16px}header b{font-size:20px}#hero{height:380px}.layout{grid-template-columns:1fr;padding:14px;gap:14px}.filtros{position:relative;top:0}#grid{grid-template-columns:repeat(2,1fr);gap:10px}.imgBox{height:240px}}
 #checkoutModal{position:fixed;inset:0;background:#0008;backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 #checkoutModal.aberto{display:flex}
 .checkCard{background:#fff;border-radius:26px;max-width:480px;width:100%;padding:26px;max-height:92vh;overflow:auto}
@@ -61,8 +54,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 .det-cor{padding:10px 16px;border:1.5px solid #f0c6d3;border-radius:24px;background:rgba(255,255,255,.8);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600}
 .det-cor.ativo{background:rgba(255,209,220,.55);border:2px solid #e84393;color:#8a1740;font-weight:800}
 #selInfo{background:linear-gradient(135deg,rgba(255,209,220,.6),rgba(255,240,245,.8));padding:12px 16px;border-radius:16px;margin:12px 0;font-size:12px;font-weight:800;color:#8a1740}
-/* ADICIONADO - ABA PIX 23H COM FUNDO BONITAS */
-#pixFinalModal{position:fixed;inset:0;background:linear-gradient(135deg,rgba(232,67,147,.85),rgba(138,23,64,.85)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&q=80') center/cover no-repeat;backdrop-filter:blur(12px);z-index:700;display:none;align-items:center;justify-content:center;padding:16px}
+#pixFinalModal{position:fixed;inset:0;background:linear-gradient(135deg,rgba(232,67,147,.92),rgba(138,23,64,.92));backdrop-filter:blur(12px);z-index:700;display:none;align-items:center;justify-content:center;padding:16px}
 #pixFinalModal.aberto{display:flex}
 .pixCard{background:linear-gradient(180deg,#fff 0%,#fff5f7 100%);border-radius:28px;max-width:420px;width:100%;padding:28px;text-align:center;box-shadow:0 30px 80px #0005;border:1px solid #ffe2ea}
 .pixQrWrap{background:#fff;padding:14px;border-radius:20px;display:inline-block;border:2px solid #e84393;margin:14px 0;box-shadow:0 8px 30px #0001}
@@ -74,9 +66,17 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 #dinheiroFinalModal.aberto{display:flex}
 </style></head><body>
 <header><b>BONITAS</b><div style="display:flex;gap:18px;align-items:center"><a onclick="document.getElementById('produtosAncora').scrollIntoView({behavior:'smooth'})">Loja</a><a onclick="document.getElementById('sobreLoja').scrollIntoView({behavior:'smooth'})">Sobre</a><a href="/admin" style="color:#999;font-size:12px">Admin</a><span onclick="abrirCarrinho()" style="cursor:pointer;font-size:18px">🛒 <b id="qtd" style="background:#e84393;color:#fff;border-radius:50%;padding:2px 7px;font-size:12px;margin-left:2px">0</b></span></div></header>
-<div id="hero"><img class="bg" src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1400&q=80"><div class="content"><h1>Loja</h1><p>FEITO PARA VOCÊ</p><div class="buscaWrap"><input id="busca" placeholder="Buscar blusa, vestido, calça..." oninput="render()"><button onclick="render()">Buscar</button></div><div style="margin-top:20px"><button onclick="document.getElementById('produtosAncora').scrollIntoView({behavior:'smooth'})" style="background:#111;color:#fff;border:none;padding:13px 30px;border-radius:30px;font-weight:800;cursor:pointer">Ver coleção ↓</button></div></div></div>
+
+<!-- BANNER ROSA DESTACADO COM MODELO -->
+<div id="hero">
+<img class="bg" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1400&q=80" style="opacity:.35; mix-blend-mode:overlay">
+<div style="position:absolute;inset:0;background:linear-gradient(135deg,#e84393 0%,#ff5eb0 30%,#ff8fb7 60%,rgba(255,255,255,.4) 100%)"></div>
+<!-- TROCA ESSA LINHA ABAIXO PELA SUA IMAGEM ROSA QUE GEREI -->
+<img src="/banner-rosa.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;z-index:1" onerror="this.style.display='none'">
+</div>
+
 <div id="produtosAncora" class="layout">
-<div class="filtros"><b style="font-family:Playfair Display;color:#8a1740;font-size:18px">Filtros</b><div style="margin:14px 0 6px;font-weight:700;font-size:13px">Categoria</div><div id="filtroCats" style="margin-bottom:16px"></div><b style="font-size:13px">Preço máximo</b><br><span id="pmaxTxt" style="color:#e84393;font-weight:800">R$ 200</span><input type="range" id="pmax" min="0" max="500" value="500" style="width:100%;accent-color:#e84393;margin-top:6px" oninput="document.getElementById('pmaxTxt').innerText='R$ '+this.value;render()"><b style="display:block;margin-top:18px;font-size:13px">Tamanho</b><div class="tam" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px"><button onclick="setTam(this,'PP')">PP</button><button onclick="setTam(this,'P')" class="ativo">P</button><button onclick="setTam(this,'M')">M</button><button onclick="setTam(this,'G')">G</button><button onclick="setTam(this,'GG')">GG</button></div><button style="width:100%;margin-top:20px;background:#e84393;color:#fff;border:none;padding:13px;border-radius:14px;font-weight:800;cursor:pointer" onclick="render()">Aplicar filtros</button></div>
+<div class="filtros"><b style="font-family:Playfair Display;color:#8a1740;font-size:18px">Filtros</b><div style="margin:14px 0 6px;font-weight:700;font-size:13px">Categoria</div><div id="filtroCats" style="margin-bottom:16px"></div><b style="font-size:13px">Preço máximo</b><br><span id="pmaxTxt" style="color:#e84393;font-weight:800">R$ 500</span><input type="range" id="pmax" min="0" max="500" value="500" style="width:100%;accent-color:#e84393;margin-top:6px" oninput="document.getElementById('pmaxTxt').innerText='R$ '+this.value;render()"><b style="display:block;margin-top:18px;font-size:13px">Tamanho</b><div class="tam" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px"><button onclick="setTam(this,'PP')">PP</button><button onclick="setTam(this,'P')" class="ativo">P</button><button onclick="setTam(this,'M')">M</button><button onclick="setTam(this,'G')">G</button><button onclick="setTam(this,'GG')">GG</button></div><button style="width:100%;margin-top:20px;background:#e84393;color:#fff;border:none;padding:13px;border-radius:14px;font-weight:800;cursor:pointer" onclick="render()">Aplicar filtros</button></div>
 <div id="grid">Carregando produtos da nuvem...</div>
 </div>
 <div id="sobreLoja"><div class="box"><div class="txt"><h2>Mais sobre a BONITAS</h2><p style="margin:16px 0;line-height:1.6;color:#5a2a3a">Moda feminina de João Pessoa - PB para todo Brasil.</p><p style="font-weight:800;color:#8a1740">✓ Envio rápido ✓ Troca fácil ✓ Atendimento no Whats</p></div></div></div>
@@ -94,8 +94,6 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 <button onclick="enviarPedidoZap()" style="background:linear-gradient(135deg,#25d366,#1ebe5d);color:#fff;width:100%;padding:16px;border:none;border-radius:14px;font-weight:800;box-shadow:0 8px 20px #25d36644">💬 FINALIZAR PELO WHATSAPP</button>
 <button onclick="fecharCheckout()" style="background:none;border:none;width:100%;padding:10px;margin-top:6px;color:#999">Voltar</button>
 </div></div>
-
-<!-- ABA PIX 23H COM FUNDO BONITAS -->
 <div id="pixFinalModal" onclick="if(event.target===this) fecharPixFinal()"><div class="pixCard">
 <div style="font-size:44px">💖</div>
 <b style="font-family:Playfair Display;color:#8a1740;letter-spacing:3px">BONITAS</b>
@@ -108,9 +106,7 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 <p style="font-size:11px;color:#8a5a6a;margin-top:14px;line-height:1.4">Após pagar, envie o comprovante no WhatsApp.<br>Se não pagar em 23h, o pedido é cancelado automaticamente.</p>
 <button onclick="fecharPixFinal()" style="margin-top:16px;background:#111;color:#fff;border:none;padding:14px;width:100%;border-radius:14px;font-weight:800;cursor:pointer">FECHAR</button>
 </div></div>
-
-<!-- ABA DINHEIRO - FINALIZA DIRETO -->
-<div id="dinheiroFinalModal" onclick="if(event.target===this) fecharDinheiroFinal()"><div class="pixCard" style="background:linear-gradient(180deg,#fff 0%,#fff5f7 100%)">
+<div id="dinheiroFinalModal" onclick="if(event.target===this) fecharDinheiroFinal()"><div class="pixCard">
 <div style="font-size:50px">✅</div>
 <b style="font-family:Playfair Display;color:#8a1740;letter-spacing:3px">BONITAS</b>
 <h2 style="font-family:Playfair Display;color:#8a1740;font-size:26px;margin-top:10px">Pedido confirmado!</h2>
@@ -120,7 +116,6 @@ header a{cursor:pointer;text-decoration:none;color:#5a2a3a;font-weight:600;font-
 <button onclick="fecharDinheiroFinal()" style="margin-top:18px;background:#111;color:#fff;border:none;padding:14px;width:100%;border-radius:14px;font-weight:800;cursor:pointer">FECHAR</button>
 <a id="btnZapDinheiro" href="#" target="_blank" style="display:block;margin-top:10px;background:linear-gradient(135deg,#25d366,#1ebe5d);color:#fff;text-decoration:none;padding:14px;border-radius:14px;font-weight:800">💬 CHAMAR NO WHATSAPP</a>
 </div></div>
-
 <div id="carrinhoModal">
 <div style="padding:20px 22px;display:flex;justify-content:space-between;border-bottom:1px solid #eee;flex-shrink:0"><h2 style="font-family:Playfair Display;color:#8a1740">Seu carrinho</h2><button onclick="fecharCarrinho()" style="background:none;border:none;font-size:22px;cursor:pointer">✕</button></div>
 <div class="carrinhoMeio"><div id="itensCarrinho"></div><div id="pagamentos" style="display:none;padding:0 20px 12px"><h4 style="margin:12px 0 8px">Forma de pagamento</h4><div class="payOpt" onclick="selPay(this,'dinheiro')"><span>💵 Dinheiro</span><small>Entrega</small></div><div class="payOpt" onclick="selPay(this,'credito')"><span>💳 Crédito</span><small>1x 2x 3x</small></div><div class="payOpt" onclick="selPay(this,'debito')"><span>💳 Débito</span><small>À vista</small></div><div class="payOpt" onclick="selPay(this,'pix')"><span>🔷 PIX</span><small>23h QR</small></div><div id="parcelaBox" style="display:none;margin-top:12px"><b style="font-size:12px">ESCOLHA AS PARCELAS</b><div class="parcelas"><button onclick="setParc(1)" id="parc1">1x</button><button onclick="setParc(2)" id="parc2">2x</button><button onclick="setParc(3)" id="parc3" class="ativo">3x</button></div><div id="parcelaInfo" style="margin-top:10px;background:#fff5f7;padding:10px;border-radius:10px;text-align:center;font-size:13px"></div></div><div id="pixArea" style="display:none;text-align:center;margin-top:12px;background:#f9f9f9;padding:12px;border-radius:14px"><img id="pixQr" style="width:200px;height:200px;border-radius:12px"><p style="font-size:11px;word-break:break-all;margin-top:8px">Chave: <span id="pixChaveTxt"></span></p><b id="pixTotal" style="display:block;margin-top:6px"></b><div style="background:#111;color:#fff;padding:8px 14px;border-radius:20px;display:inline-flex;margin-top:8px;font-size:12px;font-weight:800">⏳ Expira em 23:00:00</div></div></div></div>
@@ -153,54 +148,15 @@ function selPay(el,tipo){document.querySelectorAll('.payOpt').forEach(o=>o.class
 function setParc(n){parcSel=n;document.querySelectorAll('.parcelas button').forEach(b=>b.classList.remove('ativo'));document.getElementById('parc'+n).classList.add('ativo');atualizarParcelas()}
 function atualizarParcelas(){let conf=getConf();let total=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0)+Number(conf.taxa||10);document.getElementById('parcelaInfo').innerHTML=`💳 <b>${parcSel}x de R$ ${(total/parcSel).toFixed(2).replace('.',',')} sem juros</b><br>Total R$ ${total.toFixed(2).replace('.',',')}`}
 function finalizarPedido(){abrirCheckout();}
-function abrirCheckout(){if(!paySel)return alert('Escolha a forma de pagamento!');let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let total=sub+Number(conf.taxa||0);document.getElementById('ck-resumo').innerHTML=`💖 <b>Resumo:</b> ${car.reduce((a,b)=>a+b.qtd,0)} itens - R$ ${total.toFixed(2).replace('.',',')}<br><b>Pagamento:</b> ${paySel.toUpperCase()} ${paySel==='pix'?'<br><span style=\"color:#e84393\">⏳ Você terá 23h para pagar o PIX</span>':''}`;document.getElementById('checkoutModal').classList.add('aberto');}
+function abrirCheckout(){if(!paySel)return alert('Escolha a forma de pagamento!');let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let total=sub+Number(conf.taxa||0);document.getElementById('ck-resumo').innerHTML=`💖 <b>Resumo:</b> ${car.reduce((a,b)=>a+b.qtd,0)} itens - R$ ${total.toFixed(2).replace('.',',')}<br><b>Pagamento:</b> ${paySel.toUpperCase()} ${paySel==='pix'?'<br><span style="color:#e84393">⏳ Você terá 23h para pagar o PIX</span>':''}`;document.getElementById('checkoutModal').classList.add('aberto');}
 function fecharCheckout(){document.getElementById('checkoutModal').classList.remove('aberto');}
 async function buscarCep(){let cep=document.getElementById('ck-cep').value.replace(/\D/g,'');if(cep.length!=8){return;}try{let r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);let d=await r.json();if(!d.erro){document.getElementById('ck-end').value=d.logradouro;document.getElementById('ck-bairro').value=d.bairro;document.getElementById('ck-cidade').value=d.localidade+' - '+d.uf;}}catch(e){alert('CEP não encontrado');}}
 function pegarDados(){let nome=document.getElementById('ck-nome').value.trim();let tel=document.getElementById('ck-tel').value.trim();let cep=document.getElementById('ck-cep').value.trim();let end=document.getElementById('ck-end').value.trim();let num=document.getElementById('ck-num').value.trim();let bairro=document.getElementById('ck-bairro').value.trim();let cidade=document.getElementById('ck-cidade').value.trim();if(!nome||!tel||!cep||!end){alert('Preencha nome, telefone, CEP e endereço');return null;}let enderecoCompleto=`${end}, ${num} - ${bairro} - ${cidade} - CEP:${cep}`;let conf=getConf();let sub=car.reduce((a,b)=>a+Number(b.preco)*b.qtd,0);let frete=Number(conf.taxa||0);let total=sub+frete;return {nome,tel,cep,end:enderecoCompleto,sub,frete,total,conf,pag:paySel==='credito'?`CREDITO ${parcSel}X`:paySel.toUpperCase()};}
 function copiarPix(){navigator.clipboard.writeText(document.getElementById('pixFinalChave').innerText);alert('Chave PIX copiada! 💖');}
 function fecharPixFinal(){document.getElementById('pixFinalModal').classList.remove('aberto');if(timerInterval)clearInterval(timerInterval);car=[];atualizarCarrinho();fecharCarrinho();}
 function fecharDinheiroFinal(){document.getElementById('dinheiroFinalModal').classList.remove('aberto');car=[];atualizarCarrinho();fecharCarrinho();}
-function iniciarTimer(){
- let s=23*3600; // 23 HORAS
- if(timerInterval)clearInterval(timerInterval);
- document.getElementById('timer').innerText='23:00:00';
- timerInterval=setInterval(()=>{
-   s--;if(s<0)s=0;
-   let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
-   document.getElementById('timer').innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
- },1000);
-}
-function enviarPedidoSite(){
- let d=pegarDados();if(!d)return;
- let data=new Date().toLocaleString('pt-BR');
- let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:data};
- fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{
-   fecharCheckout();
-   if(paySel==='pix'){
-     document.getElementById('pixFinalChave').innerText=d.conf.pix;
-     document.getElementById('pixFinalTotal').innerText='Total: R$ '+d.total.toFixed(2).replace('.',',');
-     document.getElementById('pixFinalQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(d.conf.pix)}`;
-     document.getElementById('pixFinalModal').classList.add('aberto');
-     iniciarTimer();
-   }else{
-     // DINHEIRO, CREDITO, DEBITO - FINALIZA DIRETO SEM ERRO
-     document.getElementById('dinheiroTotal').innerText='Total: R$ '+d.total.toFixed(2).replace('.',',')+' - '+d.pag;
-     document.getElementById('btnZapDinheiro').href=`https://wa.me/${d.conf.zap}?text=${encodeURIComponent('Olá BONITAS! Acabei de finalizar meu pedido de R$ '+d.total.toFixed(2)+' no site. Meu nome é '+d.nome)}`;
-     document.getElementById('dinheiroFinalModal').classList.add('aberto');
-   }
- });
-}
-function enviarPedidoZap(){
- let d=pegarDados();if(!d)return;
- let data=new Date().toLocaleString('pt-BR');
- let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:data};
- fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{
-   let itensTxt = car.map((p,i)=>`${i+1}x ${p.nome.toUpperCase()}\nTamanho: ${p.tam}\nCor: ${p.cor}\nR$ ${Number(p.preco).toFixed(2).replace('.',',')}`).join('\n\n');
-   let enderecoTxt = `📍 ENTREGA\n${d.end}`;
-   let msg=`#### NOVO PEDIDO BONITAS ####\n\n📅 ${data}\n\n👤 CLIENTE\n${d.nome}\n📞 ${d.tel}\n\n${enderecoTxt}\n\n------- ITENS -------\n\n${itensTxt}\n\nSUBTOTAL: R$ ${d.sub.toFixed(2).replace('.',',')}\nFRETE: R$ ${d.frete.toFixed(2).replace('.',',')}\nTOTAL: R$ ${d.total.toFixed(2).replace('.',',')}\n\nPAGAMENTO: ${d.pag}\n\nPedido realizado pelo site BONITAS 💗`;
-   window.open(`https://wa.me/${d.conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');
-   fecharCheckout();car=[];atualizarCarrinho();fecharCarrinho();
- });
-}
+function iniciarTimer(){let s=23*3600;if(timerInterval)clearInterval(timerInterval);document.getElementById('timer').innerText='23:00:00';timerInterval=setInterval(()=>{s--;if(s<0)s=0;let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;document.getElementById('timer').innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;},1000);}
+function enviarPedidoSite(){let d=pegarDados();if(!d)return;let data=new Date().toLocaleString('pt-BR');let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:data};fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{fecharCheckout();if(paySel==='pix'){document.getElementById('pixFinalChave').innerText=d.conf.pix;document.getElementById('pixFinalTotal').innerText='Total: R$ '+d.total.toFixed(2).replace('.',',');document.getElementById('pixFinalQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(d.conf.pix)}`;document.getElementById('pixFinalModal').classList.add('aberto');iniciarTimer();}else{document.getElementById('dinheiroTotal').innerText='Total: R$ '+d.total.toFixed(2).replace('.',',')+' - '+d.pag;document.getElementById('btnZapDinheiro').href=`https://wa.me/${d.conf.zap}?text=${encodeURIComponent('Olá BONITAS! Acabei de finalizar meu pedido de R$ '+d.total.toFixed(2)+' no site. Meu nome é '+d.nome)}`;document.getElementById('dinheiroFinalModal').classList.add('aberto');}});}
+function enviarPedidoZap(){let d=pegarDados();if(!d)return;let data=new Date().toLocaleString('pt-BR');let pedido={nome:d.nome,cliente:{nome:d.nome,tel:d.tel,end:d.end,cep:d.cep},itens:car.map(p=>({nome:p.nome,tam:p.tam,cor:p.cor,qtd:p.qtd,preco:p.preco})),subtotal:d.sub,frete:d.frete,total:d.total,pagamento:d.pag,data:data};fetch('/api/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)}).then(r=>r.json()).then(res=>{let itensTxt = car.map((p,i)=>`${i+1}x ${p.nome.toUpperCase()}\nTamanho: ${p.tam}\nCor: ${p.cor}\nR$ ${Number(p.preco).toFixed(2).replace('.',',')}`).join('\n\n');let enderecoTxt = `📍 ENTREGA\n${d.end}`;let msg=`#### NOVO PEDIDO BONITAS ####\n\n📅 ${data}\n\n👤 CLIENTE\n${d.nome}\n📞 ${d.tel}\n\n${enderecoTxt}\n\n------- ITENS -------\n\n${itensTxt}\n\nSUBTOTAL: R$ ${d.sub.toFixed(2).replace('.',',')}\nFRETE: R$ ${d.frete.toFixed(2).replace('.',',')}\nTOTAL: R$ ${d.total.toFixed(2).replace('.',',')}\n\nPAGAMENTO: ${d.pag}\n\nPedido realizado pelo site BONITAS 💗`;window.open(`https://wa.me/${d.conf.zap}?text=${encodeURIComponent(msg)}`,'_blank');fecharCheckout();car=[];atualizarCarrinho();fecharCarrinho();});}
 carregarDB();
 </script></body></html>
